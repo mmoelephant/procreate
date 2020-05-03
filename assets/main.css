@@ -63,3 +63,162 @@ input {
   font-size: 14px;
   color: #ccc
 }
+.pagetitle {
+  margin: 24px 0;
+  font-size: 18px;
+  color: #333;
+}
+.pagetitle span {
+  font-size: 16px;
+  font-weight: normal;
+  color: #999;
+}
+.pagetip {
+  width: 100%;
+  height: 50px;
+  padding: 0 40px;
+  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  font-size: 12px;
+  line-height: 50px;
+  background: #fff;
+  color: #666;
+}
+.pagetip span {
+  font-weight: bold;
+  color: #1D78D3;
+}
+.form {
+  display: flex;
+  margin-bottom: 60px;
+  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  padding: 30px 50px;
+  margin: 20px 0;
+  background: #fff
+}
+.formtitle {
+  width: auto;
+  max-width: 160px;
+  font-weight: bold
+}
+.formitems {
+  width: calc(100% - 200px);
+  margin-left: 40px
+}
+.formitem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px
+}
+.formitem .itemname {
+  width: 114px;
+  margin-right: 20px;
+  text-align: right;
+  color: #666;
+}
+.formitem input {
+  width: 420px;
+  height: 40px;
+  background: #F3F6FA;
+  border: 1px #DCDEE2 solid
+}
+.formitem input[disabled] {
+  border: none;
+  background: none;
+}
+.formitem.msgcode {
+  position: relative
+}
+.formitem.msgcode input {
+  width: 320px
+}
+.formitem.upload {
+  align-items: flex-start
+}
+.formitem.upload .itemname {
+  margin-top: 10px
+}
+.uploadbox, .filebox {
+  display: flex;
+  align-items: center;
+  width: 420px;
+}
+.uploadbtn {
+  position: relative; 
+  width: 160px;
+  height: 40px;
+  margin-right: 10px;
+  text-align: center;
+  line-height: 40px;
+  background: #50A7FF;
+  color: #fff;
+  cursor: pointer
+}
+.uploadbtn input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer
+}
+.uploadtip {
+  font-size: 12px;
+  color: #ccc;
+}
+.filebox {
+  margin-top: 10px;
+  color: #1D78D3;
+}
+.filebox>div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px
+}
+.filebox>div p {
+  width: auto;
+  max-width: calc(100% - 26px);
+  text-decoration: underline;
+  cursor: pointer
+}
+.filebox>div p:hover {
+  color: #3972E4;
+}
+.delIcon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-left: 5px;
+  font-size: 12px;
+  line-height: 11px;
+  text-align: center;
+  background: #666;
+  color: #fff;
+  cursor: pointer
+}
+.delIcon:hover {
+  background: #333
+}
+.btns {
+  display: flex;
+  justify-content: center;
+}
+.btns>div {
+  width: 140px;
+  height: 36px;
+  border-radius: 20px;
+  margin: 0 10px;
+  text-align: center;
+  line-height: 36px;
+  background: #ccc;
+  color: #fff;
+  cursor: pointer
+}
+.btns>div:hover {
+  background: #bbb
+}
+.btns>div.submitbtn {
+  background: #3972E4
+}
+.btns>div.submitbtn:hover {
+  background: #50A7FF
+}

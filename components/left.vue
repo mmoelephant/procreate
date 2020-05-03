@@ -26,6 +26,16 @@
         "
         @click="userinfo"
       >
+        企业信息
+      </li>
+      <li
+        :class="
+          route.path == '/accoutset'
+            ? 'bignav proset leftnavOn'
+            : 'bignav proset'
+        "
+        @click="accoutset"
+      >
         账户设置
       </li>
     </ul>
@@ -44,6 +54,9 @@ export default {
   methods: {
     userinfo() {
       this.$router.push('/userinfo')
+    },
+    accoutset() {
+      this.$router.push('/accoutset')
     }
   }
 }

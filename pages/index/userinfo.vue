@@ -9,12 +9,12 @@
       <span>0871-65874167</span>
     </div>
     <div class="form">
-      <p class="formtitle">资料信息</p>
+      <p class="formtitle">企业资质信息</p>
       <div class="formitems">
         <div class="formitem">
           <div class="itemname">申报单位名称</div>
           <input
-            v-model="enterprise_name"
+            v-model="form.enterprise_name"
             type="text"
             :disabled="disabled1"
             placeholder="请输入申报单位名称"
@@ -23,7 +23,7 @@
         <div class="formitem">
           <div class="itemname">统一社会信用代码</div>
           <input
-            v-model="enterprise_code"
+            v-model="form.enterprise_code"
             type="text"
             :disabled="disabled1"
             placeholder="请输入统一社会信用代码"
@@ -32,7 +32,7 @@
         <div class="formitem">
           <div class="itemname">法人姓名</div>
           <input
-            v-model="leaderman"
+            v-model="form.leaderman"
             type="text"
             :disabled="disabled1"
             placeholder="请输入法人姓名"
@@ -41,7 +41,7 @@
         <div class="formitem">
           <div class="itemname">法人身份证号</div>
           <input
-            v-model="idnumber"
+            v-model="form.idnumber"
             type="text"
             :disabled="disabled1"
             placeholder="请输入法人身份证号"
@@ -93,7 +93,7 @@
         <div class="formitem">
           <div class="itemname">法人手机号</div>
           <input
-            v-model="leaderphone"
+            v-model="form.leaderphone"
             type="text"
             :disabled="disabled1"
             placeholder="请输入法人手机号"
@@ -126,7 +126,7 @@
         <div class="formitem">
           <div class="itemname">单位性质</div>
           <el-select
-            v-model="unitype"
+            v-model="form.unitype"
             :disabled="disabled1"
             placeholder="请选择单位性质"
           >
@@ -141,7 +141,7 @@
         <div class="formitem">
           <div class="itemname">注册地址</div>
           <input
-            v-model="regisaddre"
+            v-model="form.regisaddre"
             type="text"
             :disabled="disabled1"
             placeholder="请输入注册地址"
@@ -149,33 +149,111 @@
         </div>
       </div>
     </div>
+    <div class="form">
+      <p class="formtitle">企业联系信息</p>
+      <div class="formitems">
+        <div class="formitem">
+          <div class="itemname">管理员姓名</div>
+          <input
+            v-model="form.adminname"
+            type="text"
+            :disabled="disabled1"
+            placeholder="请输入管理员姓名"
+          />
+        </div>
+        <div class="formitem">
+          <div class="itemname">管理员身份证号</div>
+          <input
+            v-model="form.adminid"
+            type="password"
+            :disabled="disabled1"
+            placeholder="请输入管理员身份证号"
+          />
+        </div>
+        <div class="formitem">
+          <div class="itemname">办公电话</div>
+          <input
+            v-model="form.adminphone"
+            type="text"
+            :disabled="disabled1"
+            placeholder="请输入管理员办公电话"
+          />
+        </div>
+        <div class="formitem">
+          <div class="itemname">联系手机号</div>
+          <input
+            v-model="form.adminmobile"
+            type="text"
+            :disabled="disabled1"
+            placeholder="请输入管理员联系手机号"
+          />
+        </div>
+        <div class="formitem">
+          <div class="itemname">QQ号</div>
+          <input
+            v-model="form.adminqq"
+            type="text"
+            :disabled="disabled1"
+            placeholder="请输入管理员联系QQ号"
+          />
+        </div>
+        <div class="formitem">
+          <div class="itemname">微信号</div>
+          <input
+            v-model="form.adminwx"
+            type="text"
+            :disabled="disabled1"
+            placeholder="请输入管理员联系微信号"
+          />
+        </div>
+        <div class="formitem">
+          <div class="itemname">通讯地址</div>
+          <input
+            v-model="form.adminaddre"
+            type="text"
+            :disabled="disabled1"
+            placeholder="请输入管理员通讯地址"
+          />
+        </div>
+      </div>
+    </div>
     <div class="btns">
-      <div v-if="disabled1" class="submitbtn" @click="modify">修改</div>
+      <div v-if="disabled1" class="submitbtn" @click="modify">更改企业信息</div>
       <div v-else class="submitbtn" @click="submit">重新提交</div>
     </div>
   </div>
 </template>
 <script>
+// import { formValidate } from '../../plugins/formValidate'
 export default {
   data() {
     return {
-      enterprise_name: '',
-      enterprise_code: '',
-      leaderman: '',
-      idnumber: '',
-      leaderphone: '',
-      file1: {},
-      fileLen1: 0,
-      files1: [],
-      file2: {},
-      fileLen2: 0,
-      files2: [],
-      file3: {},
-      fileLen3: 0,
-      files3: [],
+      form: {
+        enterprise_name: '',
+        enterprise_code: '',
+        leaderman: '',
+        idnumber: '',
+        leaderphone: '',
+        file1: {},
+        fileLen1: 0,
+        files1: [],
+        file2: {},
+        fileLen2: 0,
+        files2: [],
+        file3: {},
+        fileLen3: 0,
+        files3: [],
+        unitype: '',
+        regisaddre: '',
+        adminname: '',
+        adminid: '',
+        adminphone: '',
+        adminmobile: '',
+        adminqq: '',
+        adminwx: '',
+        adminaddre: ''
+      },
       unitypes: [],
-      unitype: '',
-      regisaddre: '',
       disabled1: true
     }
   },
@@ -183,74 +261,9 @@ export default {
     uploadchange1() {},
     uploadchange2() {},
     uploadchange3() {},
-    formValidate() {
-      if (!this.enterprise_name) {
-        this.$message({
-          type: 'error',
-          message: '请输入申报单位名称'
-        })
-        return false
-      } else if (!this.enterprise_code || this.enterprise_code !== 18) {
-        this.$message({
-          type: 'error',
-          message: '请输入正确的统一社会信用代码'
-        })
-        return false
-      } else if (!this.leaderman) {
-        this.$message({
-          type: 'error',
-          message: '请输入法人姓名'
-        })
-        return false
-      } else if (!this.idnumber || this.idnumber.length !== 18) {
-        this.$message({
-          type: 'error',
-          message: '请输入正确的法人身份证号'
-        })
-        return false
-      } else if (this.files1.length === 0) {
-        this.$message({
-          type: 'error',
-          message: '请上传身份证正面扫描件'
-        })
-        return false
-      } else if (this.files2.length === 0) {
-        this.$message({
-          type: 'error',
-          message: '请上传身份证背面扫描件'
-        })
-        return false
-      } else if (!this.leaderphone || this.leaderphone.length !== 11) {
-        this.$message({
-          type: 'error',
-          message: '请输入正确的法人手机号'
-        })
-        return false
-      } else if (this.files3.length === 0) {
-        this.$message({
-          type: 'error',
-          message: '请上传营业执照'
-        })
-        return false
-      } else if (!this.unitype) {
-        this.$message({
-          type: 'error',
-          message: '请选择单位性质'
-        })
-        return false
-      } else if (!this.regisaddre) {
-        this.$message({
-          type: 'error',
-          message: '请输入注册地址'
-        })
-        return false
-      } else {
-        return true
-      }
-    },
     submit() {
       /*eslint-disable*/
-      // if (!this.formValidate()) return
+      // if (!formValidate(this.form, this)) return
       this.disabled1 = true
     },
     downfile(aa) {
@@ -263,131 +276,4 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped>
-.indexpage
-  color #666
-.pagetitle
-  margin 24px 0
-  font-size 18px
-  // font-weight normal
-  color #333
-  span
-    font-size 16px
-    font-weight normal
-    color #999
-.pagetip
-  width 100%
-  height 50px
-  padding 0 40px
-  box-shadow 0px 3px 10px rgba(151,190,255,0.17)
-  font-size 12px
-  line-height 50px
-  background #fff
-  span
-    font-weight bold
-    color #1D78D3
-.form
-  display flex
-  box-shadow 0px 3px 10px rgba(151,190,255,0.17)
-  padding 30px 50px
-  margin 20px 0
-  background #fff
-.formtitle
-  width auto
-  max-width 160px
-  font-weight bold
-  color #333
-.formitems
-  width calc(100% - 200px)
-  margin-left 40px
-.formitem
-  display flex
-  align-items center
-  margin-bottom 20px
-  .itemname
-    width 114px
-    margin-right 20px
-    text-align right
-    color #666
-  input
-    width 420px
-    height 40px
-    background #F3F6FA
-    border 1px #DCDEE2 solid
-  input[disabled]
-    border none
-.formitem.upload
-  align-items flex-start
-  .itemname
-    margin-top 10px
-.uploadbox, .filebox
-  width 420px
-  display flex
-  align-items center
-.uploadbtn
-  position relative
-  width 160px
-  height 40px
-  margin-right 10px
-  text-align center
-  line-height 40px
-  background #50A7FF
-  color #fff
-  cursor pointer
-  input
-    position absolute
-    top 0
-    left 0
-    opacity 0
-    cursor pointer
-.uploadtip
-  font-size 12px
-  color #ccc
-.filebox
-  margin-top 10px
-  color #1D78D3
-  >div
-    width 100%
-    display flex
-    align-items center
-    margin-bottom 10px
-    p
-      width auto
-      max-width calc(100% - 26px)
-      text-decoration underline
-      cursor pointer
-    p:hover
-      color #3972E4
-.delIcon
-  width 12px
-  height 12px
-  border-radius 50%
-  margin-left 10px
-  font-size 12px
-  line-height 11px
-  text-align center
-  background #666
-  color #fff
-  cursor pointer
-.delIcon:hover
-  background #333
-.btns
-  display flex
-  justify-content center
-  >div
-    width 140px
-    height 36px
-    border-radius 20px
-    margin 0 10px
-    text-align center
-    line-height 36px
-    background #CCC
-    color #fff
-    cursor pointer
-  div:hover
-    background #bbb
-  div.submitbtn
-    background #3972E4
-  div.submitbtn:hover
-    background #50A7FF
-</style>
+<style lang="stylus" scoped></style>
