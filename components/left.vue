@@ -2,10 +2,23 @@
   <div class="leftpage">
     <div class="unitname">昆明行列科技有限公司</div>
     <ul class="leftnav">
-      <li class="bignav">项目立项</li>
+      <li
+        :class="
+          route.path == '/createpro' || route.path == '/creating'
+            ? 'bignav leftnavOn'
+            : 'bignav'
+        "
+        @click="createpro"
+      >
+        <i class="iconfont">&#xe61e;</i>
+        项目立项
+      </li>
       <li>
         <ul>
-          <li class="bignav">项目中期</li>
+          <li class="bignav">
+            <i class="iconfont">&#xe61f;</i>
+            项目中期
+          </li>
           <li>中期汇报</li>
           <li>变更申请</li>
           <li>中止申请</li>
@@ -13,19 +26,19 @@
       </li>
       <li>
         <ul>
-          <li class="bignav">项目验收</li>
+          <li class="bignav">
+            <i class="iconfont">&#xe61c;</i>
+            项目验收
+          </li>
           <li>验收申请</li>
           <li>证书申请</li>
         </ul>
       </li>
       <li
-        :class="
-          route.path == '/userinfo'
-            ? 'bignav proset leftnavOn'
-            : 'bignav proset'
-        "
+        :class="route.path == '/userinfo' ? 'bignav leftnavOn' : 'bignav'"
         @click="userinfo"
       >
+        <i class="iconfont">&#xe61d;</i>
         企业信息
       </li>
       <li
@@ -36,6 +49,7 @@
         "
         @click="accoutset"
       >
+        <i class="iconfont">&#xe618;</i>
         账户设置
       </li>
     </ul>
@@ -52,6 +66,9 @@ export default {
     }
   },
   methods: {
+    createpro() {
+      this.$router.push('/createpro')
+    },
     userinfo() {
       this.$router.push('/userinfo')
     },
@@ -63,7 +80,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .leftpage
-  width 320px
+  width 260px
   box-shadow 0px 3px 10px rgba(151,190,255,0.17)
   padding-bottom 100px
   background #fff
@@ -84,6 +101,8 @@ export default {
   font-size 16px
   font-weight bold
   color #666 !important
+  i
+    margin-right 14px
 .bignav:hover
   color #333
 .bignav.proset

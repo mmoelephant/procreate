@@ -1,7 +1,7 @@
 <template>
   <div class="indexcommon">
-    <left v-if="route.path != '/register'" />
-    <div :class="route.path != '/register' ? 'indexright' : 'indexright2'">
+    <left />
+    <div class="indexright">
       <nuxt />
     </div>
   </div>
@@ -20,11 +20,7 @@ export default {
       return this.$route
     }
   },
-  methods: {
-    toindex() {
-      this.$router.push('/login')
-    }
-  }
+  methods: {}
 }
 </script>
 <style lang="stylus" scoped>
@@ -32,8 +28,6 @@ export default {
   display flex
   width 100%
 .indexright
-  width calc(100% - 320px)
+  width calc(100% - 260px)
   padding 20px 80px 20px 20px
-.indexright2
-  width 100%
 </style>

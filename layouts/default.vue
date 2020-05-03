@@ -1,12 +1,14 @@
 <template>
   <div>
-    <el-header v-if="route.path != '/login'" class="commonheader">
+    <el-header v-if="route.name.slice(0, 5) != 'login'" class="commonheader">
       <div class="webtitle" @click="toIndex">
         云南省住房和城乡建设厅科学技术计划项目管理系统
       </div>
     </el-header>
-    <el-main :class="route.path == '/login' ? '' : 'main'"><nuxt /></el-main>
-    <el-footer v-if="route.path != '/login'">
+    <el-main :class="route.name.slice(0, 5) == 'login' ? '' : 'main'">
+      <nuxt />
+    </el-main>
+    <el-footer v-if="route.name.slice(0, 5) != 'login'">
       <div class="footerinfo">
         <span>主管单位：云南省住房和城乡建设厅科技与标准定额处</span>
         <span>联系电话：64320549</span>

@@ -23,6 +23,7 @@
             :disabled="disabled1"
             placeholder="请输入用户密码"
           />
+          <p class="setbtn">修改密码</p>
         </div>
         <div class="formitem msgcode">
           <div class="itemname">手机号</div>
@@ -32,6 +33,7 @@
             :disabled="disabled1"
             placeholder="请输入用户手机号"
           />
+          <p class="setbtn">换绑</p>
         </div>
       </div>
     </div>
@@ -49,4 +51,12 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.setbtn
+  position absolute
+  left 360px
+  color #50A7FF
+  cursor pointer
+.setbtn:hover
+  color #1D78D3
+</style>

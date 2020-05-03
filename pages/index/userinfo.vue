@@ -228,31 +228,7 @@
 export default {
   data() {
     return {
-      form: {
-        enterprise_name: '',
-        enterprise_code: '',
-        leaderman: '',
-        idnumber: '',
-        leaderphone: '',
-        file1: {},
-        fileLen1: 0,
-        files1: [],
-        file2: {},
-        fileLen2: 0,
-        files2: [],
-        file3: {},
-        fileLen3: 0,
-        files3: [],
-        unitype: '',
-        regisaddre: '',
-        adminname: '',
-        adminid: '',
-        adminphone: '',
-        adminmobile: '',
-        adminqq: '',
-        adminwx: '',
-        adminaddre: ''
-      },
+      form: {},
       unitypes: [],
       disabled1: true
     }
@@ -276,4 +252,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped></style>

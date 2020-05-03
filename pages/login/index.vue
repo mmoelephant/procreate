@@ -1,6 +1,8 @@
 <template>
-  <div class="loginpage">
-    <div class="systemname">云南省住房和城乡建设厅科学技术计划项目管理系统</div>
+  <div :class="userwho == 1 ? 'loginpage' : 'loginpage2'">
+    <div class="systemname">
+      云南省住房和城乡建设厅科学技术计划项目管理系统
+    </div>
     <div class="loginbox">
       <div class="loginleft">
         <h4>登录&注册</h4>
@@ -277,143 +279,8 @@ export default {
       if (!this.formValidate3()) return
     },
     register() {
-      this.$router.push('/register')
-      // this.$router.push('/login/code')
+      this.$router.push('/login/register')
     },
   }
 }
 </script>
-<style lang="stylus" scoped>
-.loginpage
-  display flex
-  flex-direction column
-  align-items center
-  justify-content center
-  width 100%
-  height 100%
-  background url(../../assets/img/loginbg.jpg) center no-repeat
-  background-size 100% 100%
-  .systemname
-    font-size 40px
-    color #fff
-.loginbox
-  display flex
-  width 720px
-  min-height 480px
-  margin-top 80px
-  border-radius 10px
-  box-shadow 0px 0px 12px rgba(0,0,0,0.06)
-.loginleft
-  display flex
-  flex-direction column
-  align-items center
-  justify-content center
-  width 280px
-  border-radius 10px 0 0 10px
-  font-size 24px !important
-  background url(../../assets/img/loginleft.jpg) center no-repeat
-  color #fff
-.loginright
-  width 440px
-  padding 30px 50px
-  border-radius 0 10px 10px 0
-  background #fff
-  color #999
-  .userstab
-    font-size 20px
-    text-align center
-    line-height 30px
-    span
-      padding 0 14px
-      border-right 1px #333 solid
-      cursor pointer
-    span:hover
-      color #666
-    span.userOn
-      color #333
-    span:last-of-type
-      border none
-.typetab
-  display flex
-  border-bottom 1px #e6e6e6 solid
-  margin 30px 0 20px 0
-  span
-    display block
-    padding 5px 0
-    margin-right 40px
-    cursor pointer
-  span.typeOn
-    border-bottom 2px #1D78D3 solid
-    color #1D78D3
-  span:hover
-    color #666
-.loginmain, .loginmain2
-  position relative
-  margin 30px 0
-  >div
-    position relative
-    display flex
-    width 100%
-    height 44px
-    border 1px #e6e6e6 solid
-    margin-bottom 30px
-    >div
-      width 44px
-      height 44px
-  input
-    width calc(100% - 44px)
-    height 44px
-  div.loginbtn
-    position static
-    display block
-    border none
-    border-radius 24px
-    margin-top 40px
-    text-align center
-    line-height 44px
-    background #3972E4
-    color #fff
-    cursor pointer
-  div.loginbtn:hover
-    background #1D78D3
-.loginmain2
-  input
-    width 100%
-  input.msginput
-    width calc(100% - 100px)
-.sendbtn
-  position absolute
-  right 0
-  top 0
-  width 100px !important
-  height 44px
-  text-align center
-  line-height 44px
-  background #50A7FF
-  color #fff
-  cursor pointer
-.sendbtn2
-  background #999
-  cursor default
-.errtip
-  position absolute
-  left 0
-  bottom 54px
-  color red
-.other
-  display flex
-  align-items center
-  justify-content center
-  text-align center
-  line-height 14px
-  span
-    display block
-    padding 0 8px
-    border-right 1px #1D78D3 solid
-    cursor pointer
-  span:last-of-type
-    border none
-    color #1D78D3
-  span:hover
-    color #1D78D3
-</style>
