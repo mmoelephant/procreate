@@ -1,18 +1,21 @@
 @import './fonts/iconfont/iconfont.css';
-body{
+body {
   min-width: 1440px;
   margin: 0;
   font-size: 14px;
   background: #F3F6FA;
 }
+
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0
 }
+
 ul, li {
   list-style: none;
   padding: 0;
 }
+
 .el-header {
   position: fixed;
   top: 0;
@@ -20,6 +23,7 @@ ul, li {
   width: 100%;
   padding: 0 60px
 }
+
 .el-main {
   width: 100%;
   height: 100vh;
@@ -27,91 +31,375 @@ ul, li {
   /* margin: 60px 0; */
   border: 1px red solid;
 }
+
 .main {
   height: auto;
   min-height: 100vh;
   margin: 60px 0;
 }
+
 .el-footer {
   padding: 0;
   text-align: center;
   color: #999
 }
-input{
+
+input {
   padding: 0 10px;
   border: none;
   outline: none;
   background: none;
 }
-/* input:focus {
-  outline: #1D78D3 auto 1px;
-} */
+
 ::-webkit-input-placeholder, ::-webkit-textarea-placeholder {
-  font-size: 14px;
-  font-family: MicrosoftYaHei;
   color: #ccc
 }
 
 :-moz-placeholder {
-  font-size: 14px;
-  font-family: MicrosoftYaHei;
   color: #ccc
 }
 
 ::-moz-placeholder {
-  font-size: 14px;
-  font-family: MicrosoftYaHei;
   color: #ccc
 }
 
 :-ms-input-placeholder, :-ms-textarea-placeholder {
-  font-size: 14px;
-  font-family: MicrosoftYaHei;
   color: #ccc
 }
 
 .el-input__inner, .el-textarea__inner {
   border-radius: 0;
 }
+
 .el-textarea__inner {
   border-color: #DCDEE2;
   background: #F3F6FA
 }
+
 .el-date-editor.el-input {
   width: 183px;
 }
+
 .el-textarea {
   width: 500px
 }
+
+.content .el-textarea {
+  width: 100%;
+}
+
+.loginpage, .loginpage2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: url(../assets/img/loginbg.jpg) center no-repeat;
+  background-size: 100% 100%
+}
+
+.systemname {
+  font-size: 40px;
+  color: #fff
+}
+
+.loginpage2 {
+  background: url(../assets/img/loginbg2.jpg) center no-repeat
+}
+
+.loginpage2 .systemname {
+  color: #333
+}
+
+.loginbox {
+  display: flex;
+  width: 720px;
+  min-height: 480px;
+  margin-top: 80px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.06)
+}
+
+.loginleft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  border-radius: 10px 0 0 10px;
+  font-size: 24px;
+  background: url(../assets/img/loginleft.jpg) center no-repeat;
+  background-size: 100% 100%;
+  color: #fff
+}
+
+.loginright {
+  width: 440px;
+  padding: 30px 50px;
+  border-radius: 0 10px 10px 0;
+  background: #fff;
+  color: #999
+}
+
+.userstab {
+  font-size: 20px;
+  text-align: center;
+  line-height: 30px
+}
+
+.userstab span {
+  padding: 0 14px;
+  border-right: 1px #333 solid;
+  cursor: pointer
+}
+
+.userstab span:hover {
+  color: #666
+}
+
+.userstab span.userOn {
+  color: #333
+}
+
+.userstab span:last-of-type {
+  border: none
+}
+
+.typetab {
+  display: flex;
+  border-bottom: 1px #e6e6e6 solid;
+  margin: 30px 0 20px 0
+}
+
+.typetab span {
+  display: block;
+  padding: 5px 0;
+  margin-right: 40px;
+  cursor: pointer
+}
+
+.typetab span.typeOn {
+  border-bottom: 2px #1D78D3 solid;
+  color: #1D78D3
+}
+
+.typetab span:hover {
+  color: #666
+}
+
+.loginmain, .loginmain2 {
+  position: relative;
+  margin: 30px 0
+}
+
+.loginmain>div, .loginmain2>div {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 44px;
+  border: 1px #e6e6e6 solid;
+  margin-bottom: 30px
+}
+
+.loginmain>div>div, .loginmain2>div>div {
+  width: 44px;
+  height: 44px
+}
+
+.loginmain input, .loginmain2 input {
+  width: calc(100% - 44px);
+  height: 44px
+}
+
+.loginmain2 input {
+  width: 100%;
+}
+
+.loginmain2 input.msginput {
+  width: calc(100% - 100px)
+}
+
+div.loginbtn {
+  position: static;
+  display: block;
+  border: none;
+  border-radius: 24px;
+  margin-top: 40px;
+  text-align: center;
+  line-height: 44px;
+  background: #3972E4;
+  color: #fff;
+  cursor: pointer
+}
+
+div.loginbtn:hover {
+  background: #1D78D3
+}
+
+.sendbtn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100px !important;
+  height: 44px;
+  text-align: center;
+  line-height: 44px;
+  background: #50A7FF;
+  color: #fff;
+  cursor: pointer
+}
+
+.sendbtn2 {
+  background: #999;
+  cursor: default;
+}
+
+.errtip {
+  position: absolute;
+  left: 0;
+  bottom: 54px;
+  color: red
+}
+
+.other {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 14px
+}
+
+.other span {
+  display: block;
+  padding: 0 8px;
+  border-right: 1px #1D78D3 solid;
+  cursor: pointer
+}
+
+.other span:last-of-type {
+  border: none;
+  color: #1D78D3
+}
+
+.other span:hover {
+  color: #1D78D3
+}
+
 .pagetitle {
   margin: 24px 0;
   font-size: 18px;
   color: #333;
 }
+.pagetitle.central {
+  text-align: center;
+}
+
 .pagetitle span {
   font-size: 16px;
   font-weight: normal;
   color: #999;
 }
+
+.indexhead {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+  border-bottom: 1px #e6e6e6 solid
+}
+.indexhead .pagetitle {
+  margin: 0;
+  text-align: center;
+}
+.guidebar {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #999;
+}
+.guidebar > div {
+  min-width: 110px;
+  height: 24px;
+  padding: 0 20px;
+  border: 1px #e6e6e6 solid;
+  border-radius: 12px;
+  margin: 0 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.guidebar > div.here {
+  border: none;
+  background: #50A7FF;
+  color: #fff
+}
+.guidebar i {
+  color: #ccc;
+}
+.d-guide {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 12px;
+  line-height: 24px;
+  color: #50A7FF
+}
+.d-guide>div {
+  min-width: 60px;
+  height: 24px;
+  padding: 0 10px;
+  margin-right: 5px;
+  border: 1px #50A7FF solid;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.d-guide>div.stepOn {
+  background: rgba(80, 167, 255, 0.19)
+}
+.contentbox {
+  /* padding-bottom: 30px; */
+  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  margin-bottom: 20px;
+  background: #fff;
+}
+.contenthead {
+  height: 50px;
+  padding: 0 40px;
+  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  font-size: 16px;
+  line-height: 50px;
+  background: #DCE8FF;
+}
+.content {
+  padding: 20px 40px 30px 40px;
+}
+.contentname {
+  margin-bottom: 10px;
+  color: #666
+}
+
 .pagetip {
   width: 100%;
   min-height: 50px;
   padding: 0 40px;
-  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  box-shadow: 0px 3px 10px rgba(151, 190, 255, 0.17);
   font-size: 12px;
   line-height: 50px;
   background: #fff;
   color: #666;
 }
+
 .pagetip span {
   font-weight: bold;
   color: #1D78D3;
 }
+
 .filters {
   display: flex;
   margin-bottom: 20px;
 }
-  
+
 .searchbox {
   display: flex;
   align-items: center;
@@ -122,6 +410,7 @@ input{
   margin-left: 20px;
   border: 1px #e6e6e6 solid;
 }
+
 .searchbox input {
   width: 260px;
   height: 30px;
@@ -146,71 +435,82 @@ input{
   display: flex;
   width: 100%;
   margin-bottom: 60px;
-  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  box-shadow: 0px 3px 10px rgba(151, 190, 255, 0.17);
   padding: 30px 50px;
   margin: 20px 0;
   background: #fff
 }
+
 .formtitle {
   width: auto;
   max-width: 160px;
   font-weight: bold
 }
+
 .formitems {
   width: calc(100% - 200px);
   margin-left: 40px
 }
+
 .formitem {
   width: 100%;
   display: flex;
   align-items: center;
   margin-bottom: 20px
 }
-.formitem.two > div {
+
+.formitem.two>div {
   display: flex;
   align-items: center;
 }
+
 .formitem .itemname {
   width: 114px;
   margin-right: 20px;
   text-align: right;
   color: #666;
 }
-/* .formitem .itemname.second {
-  width: 80px;
-} */
+
 .formitem input {
   width: 420px;
   height: 40px;
   background: #F3F6FA;
   border: 1px #DCDEE2 solid
 }
+
 .formitem input[disabled] {
   border: none;
   background: none;
 }
+
 .formitem.two input {
   width: 183px !important;
 }
+
 .formitem.msgcode {
   position: relative
 }
+
 .formitem.msgcode input {
   width: 320px
 }
+
 .formitem.upload {
   align-items: flex-start
 }
+
 .formitem.upload .itemname {
   margin-top: 10px
 }
+
 .uploadbox, .filebox {
   display: flex;
   align-items: center;
   width: 420px;
 }
+
 .uploadbtn {
-  position: relative; 
+  position: relative;
   width: 160px;
   height: 40px;
   margin-right: 10px;
@@ -220,6 +520,7 @@ input{
   color: #fff;
   cursor: pointer
 }
+
 .uploadbtn input {
   position: absolute;
   top: 0;
@@ -227,29 +528,35 @@ input{
   opacity: 0;
   cursor: pointer
 }
+
 .uploadtip {
   font-size: 12px;
   color: #ccc;
 }
+
 .filebox {
   margin-top: 10px;
   color: #1D78D3;
 }
+
 .filebox>div {
   display: flex;
   align-items: center;
   width: 100%;
   margin-bottom: 10px
 }
+
 .filebox>div p {
   width: auto;
   max-width: calc(100% - 26px);
   text-decoration: underline;
   cursor: pointer
 }
+
 .filebox>div p:hover {
   color: #3972E4;
 }
+
 .delIcon {
   width: 12px;
   height: 12px;
@@ -262,13 +569,17 @@ input{
   color: #fff;
   cursor: pointer
 }
+
 .delIcon:hover {
   background: #333
 }
+
 .btns {
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 }
+
 .btns>div {
   width: 140px;
   height: 36px;
@@ -280,179 +591,75 @@ input{
   color: #fff;
   cursor: pointer
 }
+
 .btns>div:hover {
   background: #bbb
 }
+
 .btns>div.submitbtn {
   background: #3972E4
 }
+
 .btns>div.submitbtn:hover {
   background: #50A7FF
 }
-.loginpage, .loginpage2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background: url(../assets/img/loginbg.jpg) center no-repeat;
-  background-size: 100% 100%
+
+.probox {
+  padding: 6px 60px 40px 60px;
+  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  margin-top: 6px;
+  background: #fff
 }
-.systemname {
-  font-size: 40px;
-  color: #fff
-}
-.loginpage2 {
-  background: url(../assets/img/loginbg2.jpg) center no-repeat
-}
-.loginpage2 .systemname {
-  color: #333
-}
-.loginbox {
-  display: flex;
-  width: 720px;
-  min-height: 480px;
-  margin-top: 80px;
-  box-shadow: 0px 0px 12px rgba(0,0,0,0.06)
-}
-.loginleft {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 280px;
-  border-radius: 10px 0 0 10px;
-  font-size: 24px;
-  background: url(../assets/img/loginleft.jpg) center no-repeat;
-  background-size: 100% 100%;
-  color: #fff
-}
-.loginright {
-  width: 440px;
-  padding: 30px 50px;
-  border-radius: 0 10px 10px 0;
-  background: #fff;
-  color: #999
-}
-.userstab {
-  font-size: 20px;
-  text-align: center;
-  line-height: 30px
-}
-.userstab span {
-  padding: 0 14px;
-  border-right: 1px #333 solid;
-  cursor: pointer
-}
-.userstab span:hover {
-  color: #666
-}
-.userstab span.userOn {
-  color: #333
-}
-.userstab span:last-of-type {
-  border: none
-}
-.typetab {
-  display: flex;
-  border-bottom: 1px #e6e6e6 solid;
-  margin: 30px 0 20px 0
-}
-.typetab span {
-  display: block;
-  padding: 5px 0;
-  margin-right: 40px;
-  cursor: pointer
-}
-.typetab span.typeOn {
-  border-bottom: 2px #1D78D3 solid;
-  color: #1D78D3
-}
-.typetab span:hover {
-  color: #666
-}
-.loginmain, .loginmain2 {
-  position: relative;
-  margin: 30px 0
-}
-.loginmain > div, .loginmain2 > div {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 44px;
+.listbox {
   border: 1px #e6e6e6 solid;
-  margin-bottom: 30px
-}
-.loginmain > div > div, .loginmain2 > div > div {
-  width: 44px;
-  height: 44px
-}
-.loginmain input, .loginmain2 input {
-  width: calc(100% - 44px);
-  height: 44px
-}
-.loginmain2 input {
-  width: 100%;
-}
-.loginmain2 input.msginput {
-  width: calc(100% - 100px)
-}
-div.loginbtn {
-  position: static;
-  display: block;
-  border: none;
-  border-radius: 24px;
-  margin-top: 40px;
+  border-right: none;
   text-align: center;
-  line-height: 44px;
-  background: #3972E4;
-  color: #fff;
-  cursor: pointer
+  line-height: 50px
 }
-div.loginbtn:hover {
-  background: #1D78D3
+.listhead, .listItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  background: #ECEEF2;
+  color: #333
+}
+.listhead p, .listItem p {
+  border-right: 1px #e6e6e6 solid;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
 }
 
-.sendbtn {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100px !important;
-  height: 44px;
-  text-align: center;
-  line-height: 44px;
-  background: #50A7FF;
-  color: #fff;
-  cursor: pointer
+.listItem {
+  background: #fff;
+  color: #666
 }
-.sendbtn2 {
-  background: #999;
-  cursor: default;
+.listItem .col4, .listItem .col5 {
+  color: #999
 }
-.errtip {
-  position: absolute;
-  left: 0;
-  bottom: 54px;
-  color: red
+.col1 {
+  width: 5%;
 }
-.other {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 14px
+.col2, .col4, .col5, .col6, .col8 {
+  width: 10%;
 }
-.other span {
-  display: block;
-  padding: 0 8px;
-  border-right: 1px #1D78D3 solid;
-  cursor: pointer
+.col3 {
+  width: 20%;
 }
-.other span:last-of-type {
-  border: none;
-  color: #1D78D3
+.col7 {
+  width: 25%;
 }
-.other span:hover {
-  color: #1D78D3
+
+.col11 {
+  width: 10%;
+}
+.col21, .col31, .col41, .col51{
+  width: 15%;
+}
+.col61 {
+  width: 20%;
+}
+.col71 {
+  width: 10%;
 }

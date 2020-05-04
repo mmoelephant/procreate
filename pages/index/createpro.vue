@@ -99,39 +99,4 @@ export default {
     color red
 .btns
   justify-content flex-start
-.probox
-  padding 6px 60px 40px 60px
-  box-shadow 0px 3px 10px rgba(151,190,255,0.17)
-  margin-top 6px
-  background #fff
-.listbox
-  border 1px #e6e6e6 solid
-  border-right none
-  text-align center
-  line-height 50px
-.listhead, .listItem
-  display flex
-  align-items center
-  width 100%
-  height 50px
-  background #ECEEF2
-  color #333
-  p
-    border-right 1px #e6e6e6 solid
-    overflow hidden
-    white-space nowrap
-    text-overflow ellipsis
-.listItem
-  background #fff
-  color #666
-  .col4, .col5
-    color #999
-.col1
-  width 5%
-.col2, .col4, .col5, .col6, .col8
-  width 10%
-.col3
-  width 20%
-.col7
-  width 25%
 </style>

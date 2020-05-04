@@ -364,32 +364,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-.indexhead
-  display flex
-  align-items center
-  padding 20px 0
-.pagetitle
-  margin 0
-.guidebar
-  display flex
-  align-items center
-  font-size 14px
-  color #999
-  >div
-    min-width 110px
-    height 24px
-    padding 0 20px
-    border 1px #e6e6e6 solid
-    border-radius 12px
-    margin 0 16px
-    line-height 24px
-    cursor pointer
-  >div.here
-    border none
-    background #50A7FF
-    color #fff
-  i
-    color #ccc
 .pagetip
   padding 30px 60px
   line-height 32px
