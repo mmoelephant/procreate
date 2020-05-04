@@ -16,6 +16,10 @@ ul, li {
   padding: 0;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .el-header {
   position: fixed;
   top: 0;
@@ -42,6 +46,12 @@ ul, li {
   padding: 0;
   text-align: center;
   color: #999
+}
+
+.el-dialog__header {
+  padding: 16px 30px;
+  box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
+  background: #DCE8FF;
 }
 
 input {
@@ -204,6 +214,11 @@ input {
 .loginmain>div>div, .loginmain2>div>div {
   width: 44px;
   height: 44px
+}
+
+.loginmain img {
+  display: block;
+  margin: 10px auto 0 auto;
 }
 
 .loginmain input, .loginmain2 input {
@@ -662,4 +677,29 @@ div.loginbtn:hover {
 }
 .col71 {
   width: 10%;
+}
+
+.col12 {
+  width: 10%;
+}
+.col32, .col42, .col62{
+  width: 15%;
+}
+.col22 {
+  width: 20%;
+}
+.col52 {
+  width: 25%;
+}
+
+.col13 {
+  width: 10%
+}
+
+.col23 {
+  width: 60%
+}
+
+.col33 {
+  width: 30%
 }

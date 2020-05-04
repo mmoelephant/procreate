@@ -225,6 +225,10 @@
 </template>
 <script>
 // import { formValidate } from '../../plugins/formValidate'
+import { datawork } from '../../plugins/datawork'
+import { getClientId } from '../../plugins/getclientid'
+import { getToken } from '../../plugins/gettoken'
+import { objectToFormdata } from '../../plugins/objectoformdata'
 export default {
   data() {
     return {
@@ -234,7 +238,93 @@ export default {
     }
   },
   methods: {
-    uploadchange1() {},
+    uploadchange1() {
+      const inputDOM = this.$refs.upload1
+      this.form.file1 = inputDOM.files
+      const oldLen = this.form.fileLen1
+      const len = this.form.file1.length + oldLen
+      if (len > 5) {
+        alert('最多可上传5个文件，您还可以上传' + (5 - oldLen) + '个')
+        return false
+      }
+      const size = Math.floor(this.form.file1[0].size)
+      if (size > 4 * 1024 * 1024) {
+        alert('请选择4M以内的文件！')
+        return false
+      }
+      this.uploadfile1()
+    },
+    uploadfile1() {
+      const commondata = this.$store.state.commondata
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      data1.type = 'file'
+      data2 = datawork(data1)
+      data2.file_single = this.form.file1[0]
+      const formdata = objectToFormdata(data2)
+      this.$api.upload_file(formdata).then((v) => {
+        if (v.data.errcode === 0) {
+          this.form.fileLen1++
+          this.form.files1.push(v.data.data)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.uploadfile1()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.uploadfile1()
+            }
+          }, 1000)
+        } else if (v.data.errmsg === '客户端ID不能为空') {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.uploadfile1()
+            }
+          }, 1000)
+        } else {
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg,
+            duration: 1000
+          })
+        }
+      })
+    },
+    deletefile1(key) {
+      this.$confirm('您确定删除该文件吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        lockScroll: false,
+        type: 'warning'
+      })
+        .then(() => {
+          this.$delete(this.form.files1, key)
+          this.$refs.upload1.value = ''
+        })
+        .catch(() => {})
+    },
     uploadchange2() {},
     uploadchange3() {},
     submit() {

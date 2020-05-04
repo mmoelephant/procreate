@@ -1,11 +1,15 @@
 <template>
-  <div :class="userwho == 1 ? 'loginpage' : 'loginpage2'">
+  <div
+    v-loading.fullscreen="loading"
+    :class="userwho == 1 ? 'loginpage' : 'loginpage2'"
+  >
     <div class="systemname">
       云南省住房和城乡建设厅科学技术计划项目管理系统
     </div>
     <div class="loginbox">
       <div class="loginleft">
-        <h4>登录&注册</h4>
+        <img src="~assets/img/denglu.svg" alt />
+        <h4 class="mt-20">登录&注册</h4>
       </div>
       <div class="loginright">
         <div class="userstab">
@@ -30,7 +34,9 @@
         </div>
         <div v-if="userwho == 1 && logintype == 1" class="loginmain">
           <div>
-            <div></div>
+            <div>
+              <img src="~assets/img/userIcon.svg" alt />
+            </div>
             <input
               v-model="username"
               type="text"
@@ -39,7 +45,9 @@
             />
           </div>
           <div>
-            <div></div>
+            <div>
+              <img src="~assets/img/pswIcon.svg" alt />
+            </div>
             <input
               v-model="password"
               type="password"
@@ -76,7 +84,9 @@
         </div>
         <div v-if="userwho == 2" class="loginmain">
           <div>
-            <div></div>
+            <div>
+              <img src="~assets/img/userIcon.svg" alt />
+            </div>
             <input
               v-model="adminname"
               type="text"
@@ -85,7 +95,9 @@
             />
           </div>
           <div>
-            <div></div>
+            <div>
+              <img src="~assets/img/pswIcon.svg" alt />
+            </div>
             <input
               v-model="adminpsw"
               type="password"
@@ -142,7 +154,8 @@ export default {
       error2: 'afaf',
       adminname: '',
       adminpsw: '',
-      error3: ''
+      error3: '',
+      loading: false
     }
   },
   methods: {

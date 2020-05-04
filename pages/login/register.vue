@@ -1,11 +1,12 @@
 <template>
-  <div class="loginpage">
+  <div v-loading.fullscreen="loading" class="loginpage">
     <div class="systemname">
       云南省住房和城乡建设厅科学技术计划项目管理系统
     </div>
     <div class="loginbox">
       <div class="loginleft">
-        <h4>登录&注册</h4>
+        <img src="~assets/img/denglu.svg" alt />
+        <h4 class="mt-20">登录&注册</h4>
       </div>
       <div class="loginright">
         <div class="userstab">
@@ -132,6 +133,7 @@ export default {
     tologin() {
       this.$router.push('/login')
     },
+    // 这里不用表单验证
     login() {}
   }
 }
