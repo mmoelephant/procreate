@@ -314,6 +314,13 @@ div.loginbtn:hover {
   font-weight: normal;
   color: #999;
 }
+.pagetitle span.statebox1 {
+  color: #50A7FF;
+}
+
+.pagetitle span.statebox4 {
+  color: red;
+}
 
 .indexhead {
   display: flex;
@@ -523,6 +530,10 @@ div.loginbtn:hover {
   display: flex;
   align-items: center;
   width: 420px;
+}
+.filebox {
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .uploadbtn {

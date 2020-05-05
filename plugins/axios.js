@@ -52,6 +52,14 @@ const api = {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Api/Passport/reg', data)
   },
+  find_psw_verify(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Api/Passport/verifyForget', data)
+  },
+  find_psw_now(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Api/Passport/setPassword', data)
+  },
   log_out(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Api/User/logout', data)
@@ -86,6 +94,18 @@ const api = {
   bind_phone(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Api/User/bindMobile', data)
+  },
+  enterprise_authen(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Api/Enterprise/cert', data)
+  },
+  get_authen_info(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Api/Enterprise/getCert', data)
+  },
+  edit_authen_info(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Api/Enterprise/edit', data)
   }
 }
 export default api

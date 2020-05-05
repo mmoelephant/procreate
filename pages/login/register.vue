@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     send() {
-      if (this.userphone) {
+      if (this.userphone && this.userphone.replace(/(^\s*)|(\s*$)/g, '')) {
         if (this.senDisable === 0) {
           const commondata = this.$store.state.commondata
           const data1 = {}
@@ -185,11 +185,11 @@ export default {
         data1.access_token = localStorage.getItem('accesstoken')
       }
       data1.scene_id = 2
-      data1.mobile = this.userphone
-      data1.username = this.username
-      data1.smscode = this.msgcode
-      data1.password = this.password
-      data1.password_a = this.confirmpsw
+      data1.mobile = this.userphone.replace(/(^\s*)|(\s*$)/g, '')
+      data1.username = this.username.replace(/(^\s*)|(\s*$)/g, '')
+      data1.smscode = this.msgcode.replace(/(^\s*)|(\s*$)/g, '')
+      data1.password = this.password.replace(/(^\s*)|(\s*$)/g, '')
+      data1.password_a = this.confirmpsw.replace(/(^\s*)|(\s*$)/g, '')
       data2 = datawork(data1)
       this.$api.register(data2).then((v) => {
         if (v.data.errcode === 0) {

@@ -57,6 +57,12 @@
 </template>
 <script>
 export default {
+  props: {
+    state: {
+      type: Number,
+      default: 5
+    }
+  },
   data() {
     return {}
   },
@@ -67,7 +73,20 @@ export default {
   },
   methods: {
     createpro() {
-      this.$router.push('/createpro')
+      if (this.state && this.state === 1) {
+        this.$router.push('/createpro')
+      } else if (this.state && this.state === 2) {
+        this.$message({
+          type: 'error',
+          message: '该账号已关闭，暂无权限操作！'
+        })
+      } else {
+        this.$message({
+          type: 'error',
+          message:
+            '您的企业信息暂未认证通过，请先认证企业信息，再进行下一步操作！'
+        })
+      }
     },
     userinfo() {
       this.$router.push('/userinfo')
