@@ -265,7 +265,7 @@ div.loginbtn:hover {
 }
 
 .sendbtn2 {
-  background: #999;
+  background: #ccc;
   cursor: default;
 }
 
@@ -459,7 +459,8 @@ div.loginbtn:hover {
 .formtitle {
   width: auto;
   max-width: 160px;
-  font-weight: bold
+  font-weight: bold;
+  color: #333;
 }
 
 .formitems {
@@ -702,4 +703,11 @@ div.loginbtn:hover {
 
 .col33 {
   width: 30%
+}
+
+.col8 span, .col71 span, .col62 span, .col33 span {
+  cursor: pointer;
+}
+.col8 span:hover, .col71 span:hover, .col62 span:hover, .col33 span:hover {
+  color: #50A7FF;
 }

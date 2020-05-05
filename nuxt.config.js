@@ -15,7 +15,11 @@ module.exports = {
   },
   loading: { color: '#fff' },
   css: ['element-ui/lib/theme-chalk/index.css', '@assets/main.css'],
-  plugins: ['@/plugins/element-ui', '@/plugins/api'],
+  plugins: [
+    '@/plugins/element-ui',
+    '@/plugins/api',
+    { src: '~/plugins/localStorage.js', ssr: false }
+  ],
   buildModules: ['@nuxtjs/eslint-module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
   axios: {},

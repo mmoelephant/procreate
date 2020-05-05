@@ -20,6 +20,14 @@ export default {
       return this.$route
     }
   },
+  mounted() {
+    if (
+      !localStorage.getItem('userid') ||
+      !Number(localStorage.getItem('userid'))
+    ) {
+      this.$router.push('/login')
+    }
+  },
   methods: {}
 }
 </script>

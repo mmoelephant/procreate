@@ -53,7 +53,9 @@
           <p class="col5">截止日期</p>
           <p class="col6">申报状态</p>
           <p class="col7">审核意见</p>
-          <p class="col8">操作</p>
+          <p class="col8">
+            <span @click="details">查看</span>
+          </p>
         </div>
       </div>
       <div class="paging">
@@ -67,17 +69,38 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog
+      :visible.sync="dialogshow"
+      title="立项申请详情"
+      :close-on-click-modal="false"
+      :lock-scroll="false"
+      :show-close="false"
+      width="1000px"
+    >
+      <detail />
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="cancel2">取消</el-button> -->
+        <el-button type="primary" @click="sure">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+import detail from './prodetail'
 export default {
+  components: {
+    detail
+  },
   data() {
     return {
       prostate: '',
       prostates: [],
       projects: [],
       word: '',
-      pagetotal: 0
+      pagetotal: 0,
+      detailinfo: {},
+      dialogshow: false
+      // imgshow: false
     }
   },
   methods: {
@@ -85,7 +108,19 @@ export default {
     pagechange() {},
     tocreate() {
       this.$router.push('/creating')
+    },
+    details() {
+      this.dialogshow = true
+    },
+    sure() {
+      this.dialogshow = false
     }
+    // seeImg() {
+    //   this.imgshow = true
+    // },
+    // sureimg() {
+    //   this.imgshow = false
+    // }
   }
 }
 </script>
@@ -99,4 +134,23 @@ export default {
     color red
 .btns
   justify-content flex-start
+.form
+  box-shadow none
+  margin 0
+.itemname + p
+  color #333
+.imgbox
+  width 100px
+  >div
+    width 100%
+    height 100px
+    margin-bottom 10px
+    overflow hidden
+    cursor pointer
+  img
+    display block
+    width 100%
+.showimgbox img
+  display block
+  width 100%
 </style>
