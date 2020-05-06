@@ -8,7 +8,7 @@
         <div class="avatar">
           <i class="iconfont">&#xe61f;</i>
         </div>
-        <span>{{ user.username }}</span>
+        <span @click="toset">{{ user.username }}</span>
         <span @click="logout">退出登录</span>
       </div>
     </el-header>
@@ -226,6 +226,9 @@ export default {
         })
         .catch(() => {})
     },
+    toset() {
+      this.$router.push('/accoutset')
+    },
     tofilesys() {
       window.open(
         'http://beian.miit.gov.cn/state/outPortal/loginPortal.action',
@@ -284,4 +287,169 @@ export default {
   cursor pointer
 .filingsys:hover
     color rgba(0,102,170,1)
+</style>
+<style>
+.panel {
+  background: rgba(255, 255, 255, 1);
+  padding-top: 102px;
+  margin: auto;
+  position: relative;
+}
+.number {
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 31px;
+  color: rgba(0, 0, 0, 1);
+  padding-left: 745px;
+}
+.company {
+  font-size: 80px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  margin-top: 142px;
+  text-align: center;
+  width: 100%;
+}
+.them {
+  margin-top: 20px;
+  font-weight: 300;
+}
+.book {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 139px;
+}
+.word {
+  width: 150px;
+}
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 77px;
+  text-align: justify;
+}
+.title {
+  width: 235px;
+  font-size: 32px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  text-align-last: justify;
+}
+.line {
+  height: 45px;
+  margin-left: 20px;
+  width: 532px;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+  font-size: 32px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+}
+.item:last-child {
+  margin-bottom: 0px;
+}
+.remark {
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 38px;
+  color: rgba(0, 0, 0, 1);
+  margin-top: 214px;
+  text-align: center;
+}
+.date {
+  margin-top: 17px;
+}
+/* 封面页码 */
+.page {
+  display: flex;
+  position: absolute;
+  bottom: 119px;
+  right: 114px;
+  align-items: center;
+}
+.pageNumber {
+  font-size: 28px;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  margin-left: 17px;
+  margin-right: 17px;
+}
+.grayLine {
+  width: 30px;
+  height: 0px;
+  border: 1px solid rgba(153, 153, 153, 1);
+}
+/* 内页页码 */
+.pageCont {
+  display: flex;
+  position: absolute;
+  bottom: 102px;
+  right: 145px;
+  align-items: center;
+}
+/* 一级标题 */
+.headTitle {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 31px;
+}
+/* 表格样式 */
+.table {
+  width: 100%;
+  background: rgba(255, 255, 255, 1);
+  border: 2px solid rgba(0, 0, 0, 1);
+  border-collapse: collapse;
+}
+.padding20 {
+  padding: 20px;
+}
+.centerCont {
+  vertical-align: text-top;
+  border: 2px solid rgba(0, 0, 0, 1);
+}
+
+/* 二级标题 */
+.bodyTitle {
+  font-size: 28px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  margin-bottom: 10px;
+}
+.bodyCont {
+  font-size: 28px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 1);
+}
+/* page8表格 */
+.tableFont {
+  font-size: 21px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: 2px solid rgba(0, 0, 0, 1);
+}
+.tdHeight {
+  height: 80px;
+}
+/* page9二级标题 */
+.font28 {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 26px;
+}
+.tableFont24 {
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: 2px solid rgba(0, 0, 0, 1);
+}
 </style>

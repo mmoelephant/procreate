@@ -32,7 +32,6 @@ ul, li {
   width: 100%;
   height: 100vh;
   padding: 0;
-  /* margin: 60px 0; */
   border: 1px red solid;
 }
 
@@ -44,6 +43,7 @@ ul, li {
 
 .el-footer {
   padding: 0;
+  margin-bottom: 20px;
   text-align: center;
   color: #999
 }
@@ -380,9 +380,7 @@ div.loginbtn:hover {
   background: rgba(80, 167, 255, 0.19)
 }
 .contentbox {
-  /* padding-bottom: 30px; */
   box-shadow: 0px 3px 10px rgba(151,190,255,0.17);
-  margin-bottom: 20px;
   background: #fff;
 }
 .contenthead {
@@ -394,10 +392,10 @@ div.loginbtn:hover {
   background: #DCE8FF;
 }
 .content {
-  padding: 20px 40px 30px 40px;
+  padding: 20px 40px 60px 40px;
 }
 .contentname {
-  margin-bottom: 10px;
+  margin: 20px 0 10px 0;
   color: #666
 }
 
@@ -518,11 +516,15 @@ div.loginbtn:hover {
   width: 320px
 }
 
-.formitem.upload {
+.formitem.upload, .formitem.multi {
   align-items: flex-start
 }
 
-.formitem.upload .itemname {
+.formitem.multi {
+  margin-bottom: 10px;
+}
+
+.formitem.upload .itemname, .formitem.multi .itemname {
   margin-top: 10px
 }
 
@@ -600,6 +602,9 @@ div.loginbtn:hover {
 .delIcon:hover {
   background: #333
 }
+.multinput > div {
+  margin-bottom: 10px;
+}
 
 .btns {
   display: flex;
@@ -629,6 +634,30 @@ div.loginbtn:hover {
 
 .btns>div.submitbtn:hover {
   background: #50A7FF
+}
+
+.btns2 {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  line-height: 20px;
+  color: #999;
+}
+.btns2 > div {
+  border-bottom: 1px #999 solid;
+  margin: 0 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.btns2 div.addmorebtn {
+  color: #50A7FF;
+  border-color: #50A7FF;
+}
+
+.btns2 > div:hover {
+  color: #1D78D3;
 }
 
 .probox {

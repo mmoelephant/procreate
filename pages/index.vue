@@ -29,6 +29,7 @@ export default {
   },
   mounted() {
     /*eslint-disable*/
+    console.log('这里难道没有内容吗')
     if (
       !localStorage.getItem('userid') ||
       !Number(localStorage.getItem('userid'))
@@ -176,4 +177,6 @@ export default {
 .indexright
   width calc(100% - 260px)
   padding 20px 80px 20px 20px
+  // border 1px red solid
+  margin-left 260px
 </style>

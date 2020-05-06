@@ -1,5 +1,5 @@
 <template>
-  <div class="indexpage">
+  <div v-loading.fullscreen="loading" class="indexpage">
     <h1 class="pagetitle">
       企业资料
       <span
@@ -16,10 +16,12 @@
         ({{ user_info.statusName ? user_info.statusName : '-' }})
       </span>
     </h1>
-    <div class="pagetip">
-      {{ user_info.statusTitle ? user_info.statusTitle : '-' }}。
+    <div v-show="user_info.statusTitle" class="pagetip">
+      {{ user_info.statusTitle ? user_info.statusTitle : '' }}
       {{
-        user_info.data && user_info.data.content ? user_info.data.content : ''
+        user_info.data && user_info.data.content
+          ? '。' + user_info.data.content
+          : ''
       }}
     </div>
     <div class="form">

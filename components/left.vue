@@ -4,7 +4,7 @@
     <ul class="leftnav">
       <li
         :class="
-          route.path == '/createpro' || route.path == '/creating'
+          route.path == '/createpro' || route.path.slice(0, 9) == '/creating'
             ? 'bignav leftnavOn'
             : 'bignav'
         "
@@ -99,6 +99,9 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .leftpage
+  position fixed
+  top 0
+  left 0
   width 260px
   box-shadow 0px 3px 10px rgba(151,190,255,0.17)
   padding-bottom 100px
