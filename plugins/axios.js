@@ -106,6 +106,18 @@ const api = {
   edit_authen_info(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Api/Enterprise/edit', data)
+  },
+  handle_before(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/handleBefore', data)
+  },
+  save_create(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/FormsBak/handle', data)
+  },
+  commit_create(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/handle', data)
   }
 }
 export default api

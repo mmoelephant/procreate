@@ -9,7 +9,8 @@ const state = function() {
     userid: '',
     userinfo: {},
     clientid: '',
-    accesstoken: ''
+    accesstoken: '',
+    form: {}
   }
 }
 const mutations = {
@@ -33,6 +34,9 @@ const mutations = {
   },
   SET_ACCESS_TOKEN(state, data) {
     state.accesstoken = data
+  },
+  SET_FORM(state, data) {
+    state.form = data
   }
 }
 export default { state, mutations }

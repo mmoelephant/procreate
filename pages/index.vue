@@ -29,7 +29,6 @@ export default {
   },
   mounted() {
     /*eslint-disable*/
-    console.log('这里难道没有内容吗')
     if (
       !localStorage.getItem('userid') ||
       !Number(localStorage.getItem('userid'))

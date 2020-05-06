@@ -316,8 +316,6 @@ export default {
       disabled1: false,
       disabled2: false,
       user_info: {},
-      // status: '',
-      // authtip: '',
       loading: false
     }
   },
