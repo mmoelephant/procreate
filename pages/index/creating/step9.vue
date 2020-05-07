@@ -1,5 +1,5 @@
 <template>
-  <div class="indexpage">
+  <div v-loading.fullscreen="loading" class="indexpage">
     <div class="contentbox">
       <div class="contenthead">9.上传相关附件</div>
       <div class="content">
@@ -22,7 +22,7 @@
                   <br />2.如用多个文件请依次上传。
                 </p>
               </div>
-              <div class="filebox">
+              <!-- <div class="filebox">
                 <div v-for="(item, index) in files1" :key="index">
                   <p :title="item.name" @click="downfile(item)">
                     {{ item.name }}
@@ -36,7 +36,7 @@
                     ×
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -50,11 +50,13 @@
           <p class="col23">文件名称</p>
           <p class="col33">操作</p>
         </div>
-        <div class="listItem">
-          <p class="col13">序号</p>
-          <p class="col23">合作单位名称</p>
+        <div v-for="(item, index) in files1" :key="index" class="listItem">
+          <p class="col13">{{ index + 1 }}</p>
+          <p class="col23">{{ item.name }}</p>
           <p class="col33">
-            <span @click="edit">编辑</span>
+            <!-- <span @click="edit">编辑</span> -->
+            <span :title="item.name" @click="downfile(item)">下载</span>
+            <span title="删除" @click="deletefile1(index)">删除</span>
           </p>
         </div>
       </div>
@@ -69,7 +71,7 @@
       </div>
     </div>
     <div class="btns">
-      <div>保存</div>
+      <div @click="savemsg">保存</div>
       <div class="submitbtn" @click="next">提交并下载打印文件</div>
     </div>
   </div>
@@ -79,7 +81,17 @@ import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
 import { objectToFormdata } from '../../../plugins/objectoformdata'
-// import { deepCopy } from '../../../plugins/deepcopy'
+import { deepCopy } from '../../../plugins/deepcopy'
+import { formValidate21 } from '../../../plugins/formValidate21'
+import { formValidate3 } from '../../../plugins/formValidate3'
+import { formValidate4 } from '../../../plugins/formValidate4'
+import { formValidate5 } from '../../../plugins/formValidate5'
+import { formValidate6 } from '../../../plugins/formValidate6'
+import { formValidate7 } from '../../../plugins/formValidate7'
+import { formValidate8 } from '../../../plugins/formValidate8'
+import { formValidate92 } from '../../../plugins/formValidate92'
+import { formValidate102 } from '../../../plugins/formValidate102'
+import { formValidate11 } from '../../../plugins/formValidate11'
 export default {
   data() {
     return {
@@ -87,15 +99,203 @@ export default {
       file1: {},
       fileLen1: 0,
       files1: [],
-      genders: [],
       pagetotal: 0,
       disabled1: false,
-      dialogshow: false
+      loading: false
+    }
+  },
+  mounted() {
+    /*eslint-disable*/
+    if (
+      !localStorage.getItem('userid') ||
+      !Number(localStorage.getItem('userid'))
+    ) {
+      this.$router.push('/login')
+      return
+    }
+    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+      console.log(JSON.parse(localStorage.getItem('form')))
+      this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
+    }
+    if (this.form.files && this.form.files.length > 0) {
+      this.files1 = this.form.files
+      this.fileLen1 = this.form.files.length
     }
   },
   methods: {
+    savemsg() {
+      // “保存”操作
+      this.loading = true
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      for (const i in this.form) {
+        // 合作单位和项目所在地是转为字符串
+        if (i == 'address' || i == 'partner_name') {
+          data1[i] = JSON.stringify(this.form[i])
+        } else {
+          // 给表格中的每一项都去处空格
+          if (this.form[i].toString().replace(/(^\s*)|(\s*$)/g, '')) {
+            data1[i] = this.form[i].toString().replace(/(^\s*)|(\s*$)/g, '')
+          }
+        }
+      }
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
+        data1.id = this.$route.query.id
+      }
+      data1.category_id = 1
+      if (this.files1.length > 0) {
+        this.form.files = deepCopy(this.files1)
+        data1.files = JSON.stringify(this.files1)
+      }
+      data2 = datawork(data1)
+      console.log(data2)
+      this.$api.save_create(data2).then((v) => {
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.$message({
+            type: 'success',
+            message: '保存成功'
+          })
+          this.$store.commit('SET_FORM', this.form)
+          localStorage.setItem('form', JSON.stringify(this.form))
+          console.log(this.form)
+          localStorage.setItem('applyid', v.data.data)
+          this.$store.commit('SET_APPLY_ID', v.data.data)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.savemsg()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.savemsg()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
     next() {
-      // this.$router.push('/step2')
+      if (!formValidate21(this.form, this)) return
+      if (!formValidate3(this.form, this)) return
+      if (!formValidate4(this.form, this)) return
+      if (!formValidate5(this.form, this)) return
+      if (!formValidate6(this.form, this)) return
+      if (!formValidate7(this.form, this)) return
+      if (!formValidate8(this.form, this)) return
+      if (!formValidate92(this.form, this)) return
+      if (!formValidate102(this.form, this)) return
+      if (!formValidate11(this.form, this)) return
+      this.form.files = deepCopy(this.files1)
+      this.loading = true
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      for (const i in this.form) {
+        // 合作单位和项目所在地是转为字符串
+        if (i == 'address' || i == 'partner_name') {
+          data1[i] = JSON.stringify(this.form[i])
+        } else {
+          // 给表格中的每一项都去处空格
+          if (this.form[i].toString().replace(/(^\s*)|(\s*$)/g, '')) {
+            data1[i] = this.form[i].toString().replace(/(^\s*)|(\s*$)/g, '')
+          }
+        }
+      }
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
+        data1.id = this.$route.query.id
+      }
+      data1.category_id = 1
+      data1.files = JSON.stringify(this.files1)
+      data2 = datawork(data1)
+      console.log(data2)
+      this.$api.commit_create(data2).then((v) => {
+        console.log(v)
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.$message({
+            type: 'success',
+            message: '提交成功'
+          })
+          this.$store.commit('SET_FORM', this.form)
+          localStorage.setItem('form', JSON.stringify(this.form))
+          console.log(this.form)
+          localStorage.setItem('applyid', v.data.data)
+          this.$store.commit('SET_APPLY_ID', v.data.data)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.next()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.next()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
     },
     uploadchange1() {
       const inputDOM = this.$refs.upload1
@@ -186,17 +386,20 @@ export default {
         })
         .catch(() => {})
     },
-    pagechange(val) {},
-    edit() {
-      this.dialogshow = true
+    downfile(val) {
+      window.location.href = val.url
+      // window.open(val.url, '_blank')
     },
-    editdone() {
-      this.dialogshow = false
-    }
+    pagechange(val) {},
+    edit() {}
   }
 }
 </script>
 <style lang="stylus" scoped>
 .uploadtip
   color red
+.listItem
+  border-bottom 1px #e6e6e6 solid
+.listItem:last-of-type
+  border none
 </style>

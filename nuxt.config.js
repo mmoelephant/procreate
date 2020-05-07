@@ -18,7 +18,8 @@ module.exports = {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/api',
-    { src: '~/plugins/localStorage.js', ssr: false }
+    { src: '~/plugins/localStorage.js', ssr: false },
+    { src: '~/plugins/vue-html-pdf.js', ssr: false }
   ],
   buildModules: ['@nuxtjs/eslint-module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],

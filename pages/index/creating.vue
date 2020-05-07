@@ -1,5 +1,5 @@
 <template>
-  <div class="indexpage">
+  <div v-loading.fullscreen="loading" class="indexpage">
     <div class="indexhead">
       <h1 class="pagetitle">
         项目立项申请
@@ -11,6 +11,7 @@
         <i class="iconfont">&#xe617;</i>
         <div :class="route.path == '/creating' ? '' : 'here'" @click="steptwo">
           2.填写申报表
+          <!-- @click="steptwo" -->
         </div>
       </div>
     </div>
@@ -225,7 +226,7 @@
             <div class="multinput">
               <div v-for="(item, index) in form.partner_name" :key="index">
                 <input
-                  v-model="form.partner[index]"
+                  v-model="partner[index]"
                   type="text"
                   :disabled="disabled1"
                   placeholder="请输入合作单位"
@@ -244,7 +245,7 @@
             <div class="multinput">
               <div v-for="(item, index) in form.address" :key="index">
                 <input
-                  v-model="form.addressb[index]"
+                  v-model="addressb[index]"
                   type="text"
                   :disabled="disabled1"
                   placeholder="请输入项目所在地"
@@ -433,6 +434,8 @@
 import { datawork } from '../../plugins/datawork'
 import { getClientId } from '../../plugins/getclientid'
 import { getToken } from '../../plugins/gettoken'
+import { deepCopy } from '../../plugins/deepcopy'
+import { formValidate2 } from '../../plugins/formValidate2'
 export default {
   data() {
     return {
@@ -454,15 +457,16 @@ export default {
       smallOn: 1,
       smallcates: [],
       form: {
-        type: this.bigOn,
+        formsType: 1,
         partner_name: [''],
-        partner: [''],
-        address: [''],
-        addressb: ['']
+        address: ['']
       },
+      partner: [''],
+      addressb: [''],
       starttime: '',
       endtime: '',
-      disabled1: false
+      disabled1: false,
+      loading: false
     }
   },
   computed: {
@@ -471,10 +475,25 @@ export default {
     }
   },
   watch: {
-    form(val) {}
+    /*eslint-disable*/
+    form(val) {
+      console.log(val)
+    },
+    route(val) {
+      if (val.path == '/creating') {
+        if (
+          JSON.parse(localStorage.getItem('form')) &&
+          JSON.parse(localStorage.getItem('form')) != {}
+        ) {
+          this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
+          this.partner = deepCopy(this.form.partner_name)
+          this.addressb = deepCopy(this.form.address)
+        }
+        this.form.formsType = this.bigOn
+      }
+    }
   },
   mounted() {
-    /*eslint-disable*/
     if (
       !localStorage.getItem('userid') ||
       !Number(localStorage.getItem('userid'))
@@ -483,10 +502,18 @@ export default {
       return
     }
     this.beforeapply()
+    this.userinfo()
+    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+      this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
+      this.partner = deepCopy(this.form.partner_name)
+      this.addressb = deepCopy(this.form.address)
+    }
+    this.form.formsType = this.bigOn
   },
   methods: {
     togglebig(val) {
       this.bigOn = val
+      this.form.formsType = this.bigOn
     },
     togglesmall(val) {
       this.smallOn = val
@@ -495,10 +522,12 @@ export default {
       this.$router.push('/creating')
     },
     steptwo() {
-      this.$router.push({
-        path: '/creating/step1',
-        query: { type: this.bigOn }
-      })
+      this.handleform(this.form)
+      setTimeout(() => {
+        this.$store.commit('SET_FORM', this.form)
+        localStorage.setItem('form', JSON.stringify(this.form))
+        this.$router.push('/creating/step1')
+      }, 1000)
     },
     beforeapply() {
       this.loading = true
@@ -552,24 +581,87 @@ export default {
         }
       })
     },
+    userinfo() {
+      this.loading = true
+      this.user_info = {}
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      data2 = datawork(data1)
+      this.$api.user_info(data2).then((v) => {
+        console.log(v)
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.form.enterprsie_name = v.data.data.enterprise[0].certData.name
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.userinfo()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.userinfo()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
     handlestarttime(data) {
       const timedata = new Date(data)
       let year = timedata.getFullYear()
       let month = timedata.getMonth()
       let date = timedata.getDate()
-      this.starttime = year + '-' + month + '-' + date
-      return year + '-' + month + '-' + date
+      this.starttime = year + '-' + (month + 1) + '-' + date
+      return year + '-' + (month + 1) + '-' + date
     },
     handlendtime(data) {
       const timedata = new Date(data)
       let year = timedata.getFullYear()
       let month = timedata.getMonth()
       let date = timedata.getDate()
-      this.endtime = year + '-' + month + '-' + date
-      return year + '-' + month + '-' + date
+      this.endtime = year + '-' + (month + 1) + '-' + date
+      return year + '-' + (month + 1) + '-' + date
+    },
+    handleform(data) {
+      // 首先先将过渡数据赋值给传输数据,然后转化时间数据
+      data.address = deepCopy(this.addressb)
+      data.partner_name = deepCopy(this.partner)
+      for (const i in data) {
+        if (i == 'starttime') {
+          data.starttime = this.handlestarttime(data[i])
+        } else if (i == 'endtime') {
+          data.endtime = this.handlendtime(data[i])
+        }
+      }
     },
     savemsg() {
-      // 保存信息
+      // "保存"操作
       this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
@@ -590,16 +682,23 @@ export default {
       if (localStorage.getItem('accesstoken')) {
         data1.access_token = localStorage.getItem('accesstoken')
       }
-      if (this.$route.query.id) {
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
         data1.id = this.$route.query.id
       }
       data1.formsType = this.bigOn
+      // 类别id, 先固定写1
       data1.category_id = 1
+      // 双重限定，就是保证除空字符之外的字符串，空字符串传输，容易出现“签名错误”的错误
       if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.name = this.form.name
+        data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.enterprsie_name && this.form.enterprsie_name.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.enterprsie_name = this.form.enterprsie_name
+        data1.enterprsie_name = this.form.enterprsie_name.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.starttime) {
         data1.starttime = this.handlestarttime(this.form.starttime)
@@ -608,85 +707,95 @@ export default {
         data1.endtime = this.handlendtime(this.form.endtime)
       }
       if (this.form.self_amount && this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.self_amount = this.form.self_amount
+        data1.self_amount = this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.county_amount && this.form.county_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.county_amount = this.form.county_amount
+        data1.county_amount = this.form.county_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.current_amount && this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.current_amount = this.form.current_amount
+        data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.other_amount && this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.other_amount = this.form.other_amount
+        data1.other_amount = this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.foreign_amount && this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.foreign_amount = this.form.foreign_amount
+        data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.amount && this.form.amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.amount = this.form.amount
+        data1.amount = this.form.amount.replace(/(^\s*)|(\s*$)/g, '')
       }
-      if (this.form.partner[0]) {
-        data1.partner_name = JSON.stringify(this.form.partner)
+      if (this.partner && this.partner[0]) {
+        // 如果存在值，就赋值给form中对应的数据
+        data1.partner_name = JSON.stringify(this.partner)
       }
-      if (this.form.addressb[0]) {
-        data1.address = JSON.stringify(this.form.addressb)
+      if (this.addressb && this.addressb[0]) {
+        // 如果存在值，就赋值给form中对应的数据
+        data1.address = JSON.stringify(this.addressb)
       }
       if (this.form.study_content && this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.study_content = this.form.study_content
+        data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.check_content && this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.check_content = this.form.check_content
+        data1.check_content = this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.expect_content && this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.expect_content = this.form.expect_content
+        data1.expect_content = this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.leader_name && this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.leader_name = this.form.leader_name
+        data1.leader_name = this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.leader_job && this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.leader_job = this.form.leader_job
+        data1.leader_job = this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.leader_mobile && this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.leader_mobile = this.form.leader_mobile
+        data1.leader_mobile = this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.leader_email && this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.leader_email = this.form.leader_email
+        data1.leader_email = this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.leader_address && this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.leader_address = this.form.leader_address
+        data1.leader_address = this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.leader_company && this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.leader_company = this.form.leader_company
+        data1.leader_company = this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.link_name && this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.link_name = this.form.link_name
+        data1.link_name = this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.link_job && this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.link_job = this.form.link_job
+        data1.link_job = this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.link_mobile && this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.link_mobile = this.form.link_mobile
+        data1.link_mobile = this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.link_email && this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.link_email = this.form.link_email
+        data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.link_address && this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.link_address = this.form.link_address
+        data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.link_company && this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.link_company = this.form.link_company
+        data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
       }
       data2 = datawork(data1)
       console.log(data2)
       this.$api.save_create(data2).then((v) => {
+        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
+          // 在这里首先对form中的partner_name和address进行处理
+          this.handleform(this.form)
           this.$message({
             type: 'success',
             message: '保存成功'
           })
-          this.$store.commit('SET_FORM', this.form)
-          localStorage.setItem('form', JSON.stringify(this.form))
+          // 保存成功之后，返回的id要全局保存，为了在下一个页面使用
+          localStorage.setItem('applyid', v.data.data)
+          this.$store.commit('SET_APPLY_ID', v.data.data)
+          setTimeout(() => {
+            this.$store.commit('SET_FORM', this.form)
+            localStorage.setItem('form', JSON.stringify(this.form))           
+          }, 1000)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -711,9 +820,105 @@ export default {
       })
     },
     next() {
-      this.$store.commit('SET_FORM', this.form)
-      localStorage.setItem('form', JSON.stringify(this.form))
-      this.$router.push('/creating/step1')
+      // 点击“下一步”按钮，执行的操作在这里，首先要进行一个表单检验，
+      if (!formValidate2(this.form, this)) return
+      this.loading = true
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
+        data1.id = this.$route.query.id
+      }
+      data1.formsType = this.bigOn
+      data1.category_id = 1
+      data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.enterprsie_name = this.form.enterprsie_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.starttime = this.handlestarttime(this.form.starttime)
+      data1.endtime = this.handlendtime(this.form.endtime)
+      data1.self_amount = this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.county_amount = this.form.county_amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.other_amount = this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.amount = this.form.amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.partner_name = JSON.stringify(this.partner)
+      data1.address = JSON.stringify(this.addressb)
+      data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.check_content = this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.expect_content = this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_name = this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_job = this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_mobile = this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_email = this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_address = this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_company = this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_name = this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_job = this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_mobile = this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
+      data2 = datawork(data1)
+      console.log(data2)
+      this.$api.save_create(data2).then((v) => {
+        console.log(v)
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.handleform(this.form)
+          this.$message({
+            type: 'success',
+            message: '操作成功，即将进入下一步'
+          })
+          localStorage.setItem('applyid', v.data.data)
+          this.$store.commit('SET_APPLY_ID', v.data.data)
+          setTimeout(() => {
+            this.$store.commit('SET_FORM', this.form)
+            localStorage.setItem('form', JSON.stringify(this.form))
+            this.$router.push('/creating/step1')         
+          }, 1000)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.next()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.next()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
     },
     addmore() {
       this.$confirm('确定合作单位吗？', '提示', {
@@ -724,7 +929,7 @@ export default {
       })
         .then(() => {
           this.form.partner_name.push('')
-          this.form.partner.push('')
+          this.partner.push('')
         })
         .catch(() => {})
     },
@@ -738,7 +943,7 @@ export default {
         })
           .then(() => {
             this.form.partner_name.splice(this.form.partner_name.length - 1, 1)
-            this.form.partner.splice(this.form.partner.length - 1, 1)
+            this.partner.splice(this.partner.length - 1, 1)
           })
           .catch(() => {})
       } else {
@@ -757,7 +962,7 @@ export default {
       })
         .then(() => {
           this.form.address.push('')
-          this.form.addressb.push('')
+          this.addressb.push('')
         })
         .catch(() => {})
     },
@@ -771,7 +976,7 @@ export default {
         })
           .then(() => {
             this.form.address.splice(this.form.address.length - 1, 1)
-            this.form.addressb.splice(this.form.addressb.length - 1, 1)
+            this.addressb.splice(this.addressb.length - 1, 1)
           })
           .catch(() => {})
       } else {
@@ -782,6 +987,7 @@ export default {
       }
     },
     tostep1() {
+      // 每次点击都要保存form数据
       this.$router.push('/creating/step1')
     },
     tostep2() {

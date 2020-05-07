@@ -10,7 +10,8 @@ const state = function() {
     userinfo: {},
     clientid: '',
     accesstoken: '',
-    form: {}
+    form: {},
+    applyid: ''
   }
 }
 const mutations = {
@@ -37,6 +38,9 @@ const mutations = {
   },
   SET_FORM(state, data) {
     state.form = data
+  },
+  SET_APPLY_ID(state, data) {
+    state.applyid = data
   }
 }
-export default { state, mutations }
+export default { state, mutations, strict: false }

@@ -746,6 +746,7 @@ div.loginbtn:hover {
 }
 
 .col8 span, .col71 span, .col62 span, .col33 span {
+  margin: 0 5px;
   cursor: pointer;
 }
 .col8 span:hover, .col71 span:hover, .col62 span:hover, .col33 span:hover {

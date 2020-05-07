@@ -292,7 +292,7 @@ export default {
 .panel {
   background: rgba(255, 255, 255, 1);
   padding-top: 102px;
-  margin: auto;
+  margin: 0 auto;
   position: relative;
 }
 .number {
@@ -401,7 +401,7 @@ export default {
 .table {
   width: 100%;
   background: rgba(255, 255, 255, 1);
-  border: 2px solid rgba(0, 0, 0, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
   border-collapse: collapse;
 }
 .padding20 {
@@ -409,7 +409,7 @@ export default {
 }
 .centerCont {
   vertical-align: text-top;
-  border: 2px solid rgba(0, 0, 0, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
 }
 
 /* 二级标题 */
@@ -432,7 +432,7 @@ export default {
   text-align: center;
   padding-top: 20px;
   padding-bottom: 20px;
-  border: 2px solid rgba(0, 0, 0, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
 }
 .tdHeight {
   height: 80px;
@@ -450,6 +450,6 @@ export default {
   text-align: center;
   padding-top: 20px;
   padding-bottom: 20px;
-  border: 2px solid rgba(0, 0, 0, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
 }
 </style>
