@@ -74,7 +74,11 @@ export default {
       this.$router.push('/login')
       return
     }
-    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+    if (
+      localStorage.getItem('form') &&
+      JSON.parse(localStorage.getItem('form')) &&
+      JSON.parse(localStorage.getItem('form')) != {}
+    ) {
       console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
@@ -121,7 +125,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       if (this.form.e_sl && this.form.e_sl.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.e_sl = this.form.e_sl.replace(/(^\s*)|(\s*$)/g, '')
       }
@@ -143,8 +147,10 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -214,7 +220,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       data1.e_sl = this.form.e_sl.replace(/(^\s*)|(\s*$)/g, '')
       data1.e_mb = this.form.e_mb.replace(/(^\s*)|(\s*$)/g, '')
       data1.e_jd = this.form.e_jd.replace(/(^\s*)|(\s*$)/g, '')
@@ -231,10 +237,15 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
           setTimeout(() => {
-            that.$router.push('/creating/step6')
+            that.$router.push({
+              path: '/creating/step6',
+              query: { id: this.$route.query.id }
+            })
           }, 1000)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)

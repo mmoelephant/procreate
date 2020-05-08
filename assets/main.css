@@ -421,6 +421,7 @@ div.loginbtn:hover {
 }
 
 .searchbox {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -434,6 +435,21 @@ div.loginbtn:hover {
 .searchbox input {
   width: 260px;
   height: 30px;
+}
+.clearbtn {
+  position: absolute;
+  right: 40px;
+  width: 16px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  color: #888;
+  text-align: center;
+  line-height: 16px;
+  cursor: pointer;
+}
+.clearbtn:hover {
+  color: #555;
 }
 
 .searchbox i {
@@ -682,14 +698,20 @@ div.loginbtn:hover {
 }
 .listhead p, .listItem p {
   border-right: 1px #e6e6e6 solid;
+  padding: 0 10px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis
 }
 
 .listItem {
+  border-bottom: 1px #e6e6e6 solid;
   background: #fff;
   color: #666
+}
+
+.listItem:last-of-type {
+  border: none;
 }
 .listItem .col4, .listItem .col5 {
   color: #999
@@ -697,14 +719,11 @@ div.loginbtn:hover {
 .col1 {
   width: 5%;
 }
-.col2, .col4, .col5, .col6, .col8 {
+.col2, .col4, .col5, .col6, .col7 {
   width: 10%;
 }
-.col3 {
-  width: 20%;
-}
-.col7 {
-  width: 25%;
+.col3, .col8, .col9 {
+  width: 15%;
 }
 
 .col11 {
@@ -745,10 +764,34 @@ div.loginbtn:hover {
   width: 30%
 }
 
+.col6.green {
+  color: #009C53;
+}
+.col6.red {
+  color: red;
+}
+.col6.grey {
+  color: #999;
+}
+.col6.black {
+  color: #333;
+}
+
+
 .col8 span, .col71 span, .col62 span, .col33 span {
   margin: 0 5px;
   cursor: pointer;
 }
 .col8 span:hover, .col71 span:hover, .col62 span:hover, .col33 span:hover {
   color: #50A7FF;
+}
+
+
+.nodata {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100px;
+  font-size: 16px;
+  text-align: center;
 }

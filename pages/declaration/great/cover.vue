@@ -1,14 +1,18 @@
 <template>
-  <div>
+  <div v-loading.fullscreen="loading">
     <div class="dwlbtn" @click="getPdf('filename', 'filecontent')">
       下载申报书
     </div>
     <div id="filecontent">
       <div class="panel size">
-        <div class="number">项目编号:</div>
+        <div id="qrcode" class="maCover maCoverStyle"></div>
+        <!-- <img src="../../../assets/img/ma.png" class="maCover maCoverStyle" /> -->
+        <div class="number">
+          项目编号:{{ detailinfo.sn ? detailinfo.sn : '-' }}
+        </div>
         <div class="company">云南省住房和城乡厅</div>
         <div class="company them" style="font-size:60px;">
-          （重大科技攻关与能力建设项目）
+          （{{ detailinfo.typeName ? detailinfo.typeName : '-' }}）
         </div>
         <div class="company book">
           <div class="word">申</div>
@@ -17,41 +21,116 @@
         </div>
         <div class="item">
           <div class="title limit">项目名称</div>
-          <div class="line"></div>
+          <div class="line">
+            {{ detailinfo.name ? detailinfo.name : '-' }}
+          </div>
         </div>
         <div class="item">
           <div class="title">申报单位(盖章）</div>
-          <div class="line"></div>
+          <div class="line">
+            {{ detailinfo.enterprise_name ? detailinfo.enterprise_name : '-' }}
+          </div>
         </div>
         <div class="item">
           <div class="title">项目起止时间</div>
-          <div class="line"></div>
+          <div class="line">
+            {{
+              detailinfo.starttime && detailinfo.endtime
+                ? detailinfo.starttime + ' 至 ' + detailinfo.endtime
+                : '-'
+            }}
+          </div>
         </div>
         <div class="item">
           <div class="title limit">申报时间</div>
-          <div class="line"></div>
+          <div class="line">
+            {{ detailinfo.addtime ? detailinfo.addtime.slice(0, 10) : '-' }}
+          </div>
         </div>
-        <div class="remark">云南省住房和城乡建设厅制标准定额处</div>
+        <div class="remark">云南省住房和城乡建设厅</div>
         <div class="date remark">二〇二五年五月制</div>
-        <div class="page">
+        <!-- <div class="page">
           <div class="grayLine"></div>
           <div class="pageNumber">1</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
       </div>
       <div class="panel size2">
-        <div class="headTitle">一、国内外研究现状和趋势</div>
+        <div class="headTitle">一、申请立项理由</div>
+        <table class="table">
+          <tr class="centerCont">
+            <td class="padding20" style="height:470px;">
+              <div class="bodyTitle">（一）研究目的</div>
+              <div class="bodyCont">
+                {{ detailinfo.a_md ? detailinfo.a_md : '-' }}
+              </div>
+            </td>
+          </tr>
+          <tr class="centerCont">
+            <td class="padding20" style="height:470px;">
+              <div class="bodyTitle">（二）选题依据</div>
+              <div class="bodyCont">
+                {{ detailinfo.a_yj ? detailinfo.a_yj : '-' }}
+                这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多
+                字这里这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
+                这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多
+                字这里这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
+                这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多
+                字这里这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
+                这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多
+                字这里这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
+                这里还有五把多字这里这里还有五把多字这里这里
+                还有五把多字这里这里还有五把多字这里这里还有五把多
+                字这里这里还有五把多字这里这里还有五把多字这里这里还有五把多字这里这里还有五把多字这里
+                这
+              </div>
+            </td>
+          </tr>
+          <tr class="centerCont">
+            <td class="padding20" style="height:470px;">
+              <div class="bodyTitle">
+                （三）研发意义
+              </div>
+              <div class="bodyCont">
+                {{ detailinfo.a_yy ? detailinfo.a_yy : '-' }}
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <!-- <div class="pageCont">
+          <div class="grayLine"></div>
+          <div class="pageNumber">2</div>
+          <div class="grayLine"></div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
+      </div>
+      <div class="panel size2">
+        <div class="headTitle">二、国内外研究现状和趋势</div>
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:350px;">
               <div class="bodyTitle">（一）国内外相关领域研究状况</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.b_xz ? detailinfo.b_xz : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
             <td class="padding20" style="height:350px;">
               <div class="bodyTitle">（二）技术指标</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.b_zb ? detailinfo.b_zb : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
@@ -59,7 +138,9 @@
               <div class="bodyTitle">
                 （三）存在的问题
               </div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.b_wt ? detailinfo.b_wt : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
@@ -67,30 +148,38 @@
               <div class="bodyTitle">
                 （四）发展趋势
               </div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.b_qs ? detailinfo.b_qs : '-' }}
+              </div>
             </td>
           </tr>
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
-          <div class="pageNumber">2</div>
+          <div class="pageNumber">3</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
-        <div class="headTitle">二、研究目标和预期效果</div>
+        <div class="headTitle">三、研究目标和预期效果</div>
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:470px;">
               <div class="bodyTitle">（一）研究目标</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.c_mb ? detailinfo.c_mb : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
             <td class="padding20" style="height:470px;">
               <div class="bodyTitle">（二）预期成果名称及表达方式</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.c_cg ? detailinfo.c_cg : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
@@ -98,30 +187,38 @@
               <div class="bodyTitle">
                 （三）成果产出对相关管理工作的作用和应用前景
               </div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.c_yy ? detailinfo.c_yy : '-' }}
+              </div>
             </td>
           </tr>
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
-          <div class="pageNumber">3</div>
+          <div class="pageNumber">4</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
-        <div class="headTitle">三、主要研究内容</div>
+        <div class="headTitle">四、主要研究内容</div>
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:470px;">
               <div class="bodyTitle">（一）主要研究内容</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.d_nr ? detailinfo.d_nr : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
             <td class="padding20" style="height:470px;">
               <div class="bodyTitle">（二）创新点</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.d_cx ? detailinfo.d_cx : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
@@ -129,30 +226,38 @@
               <div class="bodyTitle">
                 （三）考核指标
               </div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.d_zb ? detailinfo.d_zb : '-' }}
+              </div>
             </td>
           </tr>
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
-          <div class="pageNumber">4</div>
+          <div class="pageNumber">5</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
-        <div class="headTitle">四、研究思路、方法和计划进度</div>
+        <div class="headTitle">五、研究思路、方法和计划进度</div>
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:470px;">
               <div class="bodyTitle">（一）研究思路和方法</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.e_sl ? detailinfo.e_sl : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
             <td class="padding20" style="height:470px;">
               <div class="bodyTitle">（二）阶段目标</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.e_mb ? detailinfo.e_mb : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
@@ -160,30 +265,38 @@
               <div class="bodyTitle">
                 （三）进度安排
               </div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.e_jd ? detailinfo.e_jd : '-' }}
+              </div>
             </td>
           </tr>
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
-          <div class="pageNumber">5</div>
+          <div class="pageNumber">6</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
-        <div class="headTitle">五、工作基础和科研保障条件</div>
+        <div class="headTitle">六、工作基础和科研保障条件</div>
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:350px;">
               <div class="bodyTitle">（一）前期研究基础</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.f_jc ? detailinfo.f_jc : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
             <td class="padding20" style="height:350px;">
               <div class="bodyTitle">（二）任务分工及主要科研条件</div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.f_rw ? detailinfo.f_rw : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
@@ -191,7 +304,9 @@
               <div class="bodyTitle">
                 （三）项目负责人以及团队
               </div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.f_td ? detailinfo.f_td : '-' }}
+              </div>
             </td>
           </tr>
           <tr class="centerCont">
@@ -199,32 +314,37 @@
               <div class="bodyTitle">
                 （四）资金概算和来源
               </div>
-              <div class="bodyCont"></div>
+              <div class="bodyCont">
+                {{ detailinfo.f_zj ? detailinfo.f_zj : '-' }}
+              </div>
             </td>
           </tr>
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
-          <div class="pageNumber">6</div>
+          <div class="pageNumber">7</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
-        <div class="headTitle" style="margin-bottom:65px;">
+        <div class="headTitle">
+          <!-- style="margin-bottom:100px;" -->
           七、主要工作人员
         </div>
-        <table class="table">
+        <table class="table table1">
           <thead>
             <tr>
-              <th class="tableFont" style="min-width:89px;">姓名</th>
-              <th class="tableFont" style="min-width:89px;">性别</th>
-              <th class="tableFont" style="min-width:179px;">出生年月</th>
-              <th class="tableFont" style="min-width:179px;">职称职务</th>
-              <th class="tableFont" style="min-width:179px;">所学专业</th>
-              <th class="tableFont" style="min-width:179px;">现从事专业</th>
-              <th class="tableFont" style="min-width:357px;">所在单位</th>
-              <th class="tableFont" style="min-width:283px;">
+              <th class="tableFont" style="min-height:100px;">姓名</th>
+              <th class="tableFont" style="min-height:100px;">性别</th>
+              <th class="tableFont" style="min-height:200px;">出生年月</th>
+              <th class="tableFont" style="min-height:200px;">职称职务</th>
+              <th class="tableFont" style="min-height:200px;">所学专业</th>
+              <th class="tableFont" style="min-height:200px;">现从事专业</th>
+              <th class="tableFont" style="min-height:357px;">所在单位</th>
+              <th class="tableFont" style="min-height:283px;">
                 在本项目中承担的任务
               </th>
             </tr>
@@ -239,7 +359,7 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -328,18 +448,20 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
-          </tr>
+          </tr> -->
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
           <div class="pageNumber">8</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:50px;">
-          八、经费概算（单位：元）
+          八、经费概算（单位：万元）
         </div>
         <table class="table">
           <thead>
@@ -350,7 +472,9 @@
               >
                 总经费
               </th>
-              <th class="tableFont" colspan="3"></th>
+              <th class="tableFont" colspan="3">
+                {{ detailinfo.amount ? detailinfo.amount : '-' }}
+              </th>
             </tr>
           </thead>
           <tr>
@@ -360,7 +484,9 @@
             >
               自筹
             </th>
-            <th class="tableFont" colspan="3"></th>
+            <th class="tableFont" colspan="3">
+              {{ detailinfo.self_amount ? detailinfo.self_amount : '-' }}
+            </th>
           </tr>
           <tr>
             <th
@@ -369,7 +495,9 @@
             >
               拨贷款（国家）
             </th>
-            <th class="tableFont" colspan="3"></th>
+            <th class="tableFont" colspan="3">
+              {{ detailinfo.country_amount ? detailinfo.country_amount : '-' }}
+            </th>
           </tr>
           <tr>
             <th
@@ -378,16 +506,20 @@
             >
               拨贷款（地方）
             </th>
-            <th class="tableFont" colspan="3"></th>
+            <th class="tableFont" colspan="3">
+              {{ detailinfo.current_amount ? detailinfo.current_amount : '-' }}
+            </th>
           </tr>
           <tr>
             <th
               class="tableFont"
               style="width:400px;padding-left:67px;text-align:left;"
             >
-              方外
+              外方
             </th>
-            <th class="tableFont" colspan="3"></th>
+            <th class="tableFont" colspan="3">
+              {{ detailinfo.foreign_amount ? detailinfo.foreign_amount : '-' }}
+            </th>
           </tr>
           <tr>
             <th
@@ -396,15 +528,19 @@
             >
               其他
             </th>
-            <th class="tableFont" colspan="3"></th>
+            <th class="tableFont" colspan="3">
+              {{ detailinfo.other_amount ? detailinfo.other_amount : '-' }}
+            </th>
           </tr>
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
-          <div class="pageNumber">10</div>
+          <div class="pageNumber">9</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">
@@ -415,27 +551,53 @@
           <thead>
             <tr>
               <th class="tableFont" style="width:178px;">申报单位</th>
-              <th class="tableFont" colspan="3"></th>
-            </tr>
-            <tr>
-              <th class="tableFont" style="width:178px;">通讯地址</th>
-              <th class="tableFont" colspan="3"></th>
+              <th class="tableFont" colspan="3">
+                {{
+                  detailinfo.enterprise_name ? detailinfo.enterprise_name : '-'
+                }}
+              </th>
             </tr>
             <tr>
               <th class="tableFont" style="width:178px;">负责人</th>
-              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:380px;">
+                {{ detailinfo.leader_name ? detailinfo.leader_name : '-' }}
+              </th>
               <th class="tableFont" style="width:178px;">电话(手机）</th>
-              <th class="tableFont" style="width:380px;"></th>
-            </tr>
-            <tr>
-              <th class="tableFont" style="width:178px;">联系人</th>
-              <th class="tableFont" style="width:380px;"></th>
-              <th class="tableFont" style="width:178px;">电话(手机）</th>
-              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:380px;">
+                {{ detailinfo.leader_mobile ? detailinfo.leader_mobile : '-' }}
+              </th>
             </tr>
             <tr>
               <th class="tableFont" style="width:178px;">电子邮箱</th>
-              <th class="tableFont" colspan="3"></th>
+              <th class="tableFont" style="width:380px;">
+                {{ detailinfo.leader_email ? detailinfo.leader_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{
+                  detailinfo.leader_address ? detailinfo.leader_address : '-'
+                }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">经办人</th>
+              <th class="tableFont" style="width:380px;">
+                {{ detailinfo.link_name ? detailinfo.link_name : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;">
+                {{ detailinfo.link_mobile ? detailinfo.link_mobile : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;">
+                {{ detailinfo.link_email ? detailinfo.link_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{ detailinfo.link_address ? detailinfo.link_address : '-' }}
+              </th>
             </tr>
           </thead>
         </table>
@@ -496,11 +658,13 @@
             </tr>
           </thead>
         </table>
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
           <div class="pageNumber">10</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:58px;">
@@ -537,7 +701,7 @@
           <tr>
             <th class="tableFont" style="width:160px;height:600px;">
               <div style="flex-direction: row-reverse;width:48px;margin:auto;">
-                云南 省住 房和 乡镇 建设 厅 标准 定额 处 审 查 意 见
+                云南 省住 房和 城乡 建设 厅 审查意见
               </div>
             </th>
             <th class="tableFont" style="width:840px;">
@@ -558,15 +722,120 @@
           </tr>
         </table>
 
-        <div class="pageCont">
+        <!-- <div class="pageCont">
           <div class="grayLine"></div>
           <div class="pageNumber">11</div>
           <div class="grayLine"></div>
-        </div>
+        </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
     </div>
   </div>
 </template>
+<script>
+import { datawork } from '../../../plugins/datawork'
+import { getClientId } from '../../../plugins/getclientid'
+import { getToken } from '../../../plugins/gettoken'
+const JsBarcode = require('jsbarcode')
+export default {
+  data() {
+    return {
+      detailinfo: {},
+      qrcodeObj: {},
+      loading: false
+    }
+  },
+  mounted() {
+    /*eslint-disable*/
+    if (
+      !localStorage.getItem('userid') ||
+      !Number(localStorage.getItem('userid'))
+    ) {
+      this.$router.push('/login')
+      return
+    }
+    if (this.$route.query.id) {
+      this.getDetail()
+    }
+  },
+  methods: {
+    getDetail() {
+      this.loading = true
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      data1.id = this.$route.query.id
+      data2 = datawork(data1)
+      this.$api.get_pro_detail(data2).then((v) => {
+        console.log(v)
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.detailinfo = v.data.data.data
+          this.qrcodeObj = new QRCode('qrcode', {
+            text: v.data.data.data.two_code,    
+            width: 150,
+            height: 150,
+            colorDark : '#000',
+            colorLight : '#fff',
+            correctLevel : QRCode.CorrectLevel.H
+          })
+          JsBarcode("#barcode", v.data.data.data.one_code, {
+            // format: "pharmacode",
+            lineColor: "#000",
+            width: 4,
+            height: 40,
+            displayValue: false
+          })
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.getDetail()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.getDetail()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    }
+  },
+  head:{
+    script: [
+      {
+        src: '/qrcode.min.js'
+      }
+    ]  
+}
+}
+</script>
 <style scoped>
 #filecontent {
   width: 1190px;
@@ -584,6 +853,7 @@
   padding-left: 95px;
   padding-top: 60px;
   padding-bottom: 60px;
+  border: 1px red solid;
 }
 .lines {
   margin-right: 10px;

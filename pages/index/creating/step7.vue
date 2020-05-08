@@ -7,12 +7,7 @@
           <div class="formitem two date">
             <div>
               <div class="itemname">姓名</div>
-              <input
-                v-model="name"
-                type="text"
-                :disabled="disabled1"
-                placeholder="请输入姓名"
-              />
+              <input v-model="name" type="text" placeholder="请输入姓名" />
             </div>
             <div>
               <div class="itemname">性别</div>
@@ -30,7 +25,6 @@
               <el-date-picker
                 v-model="birthday"
                 type="date"
-                :disabled="disabled1"
                 placeholder="请选择起始时间"
               >
               </el-date-picker>
@@ -38,12 +32,7 @@
           </div>
           <div class="formitem">
             <div class="itemname">职务/职称</div>
-            <input
-              v-model="job"
-              type="text"
-              :disabled="disabled1"
-              placeholder="请输入职务/职称"
-            />
+            <input v-model="job" type="text" placeholder="请输入职务/职称" />
           </div>
           <div class="formitem formitem2">
             <div>
@@ -51,7 +40,6 @@
               <input
                 v-model="study_major"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入所学专业"
               />
             </div>
@@ -60,32 +48,25 @@
               <input
                 v-model="now_major"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入现从事专业"
               />
             </div>
           </div>
           <div class="formitem">
             <div class="itemname">所在单位</div>
-            <input
-              v-model="company"
-              type="text"
-              :disabled="disabled1"
-              placeholder="请输入所在单位"
-            />
+            <input v-model="company" type="text" placeholder="请输入所在单位" />
           </div>
           <div class="formitem">
             <div class="itemname">在本项目中承担的任务</div>
             <input
               v-model="task"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入在本项目中承担的任务"
             />
           </div>
         </div>
         <div class="btns">
-          <div class="submitbtn">+ 保存人员信息</div>
+          <div class="submitbtn" @click="addpeople">+ 保存人员信息</div>
         </div>
       </div>
     </div>
@@ -101,28 +82,30 @@
           <p class="col61">所在单位</p>
           <p class="col71">操作</p>
         </div>
-        <div class="listItem">
-          <p class="col11">序号</p>
-          <p class="col21">姓名</p>
-          <p class="col31">性别</p>
-          <p class="col41">出生日期</p>
-          <p class="col51">职务/职称</p>
-          <p class="col61">所在单位</p>
+        <div v-for="(item, index) in worker_json" :key="index" class="listItem">
+          <p class="col11">{{ index + 1 }}</p>
+          <p class="col21">{{ item.name ? item.name : '-' }}</p>
+          <p class="col31">
+            {{
+              !item.sex
+                ? '-'
+                : item.sex == '1'
+                ? '男'
+                : item.sex == '2'
+                ? '女'
+                : '-'
+            }}
+          </p>
+          <p class="col41">{{ item.birthday ? item.birthday : '-' }}</p>
+          <p class="col51">{{ item.job ? item.job : '-' }}</p>
+          <p class="col61">{{ item.company ? item.company : '-' }}</p>
           <p class="col71">
-            <span @click="edit">编辑</span>
+            <span @click="edit(item, index)">编辑</span>
+            <span @click="del(index)">删除</span>
           </p>
         </div>
       </div>
-      <div class="paging">
-        <el-pagination
-          layout="total, prev, pager, next"
-          :page-size="8"
-          :hide-on-single-page="false"
-          :total="pagetotal"
-          @current-change="pagechange"
-        >
-        </el-pagination>
-      </div>
+      <div v-if="worker_json.length === 0" class="nodata">暂时没有人员哦！</div>
     </div>
     <div class="btns">
       <div @click="savemsg">保存</div>
@@ -136,14 +119,13 @@
       :show-close="false"
       width="1000px"
     >
-      <!-- <div class="formitems dialogform">
+      <div class="formitems dialogform">
         <div class="formitem two date">
           <div>
             <div class="itemname">姓名</div>
             <input
               v-model="worker_detail.name"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入姓名"
             />
           </div>
@@ -163,7 +145,6 @@
             <el-date-picker
               v-model="worker_detail.birthday"
               type="date"
-              :disabled="disabled1"
               placeholder="请选择起始时间"
             >
             </el-date-picker>
@@ -174,7 +155,6 @@
           <input
             v-model="worker_detail.job"
             type="text"
-            :disabled="disabled1"
             placeholder="请输入职务/职称"
           />
         </div>
@@ -184,7 +164,6 @@
             <input
               v-model="worker_detail.study_major"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入所学专业"
             />
           </div>
@@ -193,7 +172,6 @@
             <input
               v-model="worker_detail.now_major"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入现从事专业"
             />
           </div>
@@ -203,7 +181,6 @@
           <input
             v-model="worker_detail.company"
             type="text"
-            :disabled="disabled1"
             placeholder="请输入所在单位"
           />
         </div>
@@ -212,13 +189,14 @@
           <input
             v-model="worker_detail.task"
             type="text"
-            :disabled="disabled1"
             placeholder="请输入在本项目中承担的任务"
           />
         </div>
-      </div> -->
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="editdone">确定</el-button>
+        <el-button type="primary" @click="editdone(worker_detail.number)">
+          确定
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -259,11 +237,9 @@ export default {
         }
       ],
       // 这里是主要研究人员的列表
-      worker_json: [{}],
+      worker_json: [],
       // 这里是某个主要研究人员的详情
       worker_detail: {},
-      pagetotal: 0,
-      disabled1: false,
       dialogshow: false,
       loading: false
     }
@@ -277,9 +253,22 @@ export default {
       this.$router.push('/login')
       return
     }
-    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+    if (
+      localStorage.getItem('form') &&
+      JSON.parse(localStorage.getItem('form')) &&
+      JSON.parse(localStorage.getItem('form')) != {}
+    ) {
       console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
+    }
+    // 如果存在主要研究人员信息，就赋值给人员列表worker_json
+    if (
+      localStorage.getItem('worker') &&
+      JSON.parse(localStorage.getItem('worker')) &&
+      JSON.parse(localStorage.getItem('worker')).length > 0
+    ) {
+      this.form.worker_json = deepCopy(JSON.parse(localStorage.getItem('worker')))
+      this.worker_json = deepCopy(JSON.parse(localStorage.getItem('worker')))
     }
   },
   methods: {
@@ -324,7 +313,8 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
+      // 保存的时候，如果存在人员信息，就传值，如果没有，就不传值
       if (this.worker_json.length > 0) {
         this.form.worker_json = deepCopy(this.worker_json)
         data1.worker_json = JSON.stringify(this.worker_json)
@@ -341,8 +331,10 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -415,7 +407,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       data1.worker_json = JSON.stringify(this.worker_json)
       data2 = datawork(data1)
       console.log(data2)
@@ -430,10 +422,15 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
           setTimeout(() => {
-            that.$router.push('/creating/step8')
+            that.$router.push({
+              path: '/creating/step8',
+              query: { id: this.$route.query.id }
+            })
           }, 1000)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
@@ -458,17 +455,120 @@ export default {
         }
       })
     },
-    pagechange(val) {},
-    edit() {
-      this.dialogshow = true
+    formValidate() {
+      if (!this.name && !this.name.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入姓名'
+        })
+        return false
+      } else if(!this.sex) {
+        this.$message({
+          type: 'error',
+          message: '请选择性别'
+        })
+        return false
+      } else if (!this.birthday) {
+        this.$message({
+          type: 'error',
+          message: '请选择出生日期'
+        })
+        return false
+      } else if (!this.job && !this.job.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入职务/职称'
+        })
+        return false
+      } else if (!this.study_major && !this.study_major.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入所学专业'
+        })
+        return false
+      } else if (!this.now_major && !this.now_major.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入现从事专业'
+        })
+        return false
+      } else if (!this.company && !this.company.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入所在单位'
+        })
+        return false
+      } else if (!this.task && !this.task.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入在本项目中承担的任务'
+        })
+        return false
+      } else {
+        return true
+      }
     },
-    editdone() {
+    handletime(data) {
+      const timedata = new Date(data)
+      let year = timedata.getFullYear()
+      let month = timedata.getMonth()
+      let date = timedata.getDate()
+      this.starttime = year + '-' + (month + 1) + '-' + date
+      return year + '-' + (month + 1) + '-' + date
+    },
+    addpeople() {
+      if (!this.formValidate()) return
+      const time = this.handletime(this.birthday)
+      this.worker_json.push(
+        {
+          name: this.name.replace(/(^\s*)|(\s*$)/g, ''),
+          sex: this.sex,
+          birthday: time,
+          job: this.job.replace(/(^\s*)|(\s*$)/g, ''),
+          study_major: this.study_major.replace(/(^\s*)|(\s*$)/g, ''),
+          now_major: this.now_major.replace(/(^\s*)|(\s*$)/g, ''),
+          company: this.company.replace(/(^\s*)|(\s*$)/g, ''),
+          task: this.task.replace(/(^\s*)|(\s*$)/g, '')
+        }
+      )
+      this.$store.commit('SET_WORKER', this.worker_json)
+      localStorage.setItem('worker', JSON.stringify(this.worker_json))
+      console.log(this.worker_json)
+    },
+    edit(val, key) {
+      this.dialogshow = true
+      this.worker_detail = deepCopy(val)
+      this.worker_detail.number = key
+    },
+    editdone(key) {
+      // 修改了人员信息
+      // 再次保存worker_json
+      this.worker_json.forEach((item, index) => {
+        if (index == key) {
+          this.worker_json[index] = deepCopy(this.worker_detail)
+        }
+      })
+      this.$store.commit('SET_WORKER', this.worker_json)
+      localStorage.setItem('worker', JSON.stringify(this.worker_json))
       this.dialogshow = false
+    },
+    del(key) {
+      this.$confirm('您确定删除该人员吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        lockScroll: false,
+        type: 'warning'
+      })
+        .then(() => {
+          this.$delete(this.worker_json, key)
+          this.$store.commit('SET_WORKER', this.worker_json)
+          localStorage.setItem('worker', JSON.stringify(this.worker_json))
+        })
+        .catch(() => {})
     }
   }
 }
 </script>
-
 <style lang="stylus" scoped>
 .formitem input
   width calc(100% - 114px) !important

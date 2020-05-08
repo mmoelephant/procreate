@@ -20,6 +20,7 @@
     "html2canvas": "^1.0.0-rc.5",
     "js-cookie": "^2.2.1",
     "js-md5": "^0.7.3",
+    "jsbarcode": "^3.11.0",
     "jspdf": "^1.5.3",
     "nuxt": "^2.0.0",
     "vuex-persistedstate": "^3.0.1"

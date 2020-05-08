@@ -7,8 +7,8 @@ export function formValidate21(data, that) {
     })
     return false
   } else if (
-    !data.enterprsie_name ||
-    !data.enterprsie_name.replace(/(^\s*)|(\s*$)/g, '')
+    !data.enterprise_name ||
+    !data.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
   ) {
     that.$message({
       type: 'error',
@@ -37,8 +37,8 @@ export function formValidate21(data, that) {
     })
     return false
   } else if (
-    !data.county_amount ||
-    !data.county_amount.replace(/(^\s*)|(\s*$)/g, '')
+    !data.country_amount ||
+    !data.country_amount.replace(/(^\s*)|(\s*$)/g, '')
   ) {
     that.$message({
       type: 'error',

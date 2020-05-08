@@ -162,6 +162,16 @@ export default {
       loading: false
     }
   },
+  mounted() {
+    const that = this
+    document.onkeydown = function(e) {
+      const keycode = document.all ? event.keyCode : e.which
+      if (keycode === 13) {
+        that.login1()
+        return false
+      }
+    }
+  },
   methods: {
     toggleuser(val) {
       this.userwho = val

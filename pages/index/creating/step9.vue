@@ -22,21 +22,6 @@
                   <br />2.如用多个文件请依次上传。
                 </p>
               </div>
-              <!-- <div class="filebox">
-                <div v-for="(item, index) in files1" :key="index">
-                  <p :title="item.name" @click="downfile(item)">
-                    {{ item.name }}
-                  </p>
-                  <div
-                    v-if="!disabled1"
-                    class="delIcon"
-                    title="删除"
-                    @click="deletefile1(index)"
-                  >
-                    ×
-                  </div>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -60,14 +45,8 @@
           </p>
         </div>
       </div>
-      <div class="paging">
-        <el-pagination
-          layout="total, prev, pager, next"
-          :page-size="8"
-          :hide-on-single-page="false"
-          :total="pagetotal"
-          @current-change="pagechange"
-        ></el-pagination>
+      <div v-if="files1.length === 0" class="nodata">
+        暂时没有附件，请先添加附件
       </div>
     </div>
     <div class="btns">
@@ -99,8 +78,7 @@ export default {
       file1: {},
       fileLen1: 0,
       files1: [],
-      pagetotal: 0,
-      disabled1: false,
+      Id: 0,
       loading: false
     }
   },
@@ -113,7 +91,11 @@ export default {
       this.$router.push('/login')
       return
     }
-    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+    if (
+      localStorage.getItem('form') &&
+      JSON.parse(localStorage.getItem('form')) &&
+      JSON.parse(localStorage.getItem('form')) != {}
+    ) {
       console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
@@ -164,7 +146,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       if (this.files1.length > 0) {
         this.form.files = deepCopy(this.files1)
         data1.files = JSON.stringify(this.files1)
@@ -181,8 +163,10 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -257,7 +241,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       data1.files = JSON.stringify(this.files1)
       data2 = datawork(data1)
       console.log(data2)
@@ -267,13 +251,23 @@ export default {
           this.loading = false
           this.$message({
             type: 'success',
-            message: '提交成功'
+            message: '提交成功',
+            duration: 1000
           })
-          this.$store.commit('SET_FORM', this.form)
-          localStorage.setItem('form', JSON.stringify(this.form))
+          if (this.$route.query.id) {
+            this.Id = Number(this.$router.query.id)
+          } else if(localStorage.getItem('applyid')) {
+            this.Id = Number(localStorage.getItem('applyid'))
+          }
+          // 提交成功之后要清除掉缓存，包括form和applyid
+          this.$store.commit('SET_FORM', {})
+          localStorage.setItem('form', '')
+          this.$store.commit('SET_APPLY_ID', '')
+          localStorage.removeItem('applyid')
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          setTimeout(() => {
+            that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
+          }, 1000);
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -390,7 +384,6 @@ export default {
       window.location.href = val.url
       // window.open(val.url, '_blank')
     },
-    pagechange(val) {},
     edit() {}
   }
 }

@@ -404,6 +404,11 @@ export default {
   border: 1px solid rgba(0, 0, 0, 1);
   border-collapse: collapse;
 }
+.table.table1 {
+  /* min-height: 900px; */
+  margin-top: 60px;
+  transform: rotate(90deg);
+}
 .padding20 {
   padding: 20px;
 }
@@ -414,13 +419,13 @@ export default {
 
 /* 二级标题 */
 .bodyTitle {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 400;
   color: rgba(0, 0, 0, 1);
   margin-bottom: 10px;
 }
 .bodyCont {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 300;
   color: rgba(0, 0, 0, 1);
 }
@@ -451,5 +456,29 @@ export default {
   padding-top: 20px;
   padding-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 1);
+}
+.maCoverStyle{
+  width:150px;
+  height:150px;
+}
+.maPageStyle{
+  width:300px;
+  height:60px;
+}
+.maCover{
+ position: absolute;
+ left:174px;
+ top:101px;
+}
+.maCovers{
+ position: absolute;
+ left:174px;
+ top:28px;
+}
+
+.maPage{
+ position: absolute;
+ left:420px;
+ bottom:38px
 }
 </style>

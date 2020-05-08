@@ -10,9 +10,9 @@
           <div class="formitem">
             <div class="itemname">申报单位名称</div>
             <input
-              v-model="form.enterprsie_name"
+              v-model="form.enterprise_name"
               type="text"
-              :disabled="form.enterprsie_name ? true : false"
+              :disabled="form.enterprise_name ? true : false"
               placeholder="请输入申报单位名称"
             />
           </div>
@@ -106,7 +106,6 @@
             <input
               v-model="name"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入合作单位名称"
             />
           </div>
@@ -116,7 +115,6 @@
               <input
                 v-model="leader_name"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人姓名"
               />
             </div>
@@ -125,7 +123,6 @@
               <input
                 v-model="leader_mobile"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人电话"
               />
             </div>
@@ -136,7 +133,6 @@
               <input
                 v-model="leader_email"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人电子邮箱"
               />
             </div>
@@ -145,7 +141,6 @@
               <input
                 v-model="leader_address"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人通讯地址"
               />
             </div>
@@ -156,7 +151,6 @@
               <input
                 v-model="link_name"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人姓名"
               />
             </div>
@@ -165,7 +159,6 @@
               <input
                 v-model="link_mobile"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人电话"
               />
             </div>
@@ -176,7 +169,6 @@
               <input
                 v-model="link_email"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人电子邮箱"
               />
             </div>
@@ -185,14 +177,13 @@
               <input
                 v-model="link_address"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人通讯地址"
               />
             </div>
           </div>
         </div>
         <div class="btns">
-          <div class="submitbtn">+ 保存合作单位</div>
+          <div class="submitbtn" @click="addpeople">+ 保存合作单位</div>
         </div>
       </div>
     </div>
@@ -207,25 +198,40 @@
           <p class="col52">联系地址</p>
           <p class="col62">操作</p>
         </div>
-        <div class="listItem">
-          <p class="col12">序号</p>
-          <p class="col22">合作单位名称</p>
-          <p class="col32">负责人</p>
-          <p class="col42">负责人电话</p>
-          <p class="col52">联系地址</p>
+        <div
+          v-for="(item, index) in partner_json"
+          :key="index"
+          class="listItem"
+        >
+          <p class="col12">
+            {{ index + 1 }}
+          </p>
+          <p class="col22" :title="item.name ? item.name : '-'">
+            {{ item.name ? item.name : '-' }}
+          </p>
+          <p class="col32" :title="item.leader_name ? item.leader_name : '-'">
+            {{ item.leader_name ? item.leader_name : '-' }}
+          </p>
+          <p
+            class="col42"
+            :title="item.leader_mobile ? item.leader_mobile : '-'"
+          >
+            {{ item.leader_mobile ? item.leader_mobile : '-' }}
+          </p>
+          <p
+            class="col52"
+            :title="item.leader_address ? item.leader_address : '-'"
+          >
+            {{ item.leader_address ? item.leader_address : '-' }}
+          </p>
           <p class="col62">
-            <span @click="edit">编辑</span>
+            <span @click="edit(item, index)">编辑</span>
+            <span @click="del(index)">删除</span>
           </p>
         </div>
       </div>
-      <div class="paging">
-        <el-pagination
-          layout="total, prev, pager, next"
-          :page-size="8"
-          :hide-on-single-page="false"
-          :total="pagetotal"
-          @current-change="pagechange"
-        ></el-pagination>
+      <div v-if="partner_json.length === 0" class="nodata">
+        暂时没有合作单位哦！
       </div>
     </div>
     <div class="btns">
@@ -247,7 +253,6 @@
           <input
             v-model="partner_detail.name"
             type="text"
-            :disabled="disabled1"
             placeholder="请输入合作单位名称"
           />
         </div>
@@ -257,7 +262,6 @@
             <input
               v-model="partner_detail.leader_name"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入负责人姓名"
             />
           </div>
@@ -266,7 +270,6 @@
             <input
               v-model="partner_detail.leader_mobile"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入负责人电话"
             />
           </div>
@@ -277,7 +280,6 @@
             <input
               v-model="partner_detail.leader_email"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入负责人电子邮箱"
             />
           </div>
@@ -286,7 +288,6 @@
             <input
               v-model="partner_detail.leader_address"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入负责人通讯地址"
             />
           </div>
@@ -297,7 +298,6 @@
             <input
               v-model="partner_detail.link_name"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入经办人姓名"
             />
           </div>
@@ -306,7 +306,6 @@
             <input
               v-model="partner_detail.link_mobile"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入经办人电话"
             />
           </div>
@@ -317,7 +316,6 @@
             <input
               v-model="partner_detail.link_email"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入经办人电子邮箱"
             />
           </div>
@@ -326,14 +324,15 @@
             <input
               v-model="partner_detail.link_address"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入经办人通讯地址"
             />
           </div>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="editdone">确定</el-button>
+        <el-button type="primary" @click="editdone(partner_detail.number)">
+          确定
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -365,10 +364,8 @@ export default {
       link_mobile: '',
       link_email: '',
       link_address: '',
-      partner_json: [{}],
+      partner_json: [],
       partner_detail: {},
-      pagetotal: 0,
-      disabled1: false,
       dialogshow: false,
       loading: false
     }
@@ -382,9 +379,22 @@ export default {
       this.$router.push('/login')
       return
     }
-    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+    if (
+      localStorage.getItem('form') &&
+      JSON.parse(localStorage.getItem('form')) &&
+      JSON.parse(localStorage.getItem('form')) != {}
+    ) {
       console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
+    }
+    // 如果存在研究合作单位，就赋值给人员列表partner_json
+    if (
+      localStorage.getItem('partner') &&
+      JSON.parse(localStorage.getItem('partner')) &&
+      JSON.parse(localStorage.getItem('partner')).length > 0
+    ) {
+      this.form.partner_json = deepCopy(JSON.parse(localStorage.getItem('partner')))
+      this.partner_json = deepCopy(JSON.parse(localStorage.getItem('partner')))
     }
   },
   methods: {
@@ -429,7 +439,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       if (this.partner_json.length > 0) {
         this.form.partner_json = deepCopy(this.partner_json)
         data1.partner_json = JSON.stringify(this.partner_json)
@@ -446,8 +456,10 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -521,7 +533,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       data1.partner_json = JSON.stringify(this.partner_json)
       data2 = datawork(data1)
       console.log(data2)
@@ -536,10 +548,15 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
           setTimeout(() => {
-            that.$router.push('/creating/step9')
+            that.$router.push({
+              path: '/creating/step9',
+              query: { id: this.$route.query.id }
+            })
           }, 1000)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
@@ -564,12 +581,114 @@ export default {
         }
       })
     },
-    pagechange(val) {},
-    edit() {
-      this.dialogshow = true
+    formValidate() {
+      if (!this.name && !this.name.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入合作单位名称'
+        })
+        return false
+      } else if(!this.leader_name && !this.leader_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入负责人姓名'
+        })
+        return false
+      } else if(!this.leader_mobile && !this.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入负责人电话'
+        })
+        return false
+      } else if(!this.leader_email && !this.leader_email.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入负责人电子邮箱'
+        })
+        return false
+      } else if(!this.leader_address && !this.leader_address.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入负责人通讯地址'
+        })
+        return false
+      } else if(!this.link_name && !this.link_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入经办人姓名'
+        })
+        return false
+      } else if(!this.link_mobile && !this.link_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入经办人电话'
+        })
+        return false
+      } else if(!this.link_email && !this.link_email.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入经办人电子邮箱'
+        })
+        return false
+      } else if(!this.link_address && !this.link_address.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.$message({
+          type: 'error',
+          message: '请输入经办人通讯地址'
+        })
+        return false
+      } else {
+        return true
+      }
     },
-    editdone() {
+    addpeople() {
+      if (!this.formValidate()) return
+      this.partner_json.push(
+        {
+          name: this.name.replace(/(^\s*)|(\s*$)/g, ''),
+          leader_name: this.leader_name.replace(/(^\s*)|(\s*$)/g, ''),
+          leader_mobile: this.leader_mobile.replace(/(^\s*)|(\s*$)/g, ''),
+          leader_email: this.leader_email.replace(/(^\s*)|(\s*$)/g, ''),
+          leader_address: this.leader_address.replace(/(^\s*)|(\s*$)/g, ''),
+          link_name: this.link_name.replace(/(^\s*)|(\s*$)/g, ''),
+          link_mobile: this.link_mobile.replace(/(^\s*)|(\s*$)/g, ''),
+          link_email: this.link_email.replace(/(^\s*)|(\s*$)/g, ''),
+          link_address: this.link_address.replace(/(^\s*)|(\s*$)/g, ''),
+        }
+      )
+      this.$store.commit('SET_PARTNER', this.partner_json)
+      localStorage.setItem('partner', JSON.stringify(this.partner_json))
+      console.log(this.partner_json)
+    },
+    edit(val, key) {
+      this.dialogshow = true
+      this.partner_detail = deepCopy(val)
+      this.partner_detail.number = key
+    },
+    editdone(key) {
+      // 修改了人员信息
+      // 再次保存partner_json
+      this.partner_json.forEach((item, index) => {
+        if (index == key) {
+          this.partner_json[index] = deepCopy(this.partner_detail)
+        }
+      })
+      this.$store.commit('SET_PARTNER', this.partner_json)
+      localStorage.setItem('partner', JSON.stringify(this.partner_json))
       this.dialogshow = false
+    },
+    del(key) {
+      this.$confirm('您确定删除该合作单位吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        lockScroll: false,
+        type: 'warning'
+      })
+        .then(() => {
+          this.$delete(this.partner_json, key)
+          this.$store.commit('SET_PARTNER', this.partner_json)
+          localStorage.setItem('partner', JSON.stringify(this.partner_json))
+        })
+        .catch(() => {})
     }
   }
 }

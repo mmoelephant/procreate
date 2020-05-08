@@ -77,7 +77,11 @@ export default {
     // 3.在计划书页面点击“填写申报表”，直接到达本页面；
     //   一定包含formsType, partner_name和address
     // 上述三种情况，不管哪一种，首先要检查有没有存储的form数据，
-    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+    if (
+      localStorage.getItem('form') &&
+      JSON.parse(localStorage.getItem('form')) &&
+      JSON.parse(localStorage.getItem('form')) != {}
+    ) {
       console.log(JSON.parse(localStorage.getItem('form')))
       // 这一步操作可能会导致vuex报错，但是我们设置为非严格模式就可以了
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
@@ -128,7 +132,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       if (this.form.a_md && this.form.a_md.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.a_md = this.form.a_md.replace(/(^\s*)|(\s*$)/g, '')
       }
@@ -150,8 +154,10 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -219,7 +225,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.category_id = 1
+      // data1.category_id = 1
       data1.a_md = this.form.a_md.replace(/(^\s*)|(\s*$)/g, '')
       data1.a_yj = this.form.a_yj.replace(/(^\s*)|(\s*$)/g, '')
       data1.a_yy = this.form.a_yy.replace(/(^\s*)|(\s*$)/g, '')
@@ -237,10 +243,15 @@ export default {
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
           console.log(this.form)
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
           setTimeout(() => {
-            that.$router.push('/creating/step2')
+            that.$router.push({
+              path: '/creating/step2',
+              query: { id: this.$route.query.id }
+            })
           }, 1000)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)

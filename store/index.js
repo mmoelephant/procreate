@@ -11,7 +11,9 @@ const state = function() {
     clientid: '',
     accesstoken: '',
     form: {},
-    applyid: ''
+    applyid: '',
+    worker: [],
+    partner: []
   }
 }
 const mutations = {
@@ -41,6 +43,12 @@ const mutations = {
   },
   SET_APPLY_ID(state, data) {
     state.applyid = data
+  },
+  SET_WORKER(state, data) {
+    state.worker = data
+  },
+  SET_PARTNER(state, data) {
+    state.partner = data
   }
 }
 export default { state, mutations, strict: false }

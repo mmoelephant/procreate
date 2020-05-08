@@ -16,7 +16,7 @@ service.interceptors.response.use(
     return response
   },
   (error) => {
-    alert('网络错误，请稍后重试')
+    alert(error)
     return Promise.reject(error)
   }
 )
@@ -25,7 +25,8 @@ service2.interceptors.response.use(
     return response
   },
   (error) => {
-    alert('网络错误，请稍后重试')
+    // alert('网络错误，请稍后重试')
+    alert(error)
     return Promise.reject(error)
   }
 )
@@ -118,6 +119,25 @@ const api = {
   commit_create(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Enterprise/Forms/handle', data)
+  },
+  search_before(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/searchBefore', data)
+  },
+  get_pro_list(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/search', data)
+  },
+  get_pro_detail(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/detail', data)
+  },
+  del_pro(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/delete', data)
+  },
+  upload_pro_file(data) {
+    return service2.post('Enterprise/Forms/upload', data)
   }
 }
 export default api

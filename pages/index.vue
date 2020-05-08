@@ -74,7 +74,7 @@ export default {
                 message: '您的企业信息暂未认证通过，请先认证企业信息，再进行下一步操作！'
               })
               setTimeout(() => {
-                this.$router.push('/userinfo')
+                that.$router.push('/userinfo')
               }, 1000)
             }
           }
@@ -139,7 +139,7 @@ export default {
                 message: '您的企业信息暂未认证通过，请先认证企业信息，再进行下一步操作！'
               })
               setTimeout(() => {
-                this.$router.push('/userinfo')
+                that.$router.push('/userinfo')
               }, 1000)
             }
           }

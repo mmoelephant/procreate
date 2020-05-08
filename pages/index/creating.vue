@@ -23,9 +23,10 @@
             v-for="item in bigcates"
             :key="item.id"
             :class="bigOn == item.id ? 'bigon' : ''"
-            @click="togglebig(item.id)"
+            :title="item.name ? item.name : '-'"
+            @click="togglebig(item)"
           >
-            {{ item.name }}
+            {{ item.name ? item.name : '-' }}
           </div>
         </div>
         <p>请继续选择子类别</p>
@@ -34,7 +35,7 @@
             v-for="item in smallcates"
             :key="item.id"
             :class="smallOn == item.id ? 'smallon' : ''"
-            @click="togglesmall(item.id)"
+            @click="togglesmall(item)"
           >
             软科学研究项目
           </div>
@@ -119,25 +120,14 @@
             <input
               v-model="form.name"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入项目名称"
-            />
-          </div>
-          <div class="formitem">
-            <div class="itemname">项目类别</div>
-            <input
-              v-model="form.protype"
-              type="text"
-              :disabled="disabled1"
-              placeholder="请输入项目类别"
             />
           </div>
           <div class="formitem">
             <div class="itemname">申报单位</div>
             <input
-              v-model="form.enterprsie_name"
+              v-model="form.enterprise_name"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入申报单位"
             />
           </div>
@@ -147,7 +137,6 @@
               <el-date-picker
                 v-model="form.starttime"
                 type="date"
-                :disabled="disabled1"
                 placeholder="请选择起始时间"
               >
               </el-date-picker>
@@ -157,7 +146,6 @@
               <el-date-picker
                 v-model="form.endtime"
                 type="date"
-                :disabled="disabled1"
                 placeholder="请选择完成时间"
               >
               </el-date-picker>
@@ -166,19 +154,13 @@
           <div class="formitem two">
             <div>
               <div class="itemname">自筹金额</div>
-              <input
-                v-model="form.self_amount"
-                type="text"
-                :disabled="disabled1"
-                placeholder="请输入金额，例如：200"
-              />
+              <input v-model="form.self_amount" type="text" />
             </div>
             <div>
               <div class="itemname">国家拨/贷款</div>
               <input
-                v-model="form.county_amount"
-                type="text"
-                :disabled="disabled1"
+                v-model="form.country_amount"
+                type="number"
                 placeholder="请输入金额，例如：200"
               />
             </div>
@@ -186,8 +168,7 @@
               <div class="itemname">地方拨/贷款</div>
               <input
                 v-model="form.current_amount"
-                type="text"
-                :disabled="disabled1"
+                type="number"
                 placeholder="请输入金额，例如：200"
               />
             </div>
@@ -197,8 +178,7 @@
               <div class="itemname">其他</div>
               <input
                 v-model="form.other_amount"
-                type="text"
-                :disabled="disabled1"
+                type="number"
                 placeholder="请输入金额，例如：200"
               />
             </div>
@@ -206,8 +186,7 @@
               <div class="itemname">外方</div>
               <input
                 v-model="form.foreign_amount"
-                type="text"
-                :disabled="disabled1"
+                type="number"
                 placeholder="请输入金额，例如：200"
               />
             </div>
@@ -215,10 +194,10 @@
           <div class="formitem">
             <div class="itemname">总金额</div>
             <input
-              v-model="form.amount"
-              type="text"
-              :disabled="disabled1"
-              placeholder="请输入金额，例如：200"
+              v-model="sum"
+              type="number"
+              :disabled="true"
+              placeholder=""
             />
           </div>
           <div class="formitem multi">
@@ -456,8 +435,11 @@ export default {
       ],
       smallOn: 1,
       smallcates: [],
+      bigtitle: '',
+      smalltitle: '',
       form: {
         formsType: 1,
+        category_id: 1,
         partner_name: [''],
         address: ['']
       },
@@ -472,24 +454,35 @@ export default {
   computed: {
     route() {
       return this.$route
+    },
+    sum() {
+      return (
+        parseFloat(this.form.self_amount) +
+        parseFloat(this.form.country_amount) +
+        parseFloat(this.form.current_amount) +
+        parseFloat(this.form.other_amount) +
+        parseFloat(this.form.foreign_amount)
+      )
     }
   },
   watch: {
     /*eslint-disable*/
-    form(val) {
-      console.log(val)
-    },
+    form(val) {},
     route(val) {
       if (val.path == '/creating') {
         if (
+          localStorage.getItem('form') &&
           JSON.parse(localStorage.getItem('form')) &&
           JSON.parse(localStorage.getItem('form')) != {}
         ) {
           this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
           this.partner = deepCopy(this.form.partner_name)
           this.addressb = deepCopy(this.form.address)
+        } else if (this.$route.query.id) {
+          this.getprodetail()
         }
         this.form.formsType = this.bigOn
+        this.form.category_id = this.smallOn
       }
     }
   },
@@ -503,35 +496,51 @@ export default {
     }
     this.beforeapply()
     this.userinfo()
-    if (JSON.parse(localStorage.getItem('form')) && JSON.parse(localStorage.getItem('form')) != {}) {
+    if (
+      localStorage.getItem('form') &&
+      JSON.parse(localStorage.getItem('form')) &&
+      JSON.parse(localStorage.getItem('form')) != {}
+    ) {
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
       this.partner = deepCopy(this.form.partner_name)
       this.addressb = deepCopy(this.form.address)
+    } else if (this.$route.query.id) {
+      this.getprodetail()
     }
     this.form.formsType = this.bigOn
+    this.form.category_id = this.smallOn
   },
   methods: {
     togglebig(val) {
-      this.bigOn = val
+      this.bigOn = val.id
+      this.bigtitle = val.name
       this.form.formsType = this.bigOn
+      this.beforeapply()
     },
     togglesmall(val) {
-      this.smallOn = val
+      this.smallOn = val.id
+      this.smalltitle = val.name
+      this.form.category_id = this.smallOn
     },
     stepone() {
-      this.$router.push('/creating')
+      // this.$router.push('/creating')
+      this.$router.push({ path: '/creating', query: { id: this.$route.query.id } })
     },
     steptwo() {
       this.handleform(this.form)
+      const that = this
       setTimeout(() => {
         this.$store.commit('SET_FORM', this.form)
         localStorage.setItem('form', JSON.stringify(this.form))
-        this.$router.push('/creating/step1')
+        that.$router.push({ path: '/creating/step1', query: { id: this.$route.query.id } })
       }, 1000)
     },
     beforeapply() {
       this.loading = true
       this.bigcates = []
+      this.smallcates = []
+      this.partner = []
+      this.addressb = []
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
@@ -558,6 +567,24 @@ export default {
         if (v.data.errcode === 0) {
           this.loading = false
           this.bigcates = v.data.data.typeData
+          this.smallcates = v.data.data.categoryData
+          if (!this.$route.query.id && !localStorage.getItem('applyid')) {
+            if (v.data.data.formsData && v.data.data.formsData != {}) {
+              this.form = deepCopy(v.data.data.formsData)
+              this.form.partner_name = []
+              this.form.address = []
+              this.partner.push(v.data.data.formsData.partner_name)
+              this.addressb.push(v.data.data.formsData.address)
+              this.form.partner_name = this.partner
+              this.form.address = this.addressb
+            } else {
+              this.partner = ['']
+              this.addressb = ['']
+            }
+            this.form.formsType = this.bigOn
+            this.form.category_id = this.smallOn
+          }
+          console.log(this.partner)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -605,10 +632,9 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.user_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
-          this.form.enterprsie_name = v.data.data.enterprise[0].certData.name
+          this.form.enterprise_name = v.data.data.enterprise[0].certData.name
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -621,6 +647,67 @@ export default {
           setTimeout(() => {
             if (localStorage.getItem('done')) {
               that.userinfo()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
+    getprodetail() {
+      this.loading = true
+      this.partner = []
+      this.addressb = []
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      data1.id = this.$route.query.id
+      data2 = datawork(data1)
+      this.$api.get_pro_detail(data2).then((v) => {
+        console.log(v)
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.form = deepCopy(v.data.data.data)
+          this.form.partner_name = []
+          this.form.address = []
+          this.partner.push(v.data.data.data.partner_name)
+          this.addressb.push(v.data.data.data.address)
+          this.form.partner_name = this.partner
+          this.form.address = this.addressb
+          this.form.formsType = this.bigOn
+          this.form.category_id = this.smallOn
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.getprodetail()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.getprodetail()
             }
           }, 1000)
         } else {
@@ -692,13 +779,13 @@ export default {
       }
       data1.formsType = this.bigOn
       // 类别id, 先固定写1
-      data1.category_id = 1
+      data1.category_id = this.smallOn
       // 双重限定，就是保证除空字符之外的字符串，空字符串传输，容易出现“签名错误”的错误
       if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       }
-      if (this.form.enterprsie_name && this.form.enterprsie_name.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.enterprsie_name = this.form.enterprsie_name.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.enterprise_name && this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.starttime) {
         data1.starttime = this.handlestarttime(this.form.starttime)
@@ -709,8 +796,8 @@ export default {
       if (this.form.self_amount && this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.self_amount = this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
-      if (this.form.county_amount && this.form.county_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.county_amount = this.form.county_amount.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.country_amount && this.form.country_amount.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.country_amount = this.form.country_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.form.current_amount && this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
@@ -790,8 +877,12 @@ export default {
             message: '保存成功'
           })
           // 保存成功之后，返回的id要全局保存，为了在下一个页面使用
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          } else {
+            console.log('不存在id')
+          }
           setTimeout(() => {
             this.$store.commit('SET_FORM', this.form)
             localStorage.setItem('form', JSON.stringify(this.form))           
@@ -851,13 +942,13 @@ export default {
         data1.id = this.$route.query.id
       }
       data1.formsType = this.bigOn
-      data1.category_id = 1
+      data1.category_id = this.smallOn
       data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
-      data1.enterprsie_name = this.form.enterprsie_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
       data1.starttime = this.handlestarttime(this.form.starttime)
       data1.endtime = this.handlendtime(this.form.endtime)
       data1.self_amount = this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')
-      data1.county_amount = this.form.county_amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.country_amount = this.form.country_amount.replace(/(^\s*)|(\s*$)/g, '')
       data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
       data1.other_amount = this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')
       data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
@@ -890,13 +981,19 @@ export default {
             type: 'success',
             message: '操作成功，即将进入下一步'
           })
-          localStorage.setItem('applyid', v.data.data)
-          this.$store.commit('SET_APPLY_ID', v.data.data)
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
           setTimeout(() => {
             this.$store.commit('SET_FORM', this.form)
             localStorage.setItem('form', JSON.stringify(this.form))
-            this.$router.push('/creating/step1')         
+            that.$router.push({
+              path: '/creating/step1',
+              query: { id: this.$route.query.id }
+            })  
           }, 1000)
+          console.log(this.form)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -988,31 +1085,58 @@ export default {
     },
     tostep1() {
       // 每次点击都要保存form数据
-      this.$router.push('/creating/step1')
+      this.$router.push({
+        path: '/creating/step1',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep2() {
-      this.$router.push('/creating/step2')
+      this.$router.push({
+        path: '/creating/step2',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep3() {
-      this.$router.push('/creating/step3')
+      this.$router.push({
+        path: '/creating/step3',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep4() {
-      this.$router.push('/creating/step4')
+      this.$router.push({
+        path: '/creating/step4',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep5() {
-      this.$router.push('/creating/step5')
+      this.$router.push({
+        path: '/creating/step5',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep6() {
-      this.$router.push('/creating/step6')
+      this.$router.push({
+        path: '/creating/step6',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep7() {
-      this.$router.push('/creating/step7')
+      this.$router.push({
+        path: '/creating/step7',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep8() {
-      this.$router.push('/creating/step8')
+      this.$router.push({
+        path: '/creating/step8',
+        query: { id: this.$route.query.id }
+      })
     },
     tostep9() {
-      this.$router.push('/creating/step9')
+      this.$router.push({
+        path: '/creating/step9',
+        query: { id: this.$route.query.id }
+      })
     }
   }
 }
@@ -1036,6 +1160,9 @@ export default {
     border-radius 20px
     margin-right 40px
     text-align center
+    overflow hidden
+    white-space nowrap
+    text-overflow ellipsis
     cursor pointer
   >div:hover
     background #f7f7f7
