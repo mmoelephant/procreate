@@ -806,8 +806,9 @@ export default {
       if (this.form.foreign_amount && this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
-      if (this.form.amount && this.form.amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.amount = this.form.amount.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.sum && this.sum.replace(/(^\s*)|(\s*$)/g, '')) {
+        this.form.amount = this.sum
+        data1.amount = this.sum.replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.partner && this.partner[0]) {
         // 如果存在值，就赋值给form中对应的数据
@@ -946,7 +947,7 @@ export default {
       data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
       data1.other_amount = this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')
       data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
-      data1.amount = this.form.amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.amount = this.sum.replace(/(^\s*)|(\s*$)/g, '')
       data1.partner_name = JSON.stringify(this.partner)
       data1.address = JSON.stringify(this.addressb)
       data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
