@@ -24,11 +24,11 @@ module.exports = {
   buildModules: ['@nuxtjs/eslint-module'],
   modules: ['@nuxtjs/axios'],
   axios: {},
-  router: {
-    scrollBehavior(to, from, savedPosition) {
-      return { x: 0, y: 0 }
-    }
-  },
+  // router: {
+  //   scrollBehavior(to, from, savedPosition) {
+  //     return { x: 0, y: 0 }
+  //   }
+  // },
   build: {
     transpile: [/^element-ui/],
     extend(config, ctx) {}
