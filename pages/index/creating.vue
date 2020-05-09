@@ -439,7 +439,7 @@ export default {
       smalltitle: '',
       form: {
         formsType: 1,
-        category_id: 1,
+        category_id: '',
         partner_name: [''],
         address: ['']
       },
@@ -478,7 +478,8 @@ export default {
           this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
           this.partner = deepCopy(this.form.partner_name)
           this.addressb = deepCopy(this.form.address)
-        } else if (this.$route.query.id) {
+        }
+        if (this.$route.query.id) {
           this.getprodetail()
         }
         this.form.formsType = this.bigOn
@@ -504,7 +505,8 @@ export default {
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
       this.partner = deepCopy(this.form.partner_name)
       this.addressb = deepCopy(this.form.address)
-    } else if (this.$route.query.id) {
+    }
+    if (this.$route.query.id) {
       this.getprodetail()
     }
     this.form.formsType = this.bigOn
@@ -539,8 +541,6 @@ export default {
       // this.loading = true
       this.bigcates = []
       this.smallcates = []
-      this.partner = []
-      this.addressb = []
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
@@ -567,22 +567,6 @@ export default {
           this.loading = false
           this.bigcates = v.data.data.typeData
           this.smallcates = v.data.data.categoryData
-          if (!this.$route.query.id && !localStorage.getItem('applyid')) {
-            if (v.data.data.formsData && v.data.data.formsData != {}) {
-              this.form = deepCopy(v.data.data.formsData)
-              this.form.partner_name = []
-              this.form.address = []
-              this.partner.push(v.data.data.formsData.partner_name)
-              this.addressb.push(v.data.data.formsData.address)
-              this.form.partner_name = this.partner
-              this.form.address = this.addressb
-            } else {
-              this.partner = ['']
-              this.addressb = ['']
-            }
-            this.form.formsType = this.bigOn
-            this.form.category_id = this.smallOn
-          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -682,13 +666,22 @@ export default {
       data1.id = this.$route.query.id
       data2 = datawork(data1)
       this.$api.get_pro_detail(data2).then((v) => {
+        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.form = deepCopy(v.data.data.data)
           this.form.partner_name = []
           this.form.address = []
-          this.partner.push(v.data.data.data.partner_name)
-          this.addressb.push(v.data.data.data.address)
+          if (v.data.data.data.partner_name && v.data.data.data.partner_name.length > 0) {
+            this.partner.push(v.data.data.data.partner_name)
+          } else {
+            this.partner = ['']
+          }
+          if (v.data.data.data.address && v.data.data.data.address.length > 0) {
+            this.addressb.push(v.data.data.data.address)
+          } else {
+            this.addressb = ['']
+          }
           this.form.partner_name = this.partner
           this.form.address = this.addressb
           this.form.formsType = this.bigOn
@@ -882,6 +875,7 @@ export default {
             this.$store.commit('SET_FORM', this.form)
             localStorage.setItem('form', JSON.stringify(this.form))           
           }, 1000)
+          console.log(this.partner)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
