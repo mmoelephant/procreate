@@ -22,7 +22,7 @@ module.exports = {
     { src: '~/plugins/vue-html-pdf.js', ssr: false }
   ],
   buildModules: ['@nuxtjs/eslint-module'],
-  modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
+  modules: ['@nuxtjs/axios'],
   axios: {},
   router: {
     scrollBehavior(to, from, savedPosition) {
