@@ -60,6 +60,19 @@
         </div>
       </div>
     </div>
+    <div>
+      <div class="footerinfo">
+        <span>主管单位：云南省住房和城乡建设厅</span>
+        <span>联系电话：0871-64320642</span>
+        <span class="filingsys" @click="tofilesys">
+          备案号：滇ICP备18001273号
+        </span>
+      </div>
+      <div class="footerinfo">
+        <span>技术支持：昆明行列科技有限公司</span>
+        <span>技术联系电话：13095322247</span>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -302,3 +315,15 @@ export default {
   }
 }
 </script>
+<style lang="stylus" scoped>
+.footerinfo
+  margin-top 40px
+  text-align center
+  color #f3f3f3 !important
+.footerinfo:last-of-type
+  margin-top 10px
+.filingsys
+  cursor pointer
+.filingsys:hover
+    color rgba(0,102,170,1)
+</style>

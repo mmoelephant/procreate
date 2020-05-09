@@ -108,7 +108,7 @@
       </div>
     </div>
     <h1 v-if="route.path != '/creating'" class="pagetitle central">
-      {{ this.bigtitle ? this.bigtitle : '-' }}
+      {{ bigtitle ? bigtitle : '-' }}
     </h1>
     <div v-if="route.path == '/creating'">
       <div class="form">
