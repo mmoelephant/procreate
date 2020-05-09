@@ -71,7 +71,7 @@ export function formValidate2(data, that) {
       message: '请输入外方金额'
     })
     return false
-  } else if (!this.sum || !this.sum.replace(/(^\s*)|(\s*$)/g, '')) {
+  } else if (!that.sum || !that.sum.replace(/(^\s*)|(\s*$)/g, '')) {
     that.$message({
       type: 'error',
       message: '请输入总金额'
