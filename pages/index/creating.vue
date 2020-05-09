@@ -438,7 +438,7 @@ export default {
           name: '软科学研究项目'
         }
       ],
-      smallOn: 1,
+      smallOn: '',
       smallcates: [],
       bigtitle: '',
       smalltitle: '',
