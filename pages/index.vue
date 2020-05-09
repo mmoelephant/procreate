@@ -63,7 +63,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.get_authen_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           if (v.data.data) {
@@ -125,7 +124,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.user_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           if (v.data.data.enterprise && v.data.data.enterprise[0]) {
@@ -176,6 +174,5 @@ export default {
 .indexright
   width calc(100% - 260px)
   padding 20px 80px 20px 20px
-  // border 1px red solid
   margin-left 260px
 </style>

@@ -56,9 +56,7 @@ export default {
     }
   },
   watch: {
-    route(val) {
-      console.log(val)
-    }
+    route(val) {}
   },
   mounted() {
     this.ready()
@@ -127,7 +125,6 @@ export default {
         new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
       data2 = datawork(data1)
       this.$api.get_client(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           localStorage.setItem('clientid', v.data.data.client_id)
@@ -404,11 +401,6 @@ export default {
   border: 1px solid rgba(0, 0, 0, 1);
   border-collapse: collapse;
 }
-.table.table1 {
-  /* min-height: 900px; */
-  margin-top: 60px;
-  transform: rotate(90deg);
-}
 .padding20 {
   padding: 20px;
 }
@@ -440,7 +432,7 @@ export default {
   border: 1px solid rgba(0, 0, 0, 1);
 }
 .tdHeight {
-  height: 80px;
+  height: 100px;
 }
 /* page9二级标题 */
 .font28 {

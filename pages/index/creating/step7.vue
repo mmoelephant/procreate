@@ -258,7 +258,6 @@ export default {
       JSON.parse(localStorage.getItem('form')) &&
       JSON.parse(localStorage.getItem('form')) != {}
     ) {
-      console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
     // 如果存在主要研究人员信息，就赋值给人员列表worker_json
@@ -320,7 +319,6 @@ export default {
         data1.worker_json = JSON.stringify(this.worker_json)
       }
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -330,7 +328,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -410,7 +407,6 @@ export default {
       // data1.category_id = 1
       data1.worker_json = JSON.stringify(this.worker_json)
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -421,7 +417,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -533,7 +528,6 @@ export default {
       )
       this.$store.commit('SET_WORKER', this.worker_json)
       localStorage.setItem('worker', JSON.stringify(this.worker_json))
-      console.log(this.worker_json)
     },
     edit(val, key) {
       this.dialogshow = true

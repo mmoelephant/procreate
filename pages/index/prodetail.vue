@@ -244,7 +244,6 @@ export default {
       data1.id = val
       data2 = datawork(data1)
       this.$api.get_pro_detail(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.detailinfo = v.data.data.data

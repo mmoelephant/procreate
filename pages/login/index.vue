@@ -348,7 +348,6 @@ export default {
       data2 = datawork(data1)
       this.$api.login(data2).then((v) => {
         if (v.data.errcode === 0) {
-          console.log(v)
           this.loading = false
           this.$message({
             type: 'success',
@@ -413,7 +412,6 @@ export default {
       data2 = datawork(data1)
       this.$api.login_code(data2).then((v) => {
         if (v.data.errcode === 0) {
-          console.log(v)
           this.loading = false
           this.$message({
             type: 'success',

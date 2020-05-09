@@ -37,7 +37,7 @@
             :class="smallOn == item.id ? 'smallon' : ''"
             @click="togglesmall(item)"
           >
-            软科学研究项目
+            {{ item.name ? item.name : '-' }}
           </div>
         </div>
       </div>
@@ -536,7 +536,7 @@ export default {
       }, 1000)
     },
     beforeapply() {
-      this.loading = true
+      // this.loading = true
       this.bigcates = []
       this.smallcates = []
       this.partner = []
@@ -563,7 +563,6 @@ export default {
       data1.type = this.bigOn
       data2 = datawork(data1)
       this.$api.handle_before(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.bigcates = v.data.data.typeData
@@ -584,7 +583,6 @@ export default {
             this.form.formsType = this.bigOn
             this.form.category_id = this.smallOn
           }
-          console.log(this.partner)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -684,7 +682,6 @@ export default {
       data1.id = this.$route.query.id
       data2 = datawork(data1)
       this.$api.get_pro_detail(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.form = deepCopy(v.data.data.data)
@@ -739,6 +736,7 @@ export default {
       // 首先先将过渡数据赋值给传输数据,然后转化时间数据
       data.address = deepCopy(this.addressb)
       data.partner_name = deepCopy(this.partner)
+      data.formsType = 1
       for (const i in data) {
         if (i == 'starttime') {
           data.starttime = this.handlestarttime(data[i])
@@ -777,7 +775,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.formsType = this.bigOn
+      data1.formsType = 1
       // 类别id, 先固定写1
       data1.category_id = this.smallOn
       // 双重限定，就是保证除空字符之外的字符串，空字符串传输，容易出现“签名错误”的错误
@@ -865,9 +863,7 @@ export default {
         data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
       }
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           // 在这里首先对form中的partner_name和address进行处理
@@ -880,8 +876,6 @@ export default {
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
-          } else {
-            console.log('不存在id')
           }
           setTimeout(() => {
             this.$store.commit('SET_FORM', this.form)
@@ -941,7 +935,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.formsType = this.bigOn
+      data1.formsType = 1
       data1.category_id = this.smallOn
       data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
@@ -971,9 +965,7 @@ export default {
       data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
       data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.handleform(this.form)
@@ -993,7 +985,6 @@ export default {
               query: { id: this.$route.query.id }
             })  
           }, 1000)
-          console.log(this.form)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -1173,8 +1164,9 @@ export default {
   div.smallon
     background #50A7FF
 .smallcate
-  height 32px
+  min-height 32px
   border none
+  // border 1px red solid
   padding 0
   >div
     min-width 120px

@@ -176,7 +176,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.user_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.username = v.data.data.username
@@ -250,7 +249,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.change_psw(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.$message({
@@ -396,7 +394,6 @@ export default {
         }
         data2 = datawork(data1)
         this.$api.verify_phone(data2).then((v) => {
-          console.log(v)
           if (v.data.errcode === 0) {
             this.loading = false
             this.$message({
@@ -443,7 +440,6 @@ export default {
         }
         data2 = datawork(data1)
         this.$api.bind_phone(data2).then((v) => {
-          console.log(v)
           if (v.data.errcode === 0) {
             this.loading = false
             this.$message({

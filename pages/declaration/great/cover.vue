@@ -1,12 +1,11 @@
 <template>
   <div v-loading.fullscreen="loading">
-    <div class="dwlbtn" @click="getPdf('filename', 'filecontent')">
+    <div class="dwlbtn" @click="getPdf(filetitle, 'filecontent')">
       下载申报书
     </div>
     <div id="filecontent">
       <div class="panel size">
         <div id="qrcode" class="maCover maCoverStyle"></div>
-        <!-- <img src="../../../assets/img/ma.png" class="maCover maCoverStyle" /> -->
         <div class="number">
           项目编号:{{ detailinfo.sn ? detailinfo.sn : '-' }}
         </div>
@@ -71,26 +70,6 @@
               <div class="bodyTitle">（二）选题依据</div>
               <div class="bodyCont">
                 {{ detailinfo.a_yj ? detailinfo.a_yj : '-' }}
-                这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多
-                字这里这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
-                这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多
-                字这里这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
-                这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多
-                字这里这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
-                这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多
-                字这里这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多字这里
-                这里还有五把多字这里这里还有五把多字这里这里
-                还有五把多字这里这里还有五把多字这里这里还有五把多
-                字这里这里还有五把多字这里这里还有五把多字这里这里还有五把多字这里这里还有五把多字这里
-                这
               </div>
             </td>
           </tr>
@@ -112,7 +91,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">二、国内外研究现状和趋势</div>
@@ -161,7 +139,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">三、研究目标和预期效果</div>
@@ -200,7 +177,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">四、主要研究内容</div>
@@ -239,7 +215,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">五、研究思路、方法和计划进度</div>
@@ -278,7 +253,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">六、工作基础和科研保障条件</div>
@@ -327,7 +301,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">
@@ -349,7 +322,47 @@
               </th>
             </tr>
           </thead>
-          <tr>
+          <tr
+            v-for="(item, index) in detailinfo.worker_json"
+            v-show="detailinfo.worker_json"
+            :key="index"
+          >
+            <td class="tableFont tdHeight">
+              {{ item.name ? item.name : '-' }}
+            </td>
+            <td class="tableFont tdHeight">
+              {{
+                !item.sex
+                  ? '-'
+                  : item.sex == 1
+                  ? '男'
+                  : item.sex == 2
+                  ? '女'
+                  : '-'
+              }}
+            </td>
+            <td class="tableFont tdHeight">
+              {{ item.birthday ? item.birthday : '-' }}
+            </td>
+            <td class="tableFont tdHeight">
+              {{ item.job ? item.job : '-' }}
+            </td>
+            <td class="tableFont tdHeight">
+              {{ item.study_major ? item.study_major : '-' }}
+            </td>
+            <td class="tableFont tdHeight">
+              {{ item.now_major ? item.now_major : '-' }}
+            </td>
+            <td class="tableFont tdHeight">
+              {{ item.company ? item.company : '-' }}
+            </td>
+            <td class="tableFont tdHeight">
+              {{ item.task ? item.task : '-' }}
+            </td>
+          </tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 0"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -359,7 +372,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <!-- <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 1"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -369,7 +384,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 2"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -379,7 +396,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 3"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -389,7 +408,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 4"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -399,7 +420,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 5"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -409,7 +432,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 6"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -419,7 +444,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 7"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -429,7 +456,9 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
+          <tr
+            v-if="detailinfo.worker_json && detailinfo.worker_json.length <= 8"
+          >
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
@@ -439,16 +468,6 @@
             <td class="tableFont tdHeight"></td>
             <td class="tableFont tdHeight"></td>
           </tr>
-          <tr>
-            <td class="tableFont tdHeight"></td>
-            <td class="tableFont tdHeight"></td>
-            <td class="tableFont tdHeight"></td>
-            <td class="tableFont tdHeight"></td>
-            <td class="tableFont tdHeight"></td>
-            <td class="tableFont tdHeight"></td>
-            <td class="tableFont tdHeight"></td>
-            <td class="tableFont tdHeight"></td>
-          </tr> -->
         </table>
 
         <!-- <div class="pageCont">
@@ -457,7 +476,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:50px;">
@@ -540,7 +558,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">
@@ -602,42 +619,69 @@
           </thead>
         </table>
         <div class="font28" style="margin-top:33px;">（二）合作单位</div>
-        <table class="table">
+        <table
+          v-for="(item, index) in detailinfo.partner_json"
+          v-show="detailinfo.partner_json"
+          :key="index"
+          class="table"
+        >
           <thead>
             <tr>
-              <th class="tableFont" style="width:178px;">合作单位1</th>
-              <th class="tableFont" colspan="3"></th>
-            </tr>
-            <tr>
-              <th class="tableFont" style="width:178px;">通讯地址</th>
-              <th class="tableFont" colspan="3"></th>
+              <th class="tableFont" style="width:178px;">合作单位</th>
+              <th class="tableFont" colspan="3">
+                {{ item.name ? item.name : '-' }}
+              </th>
             </tr>
             <tr>
               <th class="tableFont" style="width:178px;">负责人</th>
-              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_name ? item.leader_name : '-' }}
+              </th>
               <th class="tableFont" style="width:178px;">电话(手机）</th>
-              <th class="tableFont" style="width:380px;"></th>
-            </tr>
-            <tr>
-              <th class="tableFont" style="width:178px;">联系人</th>
-              <th class="tableFont" style="width:380px;"></th>
-              <th class="tableFont" style="width:178px;">电话(手机）</th>
-              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_mobile ? item.leader_mobile : '-' }}
+              </th>
             </tr>
             <tr>
               <th class="tableFont" style="width:178px;">电子邮箱</th>
-              <th class="tableFont" colspan="3"></th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_email ? item.leader_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_address ? item.leader_address : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">经办人</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_name ? item.link_name : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_mobile ? item.link_mobile : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_email ? item.link_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_address ? item.link_address : '-' }}
+              </th>
             </tr>
           </thead>
         </table>
-        <table class="table" style="margin-top:50px;">
+        <table
+          v-if="detailinfo.partner_json && detailinfo.partner_json.length <= 0"
+          class="table"
+          style="margin-top: 50px"
+        >
           <thead>
             <tr>
-              <th class="tableFont" style="width:178px;">合作单位2</th>
-              <th class="tableFont" colspan="3"></th>
-            </tr>
-            <tr>
-              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:178px;">合作单位</th>
               <th class="tableFont" colspan="3"></th>
             </tr>
             <tr>
@@ -647,14 +691,58 @@
               <th class="tableFont" style="width:380px;"></th>
             </tr>
             <tr>
-              <th class="tableFont" style="width:178px;">联系人</th>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;"></th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">经办人</th>
               <th class="tableFont" style="width:380px;"></th>
               <th class="tableFont" style="width:178px;">电话(手机）</th>
               <th class="tableFont" style="width:380px;"></th>
             </tr>
             <tr>
               <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;"></th>
+            </tr>
+          </thead>
+        </table>
+        <table
+          v-if="detailinfo.partner_json && detailinfo.partner_json.length <= 1"
+          class="table"
+          style="margin-top: 50px"
+        >
+          <thead>
+            <tr>
+              <th class="tableFont" style="width:178px;">合作单位</th>
               <th class="tableFont" colspan="3"></th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">负责人</th>
+              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;"></th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;"></th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">经办人</th>
+              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;"></th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;"></th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;"></th>
             </tr>
           </thead>
         </table>
@@ -664,7 +752,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:58px;">
@@ -728,7 +815,6 @@
           <div class="grayLine"></div>
         </div> -->
         <svg id="barcode" class="ma maPage"></svg>
-        <!-- <img src="http://placehold.it/300x60" class="ma maPage" /> -->
       </div>
     </div>
   </div>
@@ -737,16 +823,19 @@
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
-const JsBarcode = require('jsbarcode')
 export default {
   data() {
     return {
       detailinfo: {},
       qrcodeObj: {},
+      jsbarcode: {},
+      filetitle: '',
       loading: false
     }
   },
   mounted() {
+    this.qrcodeObj = {}
+    this.jsbarcode = {}
     /*eslint-disable*/
     if (
       !localStorage.getItem('userid') ||
@@ -756,11 +845,11 @@ export default {
       return
     }
     if (this.$route.query.id) {
-      this.getDetail()
+      this.getprodetail()
     }
   },
   methods: {
-    getDetail() {
+    getprodetail() {
       this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
@@ -784,10 +873,10 @@ export default {
       data1.id = this.$route.query.id
       data2 = datawork(data1)
       this.$api.get_pro_detail(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.detailinfo = v.data.data.data
+          this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
           this.qrcodeObj = new QRCode('qrcode', {
             text: v.data.data.data.two_code,    
             width: 150,
@@ -796,7 +885,7 @@ export default {
             colorLight : '#fff',
             correctLevel : QRCode.CorrectLevel.H
           })
-          JsBarcode("#barcode", v.data.data.data.one_code, {
+          this.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
             // format: "pharmacode",
             lineColor: "#000",
             width: 4,
@@ -807,14 +896,14 @@ export default {
           getToken(commondata, this)
           setTimeout(() => {
             if (localStorage.getItem('tokenDone')) {
-              that.getDetail()
+              that.getprodetail()
             }
           }, 1000)
         } else if (v.data.errcode === 1103) {
           getClientId(commondata, this)
           setTimeout(() => {
             if (localStorage.getItem('done')) {
-              that.getDetail()
+              that.getprodetail()
             }
           }, 1000)
         } else {
@@ -826,11 +915,39 @@ export default {
         }
       })
     }
+    // uploadwl() {
+    //   const commondata = JSON.parse(localStorage.getItem('commondata'))
+    //   const data1 = {}
+    //   let data2 = {}
+    //   const that = this
+    //   for (const i in commondata) {
+    //     data1[i] = commondata[i]
+    //   }
+    //   if (localStorage.getItem('userid')) {
+    //     data1.user_id = localStorage.getItem('userid')
+    //   }
+    //   data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+    //   data1.nonce_str =
+    //     new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+    //   if (localStorage.getItem('clientid')) {
+    //     data1.client_id = localStorage.getItem('clientid')
+    //   }
+    //   if (localStorage.getItem('accesstoken')) {
+    //     data1.access_token = localStorage.getItem('accesstoken')
+    //   }
+    //   data2 = datawork(data1)
+    //   this.$api.upload_pro_file(data2).then((v) => {
+    //     console.log(v)
+    //   }
+    // }
   },
   head:{
     script: [
       {
         src: '/qrcode.min.js'
+      },
+      {
+        src: '/JsBarcode.all.js'
       }
     ]  
 }
@@ -852,8 +969,7 @@ export default {
   padding-right: 95px;
   padding-left: 95px;
   padding-top: 60px;
-  padding-bottom: 60px;
-  border: 1px red solid;
+  padding-bottom: 60px
 }
 .lines {
   margin-right: 10px;
@@ -877,5 +993,14 @@ export default {
 }
 .dwlbtn {
   position: absolute;
+  /* top: 20px;
+  left: 30px; */
+  width: 100px;
+  height: 36px;
+  text-align: center;
+  line-height: 36px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
 }
 </style>

@@ -384,10 +384,8 @@ export default {
       JSON.parse(localStorage.getItem('form')) &&
       JSON.parse(localStorage.getItem('form')) != {}
     ) {
-      console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
-    // 如果存在研究合作单位，就赋值给人员列表partner_json
     if (
       localStorage.getItem('partner') &&
       JSON.parse(localStorage.getItem('partner')) &&
@@ -422,7 +420,7 @@ export default {
       }
       for (const i in this.form) {
         // 合作单位和项目所在地是转为字符串
-        if (i == 'address' || i == 'partner_name') {
+        if (i == 'address' || i == 'partner_name' || i == 'worker_json') {
           data1[i] = JSON.stringify(this.form[i])
         } else {
           // 给表格中的每一项都去处空格
@@ -445,7 +443,6 @@ export default {
         data1.partner_json = JSON.stringify(this.partner_json)
       }
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -455,7 +452,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -516,7 +512,7 @@ export default {
       }
       for (const i in this.form) {
         // 合作单位和项目所在地是转为字符串
-        if (i == 'address' || i == 'partner_name') {
+        if (i == 'address' || i == 'partner_name' || i == 'worker_json') {
           data1[i] = JSON.stringify(this.form[i])
         } else {
           // 给表格中的每一项都去处空格
@@ -536,7 +532,6 @@ export default {
       // data1.category_id = 1
       data1.partner_json = JSON.stringify(this.partner_json)
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -547,7 +542,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -657,7 +651,6 @@ export default {
       )
       this.$store.commit('SET_PARTNER', this.partner_json)
       localStorage.setItem('partner', JSON.stringify(this.partner_json))
-      console.log(this.partner_json)
     },
     edit(val, key) {
       this.dialogshow = true

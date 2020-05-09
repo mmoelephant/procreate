@@ -82,7 +82,6 @@ export default {
       JSON.parse(localStorage.getItem('form')) &&
       JSON.parse(localStorage.getItem('form')) != {}
     ) {
-      console.log(JSON.parse(localStorage.getItem('form')))
       // 这一步操作可能会导致vuex报错，但是我们设置为非严格模式就可以了
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
@@ -143,7 +142,6 @@ export default {
         data1.a_yy = this.form.a_yy.replace(/(^\s*)|(\s*$)/g, '')
       }
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -153,7 +151,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -184,9 +181,7 @@ export default {
     next() {
       // const that = this
       if (!formValidate21(this.form, this)) return
-      console.log('表单检验完成')
       if (!formValidate3(this.form, this)) return
-      console.log('这里的表单也是检验完成')
       this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
@@ -231,7 +226,6 @@ export default {
       data1.a_yy = this.form.a_yy.replace(/(^\s*)|(\s*$)/g, '')
 
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -242,7 +236,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)

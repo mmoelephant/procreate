@@ -356,7 +356,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.user_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           if (v.data.data.enterprise && v.data.data.enterprise[0]) {
@@ -420,7 +419,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.get_authen_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           if (v.data.data) {
@@ -499,7 +497,6 @@ export default {
       data2.file_single = this.file1[0]
       const formdata = objectToFormdata(data2)
       this.$api.upload_file(formdata).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.fileLen1++
           this.files1.push(v.data.data)
@@ -588,7 +585,6 @@ export default {
       data2.file_single = this.file2[0]
       const formdata = objectToFormdata(data2)
       this.$api.upload_file(formdata).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.fileLen2++
           this.files2.push(v.data.data)
@@ -670,7 +666,6 @@ export default {
       data2.file_single = this.file3[0]
       const formdata = objectToFormdata(data2)
       this.$api.upload_file(formdata).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.fileLen3++
           this.files3.push(v.data.data)
@@ -752,7 +747,6 @@ export default {
       data1.tel = this.form.tel
       data2 = datawork(data1)
       this.$api.enterprise_authen(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.$message({
@@ -821,7 +815,6 @@ export default {
       data1.tel = this.form.tel
       data2 = datawork(data1)
       this.$api.edit_authen_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.$message({

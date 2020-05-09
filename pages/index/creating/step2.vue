@@ -88,7 +88,6 @@ export default {
       JSON.parse(localStorage.getItem('form')) &&
       JSON.parse(localStorage.getItem('form')) != {}
     ) {
-      console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
   },
@@ -147,7 +146,6 @@ export default {
         data1.b_qs = this.form.b_qs.replace(/(^\s*)|(\s*$)/g, '')
       }
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -157,7 +155,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -188,9 +185,7 @@ export default {
     next() {
       if (!formValidate21(this.form, this)) return
       if (!formValidate3(this.form, this)) return
-      console.log('方法三检验万恒')
       if (!formValidate4(this.form, this)) return
-      console.log('已完成了疏浚减压')
       this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
@@ -224,7 +219,6 @@ export default {
       if (!this.$route.query.id) {
         // 保存生成的id
         if (localStorage.getItem('applyid')) {
-          console.log(localStorage.getItem('applyid'))
           data1.id = localStorage.getItem('applyid')
         }
       } else {
@@ -236,7 +230,6 @@ export default {
       data1.b_wt = this.form.b_wt.replace(/(^\s*)|(\s*$)/g, '')
       data1.b_qs = this.form.b_qs.replace(/(^\s*)|(\s*$)/g, '')
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -247,7 +240,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)

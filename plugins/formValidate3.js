@@ -1,5 +1,4 @@
 export function formValidate3(data, that) {
-  console.log('数据来到了这里')
   if (!data.a_md || !data.a_md.replace(/(^\s*)|(\s*$)/g, '')) {
     that.$message({
       type: 'error',

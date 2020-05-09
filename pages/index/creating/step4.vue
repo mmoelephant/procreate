@@ -78,7 +78,6 @@ export default {
       JSON.parse(localStorage.getItem('form')) &&
       JSON.parse(localStorage.getItem('form')) != {}
     ) {
-      console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
   },
@@ -135,7 +134,6 @@ export default {
         data1.d_zb = this.form.d_zb.replace(/(^\s*)|(\s*$)/g, '')
       }
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -145,7 +143,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -223,7 +220,6 @@ export default {
       data1.d_cx = this.form.d_cx.replace(/(^\s*)|(\s*$)/g, '')
       data1.d_zb = this.form.d_zb.replace(/(^\s*)|(\s*$)/g, '')
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -234,7 +230,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)

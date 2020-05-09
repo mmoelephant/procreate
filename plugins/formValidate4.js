@@ -1,5 +1,4 @@
 export function formValidate4(data, that) {
-  console.log('来到了方法4')
   if (!data.b_xz || !data.b_xz.replace(/(^\s*)|(\s*$)/g, '')) {
     that.$message({
       type: 'error',
@@ -25,7 +24,6 @@ export function formValidate4(data, that) {
     })
     return false
   } else {
-    console.log('通过了方法4')
     return true
   }
 }

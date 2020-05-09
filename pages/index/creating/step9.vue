@@ -53,6 +53,40 @@
       <div @click="savemsg">保存</div>
       <div class="submitbtn" @click="next">提交并下载打印文件</div>
     </div>
+    <el-dialog
+      :visible.sync="tipshow"
+      title="提示"
+      :close-on-click-modal="false"
+      :lock-scroll="false"
+      :show-close="false"
+      width="600px"
+    >
+      <div class="tipbox">
+        <p class="tiptitle">
+          <i class="iconfont">&#xe616;</i>
+          项目立项申请提交成功
+        </p>
+        <p class="maintip">
+          请在线上资料审核通过后下载打印申报书以及附件（全部材料原件和复印件一式一份）并加盖申报单位和合作单位公章后送审初审单位
+        </p>
+        <div class="contactinfo">
+          <p class="c-title">送审地址</p>
+          <div class="c-info">
+            <div class="c-people">
+              <p>杨莉花&nbsp;&nbsp;15887247513</p>
+              <p>周一至周五&nbsp;&nbsp;9:00至17:30</p>
+            </div>
+            <div class="c-address">
+              云南省昆明市官渡区关上街道春城路巫家坝昭商大酒店7楼办公区
+            </div>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="cancel">取消</el-button> -->
+        <el-button type="primary" @click="toword">生成申报书</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -79,6 +113,7 @@ export default {
       fileLen1: 0,
       files1: [],
       Id: 0,
+      tipshow: false,
       loading: false
     }
   },
@@ -96,7 +131,6 @@ export default {
       JSON.parse(localStorage.getItem('form')) &&
       JSON.parse(localStorage.getItem('form')) != {}
     ) {
-      console.log(JSON.parse(localStorage.getItem('form')))
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
     if (this.form.files && this.form.files.length > 0) {
@@ -129,7 +163,7 @@ export default {
       }
       for (const i in this.form) {
         // 合作单位和项目所在地是转为字符串
-        if (i == 'address' || i == 'partner_name') {
+        if (i == 'address' || i == 'partner_name' || i == 'worker_json' || i == 'partner_json') {
           data1[i] = JSON.stringify(this.form[i])
         } else {
           // 给表格中的每一项都去处空格
@@ -152,7 +186,6 @@ export default {
         data1.files = JSON.stringify(this.files1)
       }
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
@@ -162,7 +195,6 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          console.log(this.form)
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -224,7 +256,7 @@ export default {
       }
       for (const i in this.form) {
         // 合作单位和项目所在地是转为字符串
-        if (i == 'address' || i == 'partner_name') {
+        if (i == 'address' || i == 'partner_name' || i == 'worker_json'  || i == 'partner_json') {
           data1[i] = JSON.stringify(this.form[i])
         } else {
           // 给表格中的每一项都去处空格
@@ -244,9 +276,7 @@ export default {
       // data1.category_id = 1
       data1.files = JSON.stringify(this.files1)
       data2 = datawork(data1)
-      console.log(data2)
       this.$api.commit_create(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.$message({
@@ -264,10 +294,10 @@ export default {
           localStorage.setItem('form', '')
           this.$store.commit('SET_APPLY_ID', '')
           localStorage.removeItem('applyid')
-          console.log(this.form)
-          setTimeout(() => {
-            that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
-          }, 1000);
+          this.tipshow = true
+          // setTimeout(() => {
+          //   that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
+          // }, 1000);
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -290,6 +320,13 @@ export default {
           })
         }
       })
+    },
+    toword() {
+      const that = this
+      this.tipshow = false
+      setTimeout(() => {
+        that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
+      }, 1000)
     },
     uploadchange1() {
       const inputDOM = this.$refs.upload1
@@ -332,7 +369,6 @@ export default {
       data2.file_single = this.file1[0]
       const formdata = objectToFormdata(data2)
       this.$api.upload_file(formdata).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.fileLen1++
           this.files1.push(v.data.data)
@@ -395,4 +431,44 @@ export default {
   border-bottom 1px #e6e6e6 solid
 .listItem:last-of-type
   border none
+.tipbox
+  display flex
+  flex-direction column
+  align-items center
+  color #333
+  i
+    margin-right 10px
+    font-size 30px
+    color #1D78D3
+.tiptitle
+  display flex
+  align-items center
+  justify-content center
+  width 100%
+  border-bottom 1px #e6e6e6 solid
+  font-size 18px
+  font-weight bold
+  line-height 50px
+.maintip
+  width 80%
+  margin 20px 0
+  text-align center
+  color red
+.contactinfo
+  max-width 90%
+  width 86%
+.c-info
+  width 100%
+  padding 10px 40px
+  border-top 1px #50A7FF solid
+  background rgba(80, 167, 255, .05)
+.c-title
+  margin-bottom 10px
+  font-weight bold
+.c-people
+  display flex
+  align-items center
+  justify-content space-between
+  width 100%
+  margin-bottom 10px
 </style>

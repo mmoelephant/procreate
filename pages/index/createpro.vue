@@ -211,7 +211,6 @@ export default {
       // data1.id = this.$route.query.id
       data2 = datawork(data1)
       this.$api.search_before(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.prostates = v.data.data.statusData
@@ -270,7 +269,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.get_pro_list(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.projects = v.data.data.data
@@ -363,7 +361,6 @@ export default {
           data1.id = Number(val)
           data2 = datawork(data1)
           this.$api.del_pro(data2).then((v) => {
-            console.log(v)
             if (v.data.errcode === 0) {
               this.loading = false
               this.$message({
