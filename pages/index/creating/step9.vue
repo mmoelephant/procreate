@@ -103,7 +103,7 @@ import { formValidate6 } from '../../../plugins/formValidate6'
 import { formValidate7 } from '../../../plugins/formValidate7'
 import { formValidate8 } from '../../../plugins/formValidate8'
 import { formValidate92 } from '../../../plugins/formValidate92'
-import { formValidate102 } from '../../../plugins/formValidate102'
+import { formValidate102 } from '../../../plugins/formvalidate102'
 import { formValidate11 } from '../../../plugins/formValidate11'
 export default {
   data() {
