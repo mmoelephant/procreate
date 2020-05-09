@@ -174,28 +174,28 @@ export default {
   },
   methods: {
     toggleuser(val) {
-      this.userwho = val
-      if (val === 2) {
-        this.types = [
-          {
-            id: 1,
-            name: '密码登录'
-          }
-        ]
-        this.logintype = 1
-      } else {
-        this.types = [
-          {
-            id: 1,
-            name: '密码登录'
-          },
-          {
-            id: 2,
-            name: '短信登录'
-          }
-        ]
-        this.logintype = 1
-      }
+      // this.userwho = val
+      // if (val === 2) {
+      //   this.types = [
+      //     {
+      //       id: 1,
+      //       name: '密码登录'
+      //     }
+      //   ]
+      //   this.logintype = 1
+      // } else {
+      //   this.types = [
+      //     {
+      //       id: 1,
+      //       name: '密码登录'
+      //     },
+      //     {
+      //       id: 2,
+      //       name: '短信登录'
+      //     }
+      //   ]
+      //   this.logintype = 1
+      // }
     },
     toggletype(val) {
       this.logintype = val
