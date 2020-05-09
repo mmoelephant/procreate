@@ -1,3 +1,3 @@
 import Vue from 'vue'
-import htmlToPdf from '~/plugins/htmlToPdf'
+import htmlToPdf from './htmltopdf'
 Vue.use(htmlToPdf)
