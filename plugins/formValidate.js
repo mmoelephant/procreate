@@ -14,7 +14,7 @@ export function formValidate(data, that) {
   } else if (!data.leaderman || !data.leaderman.replace(/(^\s*)|(\s*$)/g, '')) {
     that.$message({
       type: 'error',
-      message: '请输入法人姓名'
+      message: '请输入法定代表人'
     })
     return false
   } else if (!data.identity || data.identity.length !== 18) {

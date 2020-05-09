@@ -46,12 +46,12 @@
           />
         </div>
         <div class="formitem">
-          <div class="itemname">法人姓名</div>
+          <div class="itemname">法定代表人</div>
           <input
             v-model="form.leaderman"
             type="text"
             :disabled="disabled1"
-            placeholder="请输入法人姓名"
+            placeholder="请输入法定代表人姓名"
           />
         </div>
         <div class="formitem">

@@ -128,6 +128,7 @@
             <input
               v-model="form.enterprise_name"
               type="text"
+              :disabled="true"
               placeholder="请输入申报单位"
             />
           </div>
@@ -154,7 +155,11 @@
           <div class="formitem two">
             <div>
               <div class="itemname">自筹金额</div>
-              <input v-model="form.self_amount" type="text" />
+              <input
+                v-model="form.self_amount"
+                type="number"
+                placeholder="请输入金额，例如：200"
+              />
             </div>
             <div>
               <div class="itemname">国家拨/贷款</div>
@@ -799,9 +804,9 @@ export default {
       if (this.form.foreign_amount && this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
       }
-      if (this.sum && this.sum.replace(/(^\s*)|(\s*$)/g, '')) {
+      if (this.sum && this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')) {
         this.form.amount = this.sum
-        data1.amount = this.sum.replace(/(^\s*)|(\s*$)/g, '')
+        data1.amount = this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')
       }
       if (this.partner && this.partner[0]) {
         // 如果存在值，就赋值给form中对应的数据
@@ -941,7 +946,7 @@ export default {
       data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
       data1.other_amount = this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')
       data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
-      data1.amount = this.sum.replace(/(^\s*)|(\s*$)/g, '')
+      data1.amount = this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')
       data1.partner_name = JSON.stringify(this.partner)
       data1.address = JSON.stringify(this.addressb)
       data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')

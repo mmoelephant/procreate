@@ -319,6 +319,8 @@ export default {
     },
     tocreate() {
       this.$router.push('/creating')
+      this.$store.commit('SET_FORM', {})
+      localStorage.removeItem('form')
     },
     edit(val) {
       this.$router.push({ path: '/creating', query: { id: Number(val) } })
