@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-const test = 'http://kjadm.ynbzde.com/'
+const test = 'http://testk.dlzjzy.com/'
 // http://kjadm.ynbzde.com/
 // http://testk.dlzjzy.com/
 const service = axios.create({

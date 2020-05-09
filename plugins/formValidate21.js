@@ -26,52 +26,37 @@ export function formValidate21(data, that) {
       message: '请选择完成时间'
     })
     return false
-  } else if (
-    !data.self_amount ||
-    !data.self_amount.replace(/(^\s*)|(\s*$)/g, '')
-  ) {
+  } else if (!data.self_amount) {
     that.$message({
       type: 'error',
       message: '请输入自筹金额'
     })
     return false
-  } else if (
-    !data.country_amount ||
-    !data.country_amount.replace(/(^\s*)|(\s*$)/g, '')
-  ) {
+  } else if (!data.country_amount) {
     that.$message({
       type: 'error',
       message: '请输入国家拨/贷款'
     })
     return false
-  } else if (
-    !data.current_amount ||
-    !data.current_amount.replace(/(^\s*)|(\s*$)/g, '')
-  ) {
+  } else if (!data.current_amount) {
     that.$message({
       type: 'error',
       message: '请输入地方拨/贷款'
     })
     return false
-  } else if (
-    !data.other_amount ||
-    !data.other_amount.replace(/(^\s*)|(\s*$)/g, '')
-  ) {
+  } else if (!data.other_amount) {
     that.$message({
       type: 'error',
       message: '请输入其他金额'
     })
     return false
-  } else if (
-    !data.foreign_amount ||
-    !data.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
-  ) {
+  } else if (!data.foreign_amount) {
     that.$message({
       type: 'error',
       message: '请输入外方金额'
     })
     return false
-  } else if (!data.amount || !data.amount.replace(/(^\s*)|(\s*$)/g, '')) {
+  } else if (!data.amount) {
     that.$message({
       type: 'error',
       message: '请输入总金额'

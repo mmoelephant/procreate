@@ -108,7 +108,7 @@
       </div>
     </div>
     <h1 v-if="route.path != '/creating'" class="pagetitle central">
-      住房和城乡建设部软科学研究项目申报书(工程造价管理--软科学研究类)
+      {{ this.bigtitle ? this.bigtitle : '-' }}
     </h1>
     <div v-if="route.path == '/creating'">
       <div class="form">
@@ -424,24 +424,10 @@ export default {
   data() {
     return {
       bigOn: 1,
-      bigcates: [
-        {
-          id: 1,
-          name: '软科学研究项目'
-        },
-        {
-          id: 2,
-          name: '软科学研究项目'
-        },
-        {
-          id: 3,
-          name: '软科学研究项目'
-        }
-      ],
+      bigcates: [],
       smallOn: '',
       smallcates: [],
       bigtitle: '',
-      smalltitle: '',
       form: {
         formsType: 1,
         category_id: '',
@@ -487,8 +473,6 @@ export default {
         if (this.$route.query.id) {
           this.getprodetail()
         }
-        this.form.formsType = this.bigOn
-        this.form.category_id = this.smallOn
       }
     }
   },
@@ -510,25 +494,24 @@ export default {
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
       this.partner = deepCopy(this.form.partner_name)
       this.addressb = deepCopy(this.form.address)
+      // this.form.formsType = this.bigOn
+      // this.form.category_id = this.smallOn
     }
     if (this.$route.query.id) {
       this.getprodetail()
     }
-    this.form.formsType = this.bigOn
-    this.form.category_id = this.smallOn
   },
   methods: {
     togglebig(val) {
       this.bigOn = val.id
       this.smallOn = ''
-      this.bigtitle = val.name
       this.form.formsType = this.bigOn
       this.beforeapply()
     },
     togglesmall(val) {
       this.smallOn = val.id
-      this.smalltitle = val.name
       this.form.category_id = this.smallOn
+      this.beforeapply()
     },
     stepone() {
       // this.$router.push('/creating')
@@ -567,12 +550,16 @@ export default {
         data1.access_token = localStorage.getItem('accesstoken')
       }
       data1.type = this.bigOn
+      if (this.smallOn) {
+        data1.category_id = this.smallOn
+      }
       data2 = datawork(data1)
       this.$api.handle_before(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
           this.bigcates = v.data.data.typeData
           this.smallcates = v.data.data.categoryData
+          this.bigtitle = v.data.data.title
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -598,7 +585,7 @@ export default {
     },
     userinfo() {
       this.loading = true
-      this.user_info = {}
+      // this.user_info = {}
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
@@ -672,26 +659,46 @@ export default {
       data1.id = this.$route.query.id
       data2 = datawork(data1)
       this.$api.get_pro_detail(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.form = deepCopy(v.data.data.data)
           this.form.partner_name = []
           this.form.address = []
-          if (v.data.data.data.partner_name && v.data.data.data.partner_name.length > 0) {
+          if (
+            v.data.data.data.partner_name &&
+            v.data.data.data.partner_name.length > 0
+          ) {
             this.partner.push(v.data.data.data.partner_name)
           } else {
             this.partner = ['']
           }
-          if (v.data.data.data.address && v.data.data.data.address.length > 0) {
+          if (
+            v.data.data.data.address &&
+            v.data.data.data.address.length > 0
+          ) {
             this.addressb.push(v.data.data.data.address)
           } else {
             this.addressb = ['']
           }
           this.form.partner_name = this.partner
           this.form.address = this.addressb
-          this.form.formsType = this.bigOn
-          this.form.category_id = this.smallOn
+          for (const i in this.form) {
+            if (
+              i == 'self_amount' ||
+              i == 'country_amount' ||
+              i == 'current_amount' ||
+              i == 'other_amount' ||
+              i == 'foreign_amount'
+            ) {
+              this.form[i] = parseInt(this.form[i])
+            }
+          }
+          if (v.data.data.data.category_id && Number(v.data.data.data.category_id)) {
+            this.form.category_id = v.data.data.data.category_id
+            this.smallOn = v.data.data.data.category_id
+          } else {
+            this.form.category_id = 0
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -716,20 +723,48 @@ export default {
       })
     },
     handlestarttime(data) {
-      const timedata = new Date(data)
-      let year = timedata.getFullYear()
-      let month = timedata.getMonth()
-      let date = timedata.getDate()
-      this.starttime = year + '-' + (month + 1) + '-' + date
-      return year + '-' + (month + 1) + '-' + date
+      let timedata = {}
+      if (typeof data == 'string') {
+        if (data.slice(0, 1) != 0) {
+          timedata = new Date(data)
+          let year = timedata.getFullYear()
+          let month = timedata.getMonth()
+          let date = timedata.getDate()
+          this.starttime = year + '-' + (month + 1) + '-' + date
+          return year + '-' + (month + 1) + '-' + date
+        } {
+          return data
+        }
+      } else {
+        timedata = new Date(data)
+        let year = timedata.getFullYear()
+        let month = timedata.getMonth()
+        let date = timedata.getDate()
+        this.starttime = year + '-' + (month + 1) + '-' + date
+        return year + '-' + (month + 1) + '-' + date
+      }
     },
     handlendtime(data) {
-      const timedata = new Date(data)
-      let year = timedata.getFullYear()
-      let month = timedata.getMonth()
-      let date = timedata.getDate()
-      this.endtime = year + '-' + (month + 1) + '-' + date
-      return year + '-' + (month + 1) + '-' + date
+      let timedata = {}
+      if (typeof data == 'string') {
+        if (data.slice(0, 1) != 0) {
+          timedata = new Date(data)
+          let year = timedata.getFullYear()
+          let month = timedata.getMonth()
+          let date = timedata.getDate()
+          this.starttime = year + '-' + (month + 1) + '-' + date
+          return year + '-' + (month + 1) + '-' + date
+        } {
+          return data
+        }
+      } else {
+        timedata = new Date(data)
+        let year = timedata.getFullYear()
+        let month = timedata.getMonth()
+        let date = timedata.getDate()
+        this.starttime = year + '-' + (month + 1) + '-' + date
+        return year + '-' + (month + 1) + '-' + date
+      }
     },
     handleform(data) {
       // 首先先将过渡数据赋值给传输数据,然后转化时间数据
@@ -775,9 +810,8 @@ export default {
         data1.id = this.$route.query.id
       }
       data1.formsType = 1
-      // 类别id, 先固定写1
-      if (this.smallOn) {
-        data1.category_id = this.smallOn
+      if (this.form.category_id) {
+        data1.category_id = this.form.category_id
       }
       // 双重限定，就是保证除空字符之外的字符串，空字符串传输，容易出现“签名错误”的错误
       if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
@@ -792,20 +826,20 @@ export default {
       if (this.form.endtime) {
         data1.endtime = this.handlendtime(this.form.endtime)
       }
-      if (this.form.self_amount && this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.self_amount = this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.self_amount) {
+        data1.self_amount = this.form.self_amount
       }
-      if (this.form.country_amount && this.form.country_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.country_amount = this.form.country_amount.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.country_amount) {
+        data1.country_amount = this.form.country_amount
       }
-      if (this.form.current_amount && this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.current_amount) {
+        data1.current_amount = this.form.current_amount
       }
-      if (this.form.other_amount && this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.other_amount = this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.other_amount && this.form.other_amount) {
+        data1.other_amount = this.form.other_amount
       }
-      if (this.form.foreign_amount && this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.foreign_amount && this.form.foreign_amount) {
+        data1.foreign_amount = this.form.foreign_amount
       }
       if (this.sum && this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')) {
         this.form.amount = this.sum
@@ -883,7 +917,6 @@ export default {
             this.$store.commit('SET_FORM', this.form)
             localStorage.setItem('form', JSON.stringify(this.form))           
           }, 1000)
-          console.log(this.partner)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -908,12 +941,21 @@ export default {
       })
     },
     next() {
-      // 点击“下一步”按钮，执行的操作在这里，首先要进行一个表单检验，
-      if (!formValidate2(this.form, this)) return
-      this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
+      if (!formValidate2(this.form, this)) return
+      this.form.amount = this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.category_id) {
+        data1.category_id = this.form.category_id
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请先选择子类别'
+        })
+        return
+      }
+      this.loading = true
       const that = this
       for (const i in commondata) {
         data1[i] = commondata[i]
@@ -939,18 +981,15 @@ export default {
         data1.id = this.$route.query.id
       }
       data1.formsType = 1
-      if (this.smallOn) {
-        data1.category_id = this.smallOn
-      }
       data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
       data1.starttime = this.handlestarttime(this.form.starttime)
       data1.endtime = this.handlendtime(this.form.endtime)
-      data1.self_amount = this.form.self_amount.replace(/(^\s*)|(\s*$)/g, '')
-      data1.country_amount = this.form.country_amount.replace(/(^\s*)|(\s*$)/g, '')
-      data1.current_amount = this.form.current_amount.replace(/(^\s*)|(\s*$)/g, '')
-      data1.other_amount = this.form.other_amount.replace(/(^\s*)|(\s*$)/g, '')
-      data1.foreign_amount = this.form.foreign_amount.replace(/(^\s*)|(\s*$)/g, '')
+      data1.self_amount = this.form.self_amount
+      data1.country_amount = this.form.country_amount
+      data1.current_amount = this.form.current_amount
+      data1.other_amount = this.form.other_amount
+      data1.foreign_amount = this.form.foreign_amount
       data1.amount = this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')
       data1.partner_name = JSON.stringify(this.partner)
       data1.address = JSON.stringify(this.addressb)
