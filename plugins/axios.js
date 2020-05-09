@@ -1,6 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
-const test = 'http://testk.dlzjzy.com/'
+const test = 'http://kjadm.ynbzde.com/'
+// http://kjadm.ynbzde.com/
+// http://testk.dlzjzy.com/
 const service = axios.create({
   baseURL: test,
   withCredentials: false,

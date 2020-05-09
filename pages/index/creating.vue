@@ -520,6 +520,7 @@ export default {
   methods: {
     togglebig(val) {
       this.bigOn = val.id
+      this.smallOn = ''
       this.bigtitle = val.name
       this.form.formsType = this.bigOn
       this.beforeapply()
@@ -775,7 +776,9 @@ export default {
       }
       data1.formsType = 1
       // 类别id, 先固定写1
-      data1.category_id = this.smallOn
+      if (this.smallOn) {
+        data1.category_id = this.smallOn
+      }
       // 双重限定，就是保证除空字符之外的字符串，空字符串传输，容易出现“签名错误”的错误
       if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
@@ -936,7 +939,9 @@ export default {
         data1.id = this.$route.query.id
       }
       data1.formsType = 1
-      data1.category_id = this.smallOn
+      if (this.smallOn) {
+        data1.category_id = this.smallOn
+      }
       data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
       data1.starttime = this.handlestarttime(this.form.starttime)

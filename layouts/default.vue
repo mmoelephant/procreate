@@ -17,16 +17,15 @@
     </el-main>
     <el-footer v-if="route.name.slice(0, 5) != 'login'">
       <div class="footerinfo">
-        <span>主管单位：云南省住房和城乡建设厅科技与标准定额处</span>
-        <span>联系电话：64320549</span>
+        <span>主管单位：云南省住房和城乡建设厅</span>
+        <span>联系电话：0871-64320642</span>
         <span class="filingsys" @click="tofilesys">
           备案号：滇ICP备18001273号
         </span>
       </div>
       <div class="footerinfo">
         <span>技术支持：昆明行列科技有限公司</span>
-        <span>联系电话：0871-68184040</span>
-        <span>后台登录</span>
+        <span>技术联系电话：13095322247</span>
       </div>
     </el-footer>
   </div>
