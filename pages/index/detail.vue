@@ -8,38 +8,38 @@
           <div class="total ">
             <div
               class="sizeStyle"
-              :class="Inv === 0 ? 'select' : ''"
-              @click="Inv = 0"
+              :class="inv === 0 ? 'select' : ''"
+              @click="inv = 0"
             >
               <div
                 class="size"
-                :class="Inv === 0 ? 'blackStyle' : 'grayStyle'"
-                @click="Inv = 0"
+                :class="inv === 0 ? 'blackStyle' : 'grayStyle'"
+                @click="inv = 0"
               >
                 计划任务书
               </div>
               <div
                 class="lineStyle"
-                :class="Inv === 0 ? 'blackLine' : ''"
-                @click="Inv = 0"
+                :class="inv === 0 ? 'blackLine' : ''"
+                @click="inv = 0"
               ></div>
             </div>
             <div
               class="sizeStyle"
-              :class="Inv === 1 ? 'after' : ''"
-              @click="Inv = 1"
+              :class="inv === 1 ? 'after' : ''"
+              @click="inv = 1"
             >
               <div
                 class="size"
-                :class="Inv === 1 ? 'blackStyle' : 'grayStyle'"
-                @click="Inv = 1"
+                :class="inv === 1 ? 'blackStyle' : 'grayStyle'"
+                @click="inv = 1"
               >
                 申报表
               </div>
               <div
                 class="lineStyle"
-                :class="Inv === 1 ? 'blackLine' : ''"
-                @click="Inv = 1"
+                :class="inv === 1 ? 'blackLine' : ''"
+                @click="inv = 1"
               ></div>
             </div>
           </div>
@@ -93,7 +93,7 @@
 
       <div class="cont marT20">
         <!--计划申报书-->
-        <div v-if="Inv === 0">
+        <div v-if="inv === 0">
           <div class="contName">计划任务书</div>
           <div class="contItem marT40">
             <div class="contL">项目编号</div>
@@ -216,16 +216,16 @@
           </div>
         </div>
         <!--下面是折叠区域-->
-        <div v-if="Inv === 1">
+        <div v-if="inv === 1">
           <!--一个折叠区域-->
           <div class="paddingMaring20">
-            <div class="contItem marT20">
+            <div class="contItem marT20" @click="tabShow1 = !tabShow1">
               <div class="itemBlues">
                 <div class="numbers">理由1</div>
                 <img src="http://placehold.it/350x150" class="cha" />
               </div>
             </div>
-            <div class="itemWhite">
+            <div v-if="tabShow1" class="itemWhite">
               <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
                 研究目的
               </div>
@@ -309,11 +309,6 @@
   </div>
 </template>
 <style>
-.back {
-  padding-top: 25px;
-  padding-left: 25px;
-  padding-right: 83px;
-}
 .backName {
   font-size: 28px;
   font-weight: 400;
@@ -613,7 +608,8 @@ table tr td {
 export default {
   data() {
     return {
-      Inv: 0
+      inv: 0,
+      tabShow1: true
     }
   }
 }
