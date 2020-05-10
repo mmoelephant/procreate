@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="back">
+    <div v-if="info !== null" class="back">
       <div class="backName">查看详情</div>
 
       <div class="small smallHead fix">
@@ -52,17 +52,21 @@
           <div v-if="false" class="topBtn">初审退回</div>
           <div v-if="false" class="topBtn">退回修改</div>
           <div class="topBtn" style="background:rgba(0,159,48,1);">
-            待送审纸质资料
+            {{ info.statusName }}
           </div>
         </div>
-        <div class="bottom">
+        <div v-if="verifyData" class="bottom">
           <div class="bottomL">
             <img src="http://placehold.it/350x150" class="icon" />
-            <div v-if="false" style="margin-left:20px;">
-              <div class="black">抱歉您的资料未通过初审，请求改后重新提交</div>
-              <div class="red">反馈信息：上传的营业执照附件不清晰。</div>
-            </div>
             <div style="margin-left:20px;">
+              <div class="black">
+                {{ verifyData.content }}
+              </div>
+              <div class="red">
+                {{ verifyData.time }}
+              </div>
+            </div>
+            <!-- <div style="margin-left:20px;">
               <div class="black">
                 恭喜您的线上资料已审核通过，请尽快送审纸质资料
               </div>
@@ -72,7 +76,7 @@
               <div class="add" style="margin-top:7px;">
                 送审地址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;杨莉花&nbsp;&nbsp;&nbsp;&nbsp;15887247513&nbsp;&nbsp;&nbsp;&nbsp;周一至周五&nbsp;&nbsp;&nbsp;&nbsp;9:00至17:30&nbsp;&nbsp;&nbsp;&nbsp;云南省昆明市官渡区关上街道春城路巫家坝昭商大酒店7楼办公区
               </div>
-            </div>
+            </div> -->
           </div>
           <div
             v-if="false"
@@ -88,7 +92,9 @@
       </div>
       <div class="remarkBox marT20">
         <div class="remarkL">申报类别</div>
-        <div class="remarkR">软科学研究项目-工程造价管理</div>
+        <div class="remarkR">
+          {{ info.typeName }}
+        </div>
       </div>
 
       <div class="cont marT20">
@@ -97,122 +103,155 @@
           <div class="contName">计划任务书</div>
           <div class="contItem marT40">
             <div class="contL">项目编号</div>
-            <div class="contR">XXXXXXXXX</div>
+            <div class="contR">{{ info.sn }}</div>
           </div>
           <div class="contItem marT20">
             <div class="contL">项目名称</div>
-            <div class="contR">XXX项目科学研究</div>
+            <div class="contR">{{ info.name }}</div>
           </div>
           <div class="contItem marT20">
             <div class="contL">申报单位</div>
-            <div class="contR">昆明XXX有限公司</div>
+            <div class="contR">{{ info.enterprise_name }}</div>
           </div>
           <div class="contItem marT20">
             <div class="contL">起始时间</div>
-            <div class="contR" style="width:160px">2020-04-25</div>
+            <div class="contR" style="width:160px">
+              {{ info.starttime ? info.starttime : '-' }}
+            </div>
             <div class="contL">完成时间</div>
-            <div class="contR">2020-04-25</div>
+            <div class="contR">
+              {{ info.endtime ? info.endtime : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">自筹金额</div>
             <div class="contR" style="width:160px">
-              200<span class="contGray">万元</span>
+              {{ info.self_amount ? info.self_amount : '-'
+              }}<span class="contGray">万元</span>
             </div>
             <div class="contL">国家拨/贷款</div>
             <div class="contR" style="width:160px">
-              200<span class="contGray">万元</span>
+              {{ info.country_amount ? info.country_amount : '-'
+              }}<span class="contGray">万元</span>
             </div>
             <div class="contL">地方贷/拨款</div>
             <div class="contR" style="width:160px">
-              200<span class="contGray">万元</span>
+              {{ info.current_amount ? info.current_amount : '-'
+              }}<span class="contGray">万元</span>
             </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">其他</div>
             <div class="contR" style="width:160px">
-              200<span class="contGray">万元</span>
+              {{ info.other_amount ? info.other_amount : '-'
+              }}<span class="contGray">万元</span>
             </div>
             <div class="contL">外方</div>
             <div class="contR" style="width:160px">
-              200<span class="contGray">万元</span>
+              {{ info.foreign_amount ? info.foreign_amount : '-'
+              }}<span class="contGray">万元</span>
             </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">总金额</div>
             <div class="contR" style="width:160px">
-              800<span class="contGray">万元</span>
+              {{ info.amount ? info.amount : '-'
+              }}<span class="contGray">万元</span>
             </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">合作单位</div>
-            <div class="contR">昆明XXX有限公司</div>
+            <div class="contR">
+              {{ info.partner_name ? info.partner_name : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">项目所在地</div>
-            <div class="contR">昆明市官渡区XX路XX号</div>
+            <div class="contR">{{ info.address ? info.address : '-' }}</div>
           </div>
           <div class="contItem marT20">
             <div class="contL">主要研究内容</div>
             <div class="contR" style="width:672px;">
-              主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
-              主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
+              {{ info.study_content ? info.study_content : '-' }}
             </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">考核指标</div>
             <div class="contR" style="width:672px;">
-              主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
-              主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
+              {{ info.check_content ? info.check_content : '-' }}
             </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">研究成果(示范工程简介)</div>
             <div class="contR" style="width:672px;">
-              主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
-              主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
+              {{ info.expect_content ? info.expect_content : '-' }}
             </div>
           </div>
           <div class="contName" style="margin-top:60px;">项目负责人</div>
           <div class="contItem marT40">
             <div class="contL">负责人姓名</div>
-            <div class="contR">张某某的货物的话说</div>
+            <div class="contR">
+              {{ info.leader_name ? info.leader_name : '-' }}
+            </div>
             <div class="contL" style="width:200px;">负责人电话</div>
-            <div class="contR">180894944545</div>
+            <div class="contR">
+              {{ info.leader_mobile ? info.leader_mobile : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">电子邮箱</div>
-            <div class="contR">75533333@qq.com</div>
+            <div class="contR">
+              {{ info.leader_email ? info.leader_email : '-' }}
+            </div>
             <div class="contL" style="width:200px;">职务/职称</div>
-            <div class="contR">项目总工程师</div>
+            <div class="contR">
+              {{ info.leader_job ? info.leader_job : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">通讯地址</div>
-            <div class="contR">昆明市官渡区XX路XX号</div>
+            <div class="contR">
+              {{ info.leader_address ? info.leader_address : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">所在单位</div>
-            <div class="contR">昆明XXX有限公司</div>
+            <div class="contR">
+              {{ info.leader_company ? info.leader_company : '-' }}
+            </div>
           </div>
-          <div class="contName" style="margin-top:60px;">项目联系人</div>
+          <div class="contName" style="margin-top:60px;">项目经办人</div>
           <div class="contItem marT40">
-            <div class="contL">负责人姓名</div>
-            <div class="contR">张某某的货物的话说</div>
-            <div class="contL" style="width:200px;">负责人电话</div>
-            <div class="contR">180894944545</div>
+            <div class="contL">经办人姓名</div>
+            <div class="contR">
+              {{ info.link_name ? info.link_name : '-' }}
+            </div>
+            <div class="contL" style="width:200px;">经办人电话</div>
+            <div class="contR">
+              {{ info.link_mobile ? info.link_mobile : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">电子邮箱</div>
-            <div class="contR">75533333@qq.com</div>
+            <div class="contR">
+              {{ info.link_email ? info.link_email : '-' }}
+            </div>
             <div class="contL" style="width:200px;">职务/职称</div>
-            <div class="contR">项目总工程师</div>
+            <div class="contR">
+              {{ info.link_job ? info.link_job : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">通讯地址</div>
-            <div class="contR">昆明市官渡区XX路XX号</div>
+            <div class="contR">
+              {{ info.link_address ? info.link_address : '-' }}
+            </div>
           </div>
           <div class="contItem marT20">
             <div class="contL">所在单位</div>
-            <div class="contR">昆明XXX有限公司</div>
+            <div class="contR">
+              {{ info.link_company ? info.link_company : '-' }}
+            </div>
           </div>
         </div>
         <!--下面是折叠区域-->
@@ -221,7 +260,7 @@
           <div class="paddingMaring20">
             <div class="contItem marT20" @click="tabShow1 = !tabShow1">
               <div class="itemBlues">
-                <div class="numbers">理由1</div>
+                <div class="numbers">1.申请立项理由</div>
                 <img src="http://placehold.it/350x150" class="cha" />
               </div>
             </div>
@@ -230,78 +269,381 @@
                 研究目的
               </div>
               <div class="whiteCont">
-                主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
-                主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
+                {{ info.a_md ? info.a_md : '-' }}
               </div>
               <div class="lines"></div>
               <div class="whiteHead">
                 选题依据
               </div>
               <div class="whiteCont">
-                主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
-                主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
+                {{ info.a_yj ? info.a_yj : '-' }}
               </div>
               <div class="lines"></div>
               <div class="whiteHead">
                 研发意义
               </div>
               <div class="whiteCont">
-                主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
-                主要研究内容主要研究内容主要研究内容主要研究内容主要研究内容
+                {{ info.a_yy ? info.a_yy : '-' }}
               </div>
             </div>
           </div>
           <!--一个折叠区域-->
           <div class="paddingMaring20">
-            <div class="contItem marT20">
+            <div class="contItem marT20" @click="tabShow2 = !tabShow2">
               <div class="itemBlues">
-                <div class="numbers">理由1</div>
+                <div class="numbers">2.国内、外研究现状和趋势</div>
                 <img src="http://placehold.it/350x150" class="cha" />
               </div>
             </div>
-            <!--下面是申报表区域-->
-            <div class="whiteFoot">
-              <div class="footText">附件列表</div>
+            <div v-if="tabShow2" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                研究现状
+              </div>
+              <div class="whiteCont">
+                {{ info.b_xz ? info.b_xz : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                技术指标
+              </div>
+              <div class="whiteCont">
+                {{ info.b_zb ? info.b_zb : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                存在的问题
+              </div>
+              <div class="whiteCont">
+                {{ info.b_wt ? info.b_wt : '-' }}
+              </div>
+              <div class="whiteHead">
+                发展趋势
+              </div>
+              <div class="whiteCont">
+                {{ info.b_qs ? info.b_qs : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow3 = !tabShow3">
+              <div class="itemBlues">
+                <div class="numbers">3.研究目标和预期成果</div>
+                <img src="http://placehold.it/350x150" class="cha" />
+              </div>
+            </div>
+            <div v-if="tabShow3" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                研究目标
+              </div>
+              <div class="whiteCont">
+                {{ info.c_mb ? info.c_mb : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                预期成果的名称及表达方式
+              </div>
+              <div class="whiteCont">
+                {{ info.c_cg ? info.c_cg : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                成果产出对相关管理工作的作用和应用前景
+              </div>
+              <div class="whiteCont">
+                {{ info.c_yy ? info.c_yy : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow4 = !tabShow4">
+              <div class="itemBlues">
+                <div class="numbers">4.项目主要内容</div>
+                <img src="http://placehold.it/350x150" class="cha" />
+              </div>
+            </div>
+            <div v-if="tabShow4" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                主要研究内容
+              </div>
+              <div class="whiteCont">
+                {{ info.d_nr ? info.d_nr : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                创新点
+              </div>
+              <div class="whiteCont">
+                {{ info.d_cx ? info.d_cx : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                考核指标
+              </div>
+              <div class="whiteCont">
+                {{ info.d_zb ? info.d_zb : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow5 = !tabShow5">
+              <div class="itemBlues">
+                <div class="numbers">5.研究思路、方法和计划进度</div>
+                <img src="http://placehold.it/350x150" class="cha" />
+              </div>
+            </div>
+            <div v-if="tabShow5" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                研究思路和方法
+              </div>
+              <div class="whiteCont">
+                {{ info.e_sl ? info.e_sl : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                阶段目标
+              </div>
+              <div class="whiteCont">
+                {{ info.e_mb ? info.e_mb : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                进度安排
+              </div>
+              <div class="whiteCont">
+                {{ info.e_jd ? info.e_jd : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow6 = !tabShow6">
+              <div class="itemBlues">
+                <div class="numbers">6.工作基础和科研保障情况</div>
+                <img src="http://placehold.it/350x150" class="cha" />
+              </div>
+            </div>
+            <div v-if="tabShow6" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                研究基础
+              </div>
+              <div class="whiteCont">
+                {{ info.f_jc ? info.f_jc : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                任务分工及主要科研条件
+              </div>
+              <div class="whiteCont">
+                {{ info.f_jc ? info.f_jc : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                项目负责人以及团队
+              </div>
+              <div class="whiteCont">
+                {{ info.f_jc ? info.f_jc : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                资金概算和来源
+              </div>
+              <div class="whiteCont">
+                {{ info.f_jc ? info.f_jc : '-' }}
+              </div>
+            </div>
+          </div>
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow7 = !tabShow7">
+              <div class="itemBlues">
+                <div class="numbers">7.主要研究人员</div>
+                <img src="http://placehold.it/350x150" class="cha" />
+              </div>
+            </div>
+            <div v-if="tabShow7" class="whiteFoot">
+              <div class="footText">研究人员列表</div>
               <table class="table">
                 <tr>
-                  <td style="background: rgba(236, 238, 242, 1);">
+                  <th>
                     序号
-                  </td>
-                  <td
-                    style="width:870px; padding-top:15px;padding-bottom:15px; background: rgba(236, 238, 242, 1);"
-                  >
-                    文件名称
-                  </td>
-                  <td style="background: rgba(236, 238, 242, 1);">
-                    操作
-                  </td>
+                  </th>
+                  <th>
+                    姓名
+                  </th>
+                  <th>
+                    性别
+                  </th>
+                  <th>
+                    生日
+                  </th>
+                  <th>
+                    职位
+                  </th>
+                  <th>
+                    学科
+                  </th>
+                  <th>
+                    行业
+                  </th>
+                  <th>
+                    公司
+                  </th>
+                  <th>
+                    专业
+                  </th>
                 </tr>
-
-                <tr>
-                  <td>1</td>
+                <tr v-for="(val, ind) in info.worker_json" :key="ind">
+                  <td>{{ ind + 1 }}</td>
                   <td>
-                    云南省XXX建设工程有限公司
+                    {{ val.name }}
                   </td>
-                  <td style="display:flex;just-content:center;">
-                    <div class="view">查看</div>
-                    <div class="view">下载</div>
+                  <td>
+                    {{ val.sex }}
+                  </td>
+                  <td>
+                    {{ val.birthday }}
+                  </td>
+                  <td>
+                    {{ val.job }}
+                  </td>
+                  <td>
+                    {{ val.study_major }}
+                  </td>
+                  <td>
+                    {{ val.now_major }}
+                  </td>
+                  <td>
+                    {{ val.company }}
+                  </td>
+                  <td>
+                    {{ val.task }}
                   </td>
                 </tr>
               </table>
-
-              <el-pagination
-                style="margin-top:10px;width:100%;display:flex; justify-content: flex-end;"
-                background
-                layout="prev, pager, next"
-                :total="5"
-              >
-              </el-pagination>
+            </div>
+          </div>
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow8 = !tabShow8">
+              <div class="itemBlues">
+                <div class="numbers">
+                  8.项目研究单位及合作单位（打印后加盖公章生效）
+                </div>
+                <img src="http://placehold.it/350x150" class="cha" />
+              </div>
+            </div>
+            <div v-if="tabShow8" class="whiteFoot">
+              <div class="footText">合作单位列表</div>
+              <table class="table">
+                <tr>
+                  <th>
+                    序号
+                  </th>
+                  <th>
+                    单位名称
+                  </th>
+                  <th>
+                    负责人
+                  </th>
+                  <th>
+                    负责人联系电话
+                  </th>
+                  <th>
+                    负责人邮箱
+                  </th>
+                  <th>
+                    负责人地址
+                  </th>
+                  <th>
+                    联系人
+                  </th>
+                  <th>
+                    联系人联系电话
+                  </th>
+                  <th>
+                    联系人邮箱
+                  </th>
+                  <th>
+                    联系人地址
+                  </th>
+                </tr>
+                <tr v-for="(val, ind) in info.partner_json" :key="ind">
+                  <td>{{ ind + 1 }}</td>
+                  <td>
+                    {{ val.name }}
+                  </td>
+                  <td>
+                    {{ val.leader_name }}
+                  </td>
+                  <td>
+                    {{ val.leader_mobile }}
+                  </td>
+                  <td>
+                    {{ val.leader_email }}
+                  </td>
+                  <td>
+                    {{ val.leader_address }}
+                  </td>
+                  <td>
+                    {{ val.link_name }}
+                  </td>
+                  <td>
+                    {{ val.link_mobile }}
+                  </td>
+                  <td>
+                    {{ val.link_email }}
+                  </td>
+                  <td>
+                    {{ val.link_address }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <!--一个折叠区域（表格）-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow9 = !tabShow9">
+              <div class="itemBlues">
+                <div class="numbers">9.上传相关附件</div>
+                <img src="http://placehold.it/350x150" class="cha" />
+              </div>
+            </div>
+            <div v-if="tabShow9" class="whiteFoot">
+              <div class="footText">附件列表</div>
+              <table class="table">
+                <tr>
+                  <th>
+                    序号
+                  </th>
+                  <th style="width:870px;">
+                    文件名称
+                  </th>
+                  <th>
+                    操作
+                  </th>
+                </tr>
+                <tr v-for="(val, ind) in info.files" :key="ind">
+                  <td>{{ ind + 1 }}</td>
+                  <td>
+                    {{ val.name }}
+                  </td>
+                  <td>
+                    <div style="display:flex;">
+                      <a :href="val.url" target="_blank" class="view">查看</a>
+                      <a :href="val.url" download class="view">下载</a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
       </div>
       <div class="detailBtn">
-        <div class="grayBtn detailBtnSize">返回上一级</div>
+        <div class="grayBtn detailBtnSize" @click="$router.go(-1)">
+          返回上一级
+        </div>
         <div v-if="false" class="blueBtn detailBtnSize marL20">修改资料</div>
         <div class="blueBtn detailBtnSize marL20">下载申报书</div>
       </div>
@@ -426,8 +768,8 @@
   border-top-right-radius: 10px;
   display: flex;
   align-items: flex-end;
-  padding-top: 18px;
-  padding-bottom: 8px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   padding-left: 38px;
   border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
@@ -577,6 +919,11 @@
   padding-right: 35px;
   padding-bottom: 10px;
 }
+.whiteFoot th {
+  border: 1px solid rgba(230, 230, 230, 1);
+  background: rgba(236, 238, 242, 1);
+  padding: 10px 0px;
+}
 .footText {
   padding-top: 17px;
   padding-bottom: 17px;
@@ -594,6 +941,7 @@ table tr td {
 .view {
   display: flex;
   flex: 1;
+  color: #000000;
   justify-content: center;
 }
 .paddingMaring20 {
@@ -607,11 +955,74 @@ table tr td {
 }
 </style>
 <script>
+import { datawork } from '../../plugins/datawork'
+// import { getClientId } from '../../plugins/getclientid'
+// import { getToken } from '../../plugins/gettoken'
 export default {
   data() {
     return {
       inv: 0,
-      tabShow1: true
+      infoId: null,
+      info: null,
+      verifyData: [], // 审核信息
+      tabShow1: false,
+      tabShow2: false,
+      tabShow3: false,
+      tabShow4: false,
+      tabShow5: false,
+      tabShow6: false,
+      tabShow7: false,
+      tabShow8: false,
+      tabShow9: false
+    }
+  },
+  mounted() {
+    // 查询的ID传递
+    this.infoId = this.$route.query.id
+    this.getDetil()
+  },
+  methods: {
+    getDetil() {
+      this.loading = true
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      if (this.prostate) {
+        data1.status = this.prostate
+      }
+      if (this.word && this.word.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.keyword = this.word.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      data1.id = this.infoId
+      data2 = datawork(data1)
+      const that = this
+      this.$api.get_pro_detail(data2).then((v) => {
+        if (v.data.errcode === 0) {
+          that.info = v.data.data.data
+          that.verifyData = v.data.data.verifyData
+          console.log('详情获得', that.info, that.verifyData)
+        } else {
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
     }
   }
 }
