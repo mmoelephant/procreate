@@ -386,6 +386,7 @@
 .detailBtn {
   display: flex;
   justify-content: flex-start;
+  cursor: pointer;
 }
 .marL20 {
   margin-left: 20px;
@@ -418,6 +419,7 @@
   font-size: 12px;
   font-weight: 400;
   color: rgba(29, 120, 211, 1);
+  cursor: pointer;
 }
 .top {
   border-top-left-radius: 10px;
