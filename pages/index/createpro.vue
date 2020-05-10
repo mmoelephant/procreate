@@ -104,7 +104,11 @@
             <span v-if="item.isdel == '1'" @click="delpro(item.id)">
               删除
             </span>
-            <span v-if="item.isagain == '1'" @click="applyagain(item.id)">
+            <span
+              v-if="item.isagain == '1'"
+              class="againbtn"
+              @click="applyagain(item.id)"
+            >
               重新申报
             </span>
             <span></span>
@@ -323,8 +327,12 @@ export default {
     tocreate() {
       this.$router.push('/creating')
       this.$store.commit('SET_FORM', {})
+      this.$store.commit('SET_WORKER', [])
+      this.$store.commit('SET_PARTNER', [])
       localStorage.removeItem('form')
       localStorage.removeItem('applyid')
+      localStorage.removeItem('worker')
+      localStorage.removeItem('partner')
     },
     edit(val) {
       this.$router.push({ path: '/creating', query: { id: Number(val) } })

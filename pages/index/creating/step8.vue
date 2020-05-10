@@ -350,7 +350,7 @@ import { formValidate6 } from '../../../plugins/formValidate6'
 import { formValidate7 } from '../../../plugins/formValidate7'
 import { formValidate8 } from '../../../plugins/formValidate8'
 import { formValidate92 } from '../../../plugins/formValidate92'
-import { formValidate10 } from '../../../plugins/formValidate10'
+// import { formValidate10 } from '../../../plugins/formValidate10'
 export default {
   data() {
     return {
@@ -488,7 +488,7 @@ export default {
       if (!formValidate7(this.form, this)) return
       if (!formValidate8(this.form, this)) return
       if (!formValidate92(this.form, this)) return
-      if (!formValidate10(this.form, this)) return
+      // if (!formValidate10(this.form, this)) return
       this.form.partner_json = deepCopy(this.partner_json)
       this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
@@ -530,7 +530,9 @@ export default {
         data1.id = this.$route.query.id
       }
       // data1.category_id = 1
-      data1.partner_json = JSON.stringify(this.partner_json)
+      if (this.partner_json.length > 0) {
+        data1.partner_json = JSON.stringify(this.partner_json)
+      }
       data2 = datawork(data1)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {

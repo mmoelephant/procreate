@@ -12,7 +12,7 @@
                   <input
                     ref="upload1"
                     type="file"
-                    accept=".png, .jpg, .pdf, .docx, .xlsx, .zip, .rar"
+                    accept=".png, .jpg, .pdf, .doc, .docx, .xlsx, .zip, .rar"
                     @change="uploadchange1"
                   />
                 </div>
@@ -103,7 +103,7 @@ import { formValidate6 } from '../../../plugins/formValidate6'
 import { formValidate7 } from '../../../plugins/formValidate7'
 import { formValidate8 } from '../../../plugins/formValidate8'
 import { formValidate92 } from '../../../plugins/formValidate92'
-import { formValidate102 } from '../../../plugins/formvalidate102'
+// import { formValidate102 } from '../../../plugins/formvalidate102'
 import { formValidate11 } from '../../../plugins/formValidate11'
 export default {
   data() {
@@ -231,7 +231,7 @@ export default {
       if (!formValidate7(this.form, this)) return
       if (!formValidate8(this.form, this)) return
       if (!formValidate92(this.form, this)) return
-      if (!formValidate102(this.form, this)) return
+      // if (!formValidate102(this.form, this)) return
       if (!formValidate11(this.form, this)) return
       this.form.files = deepCopy(this.files1)
       this.loading = true
@@ -285,7 +285,7 @@ export default {
             duration: 1000
           })
           if (this.$route.query.id) {
-            this.Id = Number(this.$router.query.id)
+            this.Id = Number(this.$route.query.id)
           } else if(localStorage.getItem('applyid')) {
             this.Id = Number(localStorage.getItem('applyid'))
           }
@@ -295,9 +295,6 @@ export default {
           this.$store.commit('SET_APPLY_ID', '')
           localStorage.removeItem('applyid')
           this.tipshow = true
-          // setTimeout(() => {
-          //   that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
-          // }, 1000);
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {

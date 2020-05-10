@@ -18,7 +18,7 @@
     <div v-if="route.path == '/creating'" class="pagetip">
       <p class="pagetitle">选择申报类型</p>
       <div class="selectbox">
-        <div class="bigcate">
+        <div v-if="!catedisable" class="bigcate">
           <div
             v-for="item in bigcates"
             :key="item.id"
@@ -28,15 +28,39 @@
           >
             {{ item.name ? item.name : '-' }}
           </div>
+          <div @click="applytip">科技示范项目</div>
+          <div @click="applytip2">国际合作项目</div>
+        </div>
+        <div v-if="catedisable" class="bigcate">
+          <div
+            v-for="item in bigcates"
+            :key="item.id"
+            :class="bigOn == item.id ? 'bigon bigrey' : 'bigrey'"
+            :title="item.name ? item.name : '-'"
+          >
+            {{ item.name ? item.name : '-' }}
+          </div>
+          <div class="bigrey" @click="applytip">科技示范项目</div>
+          <div class="bigrey" @click="applytip2">国际合作项目</div>
         </div>
         <p>请继续选择子类别</p>
-        <div class="smallcate">
+        <div v-if="!catedisable" class="smallcate">
           <div
             v-for="item in smallcates"
             :key="item.id"
             :class="smallOn == item.id ? 'smallon' : ''"
             :title="item.name ? item.name : '-'"
             @click="togglesmall(item)"
+          >
+            {{ item.name ? item.name : '-' }}
+          </div>
+        </div>
+        <div v-if="catedisable" class="smallcate">
+          <div
+            v-for="item in smallcates"
+            :key="item.id"
+            :class="smallOn == item.id ? 'smallon bigrey' : 'bigrey'"
+            :title="item.name ? item.name : '-'"
           >
             {{ item.name ? item.name : '-' }}
           </div>
@@ -430,6 +454,7 @@ export default {
       starttime: '',
       endtime: '',
       disabled1: false,
+      catedisable: false,
       loading: false
     }
   },
@@ -457,12 +482,14 @@ export default {
           JSON.parse(localStorage.getItem('form')) &&
           JSON.parse(localStorage.getItem('form')) != {}
         ) {
-          console.log(this.form)
           this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
           this.partner = deepCopy(this.form.partner_name)
           this.addressb = deepCopy(this.form.address)
           this.bigOn = this.form.type
           this.smallOn = this.form.category_id
+          if (this.bigOn && this.smallOn) {
+            this.catedisable = true
+          }
         }
         if (this.$route.query.id) {
           this.getprodetail()
@@ -493,6 +520,9 @@ export default {
       this.addressb = deepCopy(this.form.address)
       this.bigOn = this.form.type
       this.smallOn = this.form.category_id
+      if (this.bigOn && this.smallOn) {
+        this.catedisable = true
+      }
     }
     if (this.$route.query.id) {
       this.getprodetail()
@@ -688,11 +718,13 @@ export default {
           }
           if (v.data.data.data.type && Number(v.data.data.data.type)) {
             this.form.type = v.data.data.data.type
-            this.smallOn = v.data.data.data.type
+            this.bigOn = v.data.data.data.type
           } else {
             this.form.type = 1
           }
-          console.log(this.partner)
+          if (this.bigOn && this.smallOn) {
+            this.catedisable = true
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -718,8 +750,7 @@ export default {
     },
     handlestarttime(data) {
       let timedata = {}
-      console.log(typeof data)
-      if (data != {} && typeof data == 'string') {
+      if (data && typeof data == 'string') {
         if (data.slice(0, 1) != 0) {
           timedata = new Date(data)
           let year = timedata.getFullYear()
@@ -730,9 +761,6 @@ export default {
         } {
           return data
         }
-      } else if (data && data == {}) {
-        console.log(data)
-        return data
       } else {
         timedata = new Date(data)
         let year = timedata.getFullYear()
@@ -765,7 +793,6 @@ export default {
       }
     },
     handleform(data) {
-      // 首先先将过渡数据赋值给传输数据,然后转化时间数据
       data.address = deepCopy(this.addressb)
       data.partner_name = deepCopy(this.partner)
       // data.formsType = 1
@@ -811,7 +838,6 @@ export default {
       if (this.form.category_id) {
         data1.category_id = this.form.category_id
       }
-      // 双重限定，就是保证除空字符之外的字符串，空字符串传输，容易出现“签名错误”的错误
       if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       }
@@ -833,10 +859,10 @@ export default {
       if (this.form.current_amount) {
         data1.current_amount = this.form.current_amount
       }
-      if (this.form.other_amount && this.form.other_amount) {
+      if (this.form.other_amount) {
         data1.other_amount = this.form.other_amount
       }
-      if (this.form.foreign_amount && this.form.foreign_amount) {
+      if (this.form.foreign_amount) {
         data1.foreign_amount = this.form.foreign_amount
       }
       if (this.sum) {
@@ -903,13 +929,16 @@ export default {
             type: 'success',
             message: '保存成功'
           })
+          if (this.bigOn && this.smallOn) {
+            this.catedisable = true
+          }
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
           }
           setTimeout(() => {
             this.$store.commit('SET_FORM', this.form)
-            localStorage.setItem('form', JSON.stringify(this.form))           
+            localStorage.setItem('form', JSON.stringify(this.form))       
           }, 1000)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
@@ -979,12 +1008,24 @@ export default {
       data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
       data1.starttime = this.handlestarttime(this.form.starttime)
       data1.endtime = this.handlendtime(this.form.endtime)
-      data1.self_amount = this.form.self_amount
-      data1.country_amount = this.form.country_amount
-      data1.current_amount = this.form.current_amount
-      data1.other_amount = this.form.other_amount
-      data1.foreign_amount = this.form.foreign_amount
-      data1.amount = this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.self_amount) {
+        data1.self_amount = this.form.self_amount
+      }
+      if (this.form.country_amount) {
+        data1.country_amount = this.form.country_amount
+      }
+      if (this.form.current_amount) {
+        data1.current_amount = this.form.current_amount
+      }
+      if (this.form.other_amount) {
+        data1.other_amount = this.form.other_amount
+      }
+      if (this.form.foreign_amount) {
+        data1.foreign_amount = this.form.foreign_amount
+      }
+      if (this.sum) {
+        data1.amount = this.sum
+      }
       data1.partner_name = JSON.stringify(this.partner)
       data1.address = JSON.stringify(this.addressb)
       data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
@@ -1011,6 +1052,7 @@ export default {
             type: 'success',
             message: '操作成功，即将进入下一步'
           })
+          this.catedisable = true
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -1056,7 +1098,6 @@ export default {
         .then(() => {
           this.form.partner_name.push('')
           this.partner.push('')
-          console.log(this.partner)
         })
         .catch(() => {})
     },
@@ -1167,6 +1208,18 @@ export default {
         path: '/creating/step9',
         query: { id: this.$route.query.id }
       })
+    },
+    applytip() {
+      this.$message({
+        type: 'error',
+        message: '抱歉，暂未开通该类别的项目申报，请于2020年5月12号进行该类别的项目的申报。'
+      })
+    },
+    applytip2() {
+      this.$message({
+        type: 'error',
+        message: '抱歉，暂未开通该类别的项目申报，请于2020年5月13号进行该类别的项目的申报。'
+      })
     }
   }
 }
@@ -1196,6 +1249,8 @@ export default {
     cursor pointer
   >div:hover
     background #f7f7f7
+  div.bigrey
+    background #eee
   div.bigon, div.smallon
     border none
     background #3972E4

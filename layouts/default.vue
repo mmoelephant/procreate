@@ -402,7 +402,7 @@ export default {
   border-collapse: collapse;
 }
 .padding20 {
-  padding: 20px;
+  padding: 10px 20px;
 }
 .centerCont {
   vertical-align: text-top;

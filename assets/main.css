@@ -785,7 +785,9 @@ div.loginbtn:hover {
   color: #50A7FF;
 }
 
-
+.againbtn {
+  color: #1D78D3;
+}
 .nodata {
   display: flex;
   flex-direction: column;

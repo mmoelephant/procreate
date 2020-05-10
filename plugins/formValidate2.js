@@ -26,12 +26,6 @@ export function formValidate2(data, that) {
       message: '请选择完成时间'
     })
     return false
-  } else if (!that.sum) {
-    that.$message({
-      type: 'error',
-      message: '请输入总金额'
-    })
-    return false
   } else if (!that.addressb || !that.addressb[0]) {
     that.$message({
       type: 'error',

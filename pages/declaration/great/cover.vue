@@ -3,6 +3,7 @@
     <div class="dwlbtn" @click="getPdf(filetitle, 'filecontent')">
       下载申报书
     </div>
+    <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div>
     <div id="filecontent">
       <div class="panel size">
         <div id="qrcode" class="maCover maCoverStyle"></div>
@@ -43,7 +44,9 @@
         <div class="item">
           <div class="title limit">申报时间</div>
           <div class="line">
-            {{ detailinfo.addtime ? detailinfo.addtime.slice(0, 10) : '-' }}
+            {{
+              detailinfo.submittime ? detailinfo.submittime.slice(0, 10) : '-'
+            }}
           </div>
         </div>
         <div class="remark">云南省住房和城乡建设厅</div>
@@ -96,7 +99,7 @@
         <div class="headTitle">二、国内外研究现状和趋势</div>
         <table class="table">
           <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
+            <td class="padding20" style="height:620px;">
               <div class="bodyTitle">（一）国内外相关领域研究状况</div>
               <div class="bodyCont">
                 {{ detailinfo.b_xz ? detailinfo.b_xz : '-' }}
@@ -104,30 +107,10 @@
             </td>
           </tr>
           <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
+            <td class="padding20" style="height:620px;">
               <div class="bodyTitle">（二）技术指标</div>
               <div class="bodyCont">
                 {{ detailinfo.b_zb ? detailinfo.b_zb : '-' }}
-              </div>
-            </td>
-          </tr>
-          <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
-              <div class="bodyTitle">
-                （三）存在的问题
-              </div>
-              <div class="bodyCont">
-                {{ detailinfo.b_wt ? detailinfo.b_wt : '-' }}
-              </div>
-            </td>
-          </tr>
-          <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
-              <div class="bodyTitle">
-                （四）发展趋势
-              </div>
-              <div class="bodyCont">
-                {{ detailinfo.b_qs ? detailinfo.b_qs : '-' }}
               </div>
             </td>
           </tr>
@@ -138,6 +121,33 @@
           <div class="pageNumber">3</div>
           <div class="grayLine"></div>
         </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+      </div>
+      <div class="panel size2">
+        <!-- <div class="headTitle">二、国内外研究现状和趋势</div> -->
+        <table class="table" style="margin-top: 60px">
+          <tr class="centerCont">
+            <td class="padding20" style="height:620px;">
+              <div class="bodyTitle">
+                （三）存在的问题
+              </div>
+              <div class="bodyCont">
+                {{ detailinfo.b_wt ? detailinfo.b_wt : '-' }}
+              </div>
+            </td>
+          </tr>
+          <tr class="centerCont">
+            <td class="padding20" style="height:620px;">
+              <div class="bodyTitle">
+                （四）发展趋势
+              </div>
+              <div class="bodyCont">
+                {{ detailinfo.b_qs ? detailinfo.b_qs : '-' }}
+              </div>
+            </td>
+          </tr>
+        </table>
+
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -258,7 +268,7 @@
         <div class="headTitle">六、工作基础和科研保障条件</div>
         <table class="table">
           <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
+            <td class="padding20" style="height:620px;">
               <div class="bodyTitle">（一）前期研究基础</div>
               <div class="bodyCont">
                 {{ detailinfo.f_jc ? detailinfo.f_jc : '-' }}
@@ -266,30 +276,10 @@
             </td>
           </tr>
           <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
+            <td class="padding20" style="height:620px;">
               <div class="bodyTitle">（二）任务分工及主要科研条件</div>
               <div class="bodyCont">
                 {{ detailinfo.f_rw ? detailinfo.f_rw : '-' }}
-              </div>
-            </td>
-          </tr>
-          <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
-              <div class="bodyTitle">
-                （三）项目负责人以及团队
-              </div>
-              <div class="bodyCont">
-                {{ detailinfo.f_td ? detailinfo.f_td : '-' }}
-              </div>
-            </td>
-          </tr>
-          <tr class="centerCont">
-            <td class="padding20" style="height:350px;">
-              <div class="bodyTitle">
-                （四）资金概算和来源
-              </div>
-              <div class="bodyCont">
-                {{ detailinfo.f_zj ? detailinfo.f_zj : '-' }}
               </div>
             </td>
           </tr>
@@ -300,6 +290,33 @@
           <div class="pageNumber">7</div>
           <div class="grayLine"></div>
         </div> -->
+        <svg id="barcode" class="ma maPage"></svg>
+      </div>
+      <div class="panel size2">
+        <!-- <div class="headTitle">六、工作基础和科研保障条件</div> -->
+        <table class="table" style="margin-top: 60px">
+          <tr class="centerCont">
+            <td class="padding20" style="height:620px;">
+              <div class="bodyTitle">
+                （三）项目负责人以及团队
+              </div>
+              <div class="bodyCont">
+                {{ detailinfo.f_td ? detailinfo.f_td : '-' }}
+              </div>
+            </td>
+          </tr>
+          <tr class="centerCont">
+            <td class="padding20" style="height:620px;">
+              <div class="bodyTitle">
+                （四）资金概算和来源
+              </div>
+              <div class="bodyCont">
+                {{ detailinfo.f_zj ? detailinfo.f_zj : '-' }}
+              </div>
+            </td>
+          </tr>
+        </table>
+
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -837,6 +854,10 @@ export default {
     this.qrcodeObj = {}
     this.jsbarcode = {}
     /*eslint-disable*/
+    this.$message({
+      type: 'info',
+      message: '请必须下载申报书，否则立项将有可能导致不成功！'
+    })
     if (
       !localStorage.getItem('userid') ||
       !Number(localStorage.getItem('userid'))
@@ -993,8 +1014,6 @@ export default {
 }
 .dwlbtn {
   position: absolute;
-  /* top: 20px;
-  left: 30px; */
   width: 100px;
   height: 36px;
   text-align: center;
@@ -1002,5 +1021,11 @@ export default {
   background: #000;
   color: #fff;
   cursor: pointer;
+}
+.dwltip {
+  position: absolute;
+  top: 100px;
+  z-index: 2;
+  color: red;
 }
 </style>

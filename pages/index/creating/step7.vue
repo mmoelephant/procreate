@@ -404,8 +404,9 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      // data1.category_id = 1
-      data1.worker_json = JSON.stringify(this.worker_json)
+      if (this.worker_json.length > 0) {
+        data1.worker_json = JSON.stringify(this.worker_json)
+      }
       data2 = datawork(data1)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
