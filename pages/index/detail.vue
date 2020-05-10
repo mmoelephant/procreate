@@ -55,14 +55,18 @@
             {{ info.statusName }}
           </div>
         </div>
-        <div class="bottom">
+        <div v-if="verifyData" class="bottom">
           <div class="bottomL">
             <img src="http://placehold.it/350x150" class="icon" />
-            <div v-if="false" style="margin-left:20px;">
-              <div class="black">抱歉您的资料未通过初审，请求改后重新提交</div>
-              <div class="red">反馈信息：上传的营业执照附件不清晰。</div>
-            </div>
             <div style="margin-left:20px;">
+              <div class="black">
+                {{ verifyData.content }}
+              </div>
+              <div class="red">
+                {{ verifyData.time }}
+              </div>
+            </div>
+            <!-- <div style="margin-left:20px;">
               <div class="black">
                 恭喜您的线上资料已审核通过，请尽快送审纸质资料
               </div>
@@ -72,7 +76,7 @@
               <div class="add" style="margin-top:7px;">
                 送审地址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;杨莉花&nbsp;&nbsp;&nbsp;&nbsp;15887247513&nbsp;&nbsp;&nbsp;&nbsp;周一至周五&nbsp;&nbsp;&nbsp;&nbsp;9:00至17:30&nbsp;&nbsp;&nbsp;&nbsp;云南省昆明市官渡区关上街道春城路巫家坝昭商大酒店7楼办公区
               </div>
-            </div>
+            </div> -->
           </div>
           <div
             v-if="false"
@@ -637,7 +641,9 @@
         </div>
       </div>
       <div class="detailBtn">
-        <div class="grayBtn detailBtnSize">返回上一级</div>
+        <div class="grayBtn detailBtnSize" @click="$router.go(-1)">
+          返回上一级
+        </div>
         <div v-if="false" class="blueBtn detailBtnSize marL20">修改资料</div>
         <div class="blueBtn detailBtnSize marL20">下载申报书</div>
       </div>
@@ -762,8 +768,8 @@
   border-top-right-radius: 10px;
   display: flex;
   align-items: flex-end;
-  padding-top: 18px;
-  padding-bottom: 8px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   padding-left: 38px;
   border-bottom: 1px solid rgba(230, 230, 230, 1);
 }
@@ -958,6 +964,7 @@ export default {
       inv: 0,
       infoId: null,
       info: null,
+      verifyData: [], // 审核信息
       tabShow1: false,
       tabShow2: false,
       tabShow3: false,
@@ -1007,7 +1014,8 @@ export default {
       this.$api.get_pro_detail(data2).then((v) => {
         if (v.data.errcode === 0) {
           that.info = v.data.data.data
-          console.log('详情获得', that.info)
+          that.verifyData = v.data.data.verifyData
+          console.log('详情获得', that.info, that.verifyData)
         } else {
           this.$message({
             type: 'error',
