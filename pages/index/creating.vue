@@ -35,6 +35,7 @@
             v-for="item in smallcates"
             :key="item.id"
             :class="smallOn == item.id ? 'smallon' : ''"
+            :title="item.name ? item.name : '-'"
             @click="togglesmall(item)"
           >
             {{ item.name ? item.name : '-' }}
@@ -159,6 +160,7 @@
                 v-model="form.self_amount"
                 type="number"
                 placeholder="请输入金额，例如：200"
+                min="0"
               />
             </div>
             <div>
@@ -167,6 +169,7 @@
                 v-model="form.country_amount"
                 type="number"
                 placeholder="请输入金额，例如：200"
+                min="0"
               />
             </div>
             <div>
@@ -175,6 +178,7 @@
                 v-model="form.current_amount"
                 type="number"
                 placeholder="请输入金额，例如：200"
+                min="0"
               />
             </div>
           </div>
@@ -185,6 +189,7 @@
                 v-model="form.other_amount"
                 type="number"
                 placeholder="请输入金额，例如：200"
+                min="0"
               />
             </div>
             <div>
@@ -193,6 +198,7 @@
                 v-model="form.foreign_amount"
                 type="number"
                 placeholder="请输入金额，例如：200"
+                min="0"
               />
             </div>
           </div>
@@ -249,7 +255,6 @@
               v-model="form.study_content"
               type="textarea"
               rows="6"
-              :disabled="disabled1"
               placeholder="请输入主要研究内容"
             >
             </el-input>
@@ -260,7 +265,6 @@
               v-model="form.check_content"
               type="textarea"
               rows="6"
-              :disabled="disabled1"
               placeholder="请输入考核指标"
             >
             </el-input>
@@ -271,7 +275,6 @@
               v-model="form.expect_content"
               type="textarea"
               rows="6"
-              :disabled="disabled1"
               placeholder="请输入研究成果"
             >
             </el-input>
@@ -287,7 +290,6 @@
               <input
                 v-model="form.leader_name"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人姓名"
               />
             </div>
@@ -296,7 +298,6 @@
               <input
                 v-model="form.leader_mobile"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人电话"
               />
             </div>
@@ -307,7 +308,6 @@
               <input
                 v-model="form.leader_email"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人电子邮箱"
               />
             </div>
@@ -316,7 +316,6 @@
               <input
                 v-model="form.leader_job"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入负责人职务/职称"
               />
             </div>
@@ -326,7 +325,6 @@
             <input
               v-model="form.leader_address"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入负责人通讯地址"
             />
           </div>
@@ -335,7 +333,6 @@
             <input
               v-model="form.leader_company"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入负责人所在单位"
             />
           </div>
@@ -350,7 +347,6 @@
               <input
                 v-model="form.link_name"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人姓名"
               />
             </div>
@@ -359,7 +355,6 @@
               <input
                 v-model="form.link_mobile"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人电话"
               />
             </div>
@@ -370,7 +365,6 @@
               <input
                 v-model="form.link_email"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人电子邮箱"
               />
             </div>
@@ -379,7 +373,6 @@
               <input
                 v-model="form.link_job"
                 type="text"
-                :disabled="disabled1"
                 placeholder="请输入经办人职务/职称"
               />
             </div>
@@ -389,7 +382,6 @@
             <input
               v-model="form.link_address"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入经办人通讯地址"
             />
           </div>
@@ -398,7 +390,6 @@
             <input
               v-model="form.link_company"
               type="text"
-              :disabled="disabled1"
               placeholder="请输入经办人所在单位"
             />
           </div>
@@ -429,8 +420,8 @@ export default {
       smallcates: [],
       bigtitle: '',
       form: {
-        formsType: 1,
-        category_id: '',
+        type: 1,
+        category_id: 0,
         partner_name: [''],
         address: ['']
       },
@@ -466,14 +457,20 @@ export default {
           JSON.parse(localStorage.getItem('form')) &&
           JSON.parse(localStorage.getItem('form')) != {}
         ) {
+          console.log(this.form)
           this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
           this.partner = deepCopy(this.form.partner_name)
           this.addressb = deepCopy(this.form.address)
+          this.bigOn = this.form.type
+          this.smallOn = this.form.category_id
         }
         if (this.$route.query.id) {
           this.getprodetail()
         }
       }
+    },
+    bigOn(val) {
+      this.beforeapply()
     }
   },
   mounted() {
@@ -494,8 +491,8 @@ export default {
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
       this.partner = deepCopy(this.form.partner_name)
       this.addressb = deepCopy(this.form.address)
-      // this.form.formsType = this.bigOn
-      // this.form.category_id = this.smallOn
+      this.bigOn = this.form.type
+      this.smallOn = this.form.category_id
     }
     if (this.$route.query.id) {
       this.getprodetail()
@@ -505,7 +502,7 @@ export default {
     togglebig(val) {
       this.bigOn = val.id
       this.smallOn = ''
-      this.form.formsType = this.bigOn
+      this.form.type = this.bigOn
       this.beforeapply()
     },
     togglesmall(val) {
@@ -514,7 +511,6 @@ export default {
       this.beforeapply()
     },
     stepone() {
-      // this.$router.push('/creating')
       this.$router.push({ path: '/creating', query: { id: this.$route.query.id } })
     },
     steptwo() {
@@ -585,7 +581,6 @@ export default {
     },
     userinfo() {
       this.loading = true
-      // this.user_info = {}
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
@@ -680,25 +675,24 @@ export default {
           } else {
             this.addressb = ['']
           }
-          this.form.partner_name = this.partner
-          this.form.address = this.addressb
-          for (const i in this.form) {
-            if (
-              i == 'self_amount' ||
-              i == 'country_amount' ||
-              i == 'current_amount' ||
-              i == 'other_amount' ||
-              i == 'foreign_amount'
-            ) {
-              this.form[i] = parseInt(this.form[i])
-            }
-          }
-          if (v.data.data.data.category_id && Number(v.data.data.data.category_id)) {
+          this.form.partner_name = deepCopy(this.partner)
+          this.form.address = deepCopy(this.addressb)
+          if (
+            v.data.data.data.category_id &&
+            Number(v.data.data.data.category_id)
+          ) {
             this.form.category_id = v.data.data.data.category_id
             this.smallOn = v.data.data.data.category_id
           } else {
             this.form.category_id = 0
           }
+          if (v.data.data.data.type && Number(v.data.data.data.type)) {
+            this.form.type = v.data.data.data.type
+            this.smallOn = v.data.data.data.type
+          } else {
+            this.form.type = 1
+          }
+          console.log(this.partner)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -724,7 +718,8 @@ export default {
     },
     handlestarttime(data) {
       let timedata = {}
-      if (typeof data == 'string') {
+      console.log(typeof data)
+      if (data != {} && typeof data == 'string') {
         if (data.slice(0, 1) != 0) {
           timedata = new Date(data)
           let year = timedata.getFullYear()
@@ -735,6 +730,9 @@ export default {
         } {
           return data
         }
+      } else if (data && data == {}) {
+        console.log(data)
+        return data
       } else {
         timedata = new Date(data)
         let year = timedata.getFullYear()
@@ -746,7 +744,7 @@ export default {
     },
     handlendtime(data) {
       let timedata = {}
-      if (typeof data == 'string') {
+      if (data && typeof data == 'string') {
         if (data.slice(0, 1) != 0) {
           timedata = new Date(data)
           let year = timedata.getFullYear()
@@ -770,7 +768,7 @@ export default {
       // 首先先将过渡数据赋值给传输数据,然后转化时间数据
       data.address = deepCopy(this.addressb)
       data.partner_name = deepCopy(this.partner)
-      data.formsType = 1
+      // data.formsType = 1
       for (const i in data) {
         if (i == 'starttime') {
           data.starttime = this.handlestarttime(data[i])
@@ -809,7 +807,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.formsType = 1
+      data1.type = this.form.type
       if (this.form.category_id) {
         data1.category_id = this.form.category_id
       }
@@ -841,16 +839,14 @@ export default {
       if (this.form.foreign_amount && this.form.foreign_amount) {
         data1.foreign_amount = this.form.foreign_amount
       }
-      if (this.sum && this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')) {
+      if (this.sum) {
         this.form.amount = this.sum
-        data1.amount = this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')
+        data1.amount = this.sum
       }
       if (this.partner && this.partner[0]) {
-        // 如果存在值，就赋值给form中对应的数据
         data1.partner_name = JSON.stringify(this.partner)
       }
       if (this.addressb && this.addressb[0]) {
-        // 如果存在值，就赋值给form中对应的数据
         data1.address = JSON.stringify(this.addressb)
       }
       if (this.form.study_content && this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')) {
@@ -902,13 +898,11 @@ export default {
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
-          // 在这里首先对form中的partner_name和address进行处理
           this.handleform(this.form)
           this.$message({
             type: 'success',
             message: '保存成功'
           })
-          // 保存成功之后，返回的id要全局保存，为了在下一个页面使用
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -945,7 +939,7 @@ export default {
       const data1 = {}
       let data2 = {}
       if (!formValidate2(this.form, this)) return
-      this.form.amount = this.sum.toString().replace(/(^\s*)|(\s*$)/g, '')
+      this.form.amount = this.sum
       if (this.form.category_id) {
         data1.category_id = this.form.category_id
       } else {
@@ -980,7 +974,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.formsType = 1
+      data1.type = 1
       data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
       data1.starttime = this.handlestarttime(this.form.starttime)
@@ -1062,6 +1056,7 @@ export default {
         .then(() => {
           this.form.partner_name.push('')
           this.partner.push('')
+          console.log(this.partner)
         })
         .catch(() => {})
     },

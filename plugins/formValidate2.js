@@ -26,46 +26,10 @@ export function formValidate2(data, that) {
       message: '请选择完成时间'
     })
     return false
-  } else if (!data.self_amount) {
-    that.$message({
-      type: 'error',
-      message: '请输入自筹金额'
-    })
-    return false
-  } else if (!data.country_amount) {
-    that.$message({
-      type: 'error',
-      message: '请输入国家拨/贷款'
-    })
-    return false
-  } else if (!data.current_amount) {
-    that.$message({
-      type: 'error',
-      message: '请输入地方拨/贷款'
-    })
-    return false
-  } else if (!data.other_amount) {
-    that.$message({
-      type: 'error',
-      message: '请输入其他金额'
-    })
-    return false
-  } else if (!data.foreign_amount) {
-    that.$message({
-      type: 'error',
-      message: '请输入外方金额'
-    })
-    return false
-  } else if (!that.sum || !that.sum.toString().replace(/(^\s*)|(\s*$)/g, '')) {
+  } else if (!that.sum) {
     that.$message({
       type: 'error',
       message: '请输入总金额'
-    })
-    return false
-  } else if (!that.partner || !that.partner[0]) {
-    that.$message({
-      type: 'error',
-      message: '请至少输入一个合作单位'
     })
     return false
   } else if (!that.addressb || !that.addressb[0]) {

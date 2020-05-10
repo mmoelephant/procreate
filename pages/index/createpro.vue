@@ -104,6 +104,9 @@
             <span v-if="item.isdel == '1'" @click="delpro(item.id)">
               删除
             </span>
+            <span v-if="item.isagain == '1'" @click="applyagain(item.id)">
+              重新申报
+            </span>
             <span></span>
           </p>
         </div>
@@ -324,6 +327,9 @@ export default {
       localStorage.removeItem('applyid')
     },
     edit(val) {
+      this.$router.push({ path: '/creating', query: { id: Number(val) } })
+    },
+    applyagain(val) {
       this.$router.push({ path: '/creating', query: { id: Number(val) } })
     },
     details(val) {

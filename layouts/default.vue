@@ -169,9 +169,10 @@ export default {
           for (const i in commondata) {
             data1[i] = commondata[i]
           }
-          if (localStorage.getItem('userid')) {
-            data1.user_id = localStorage.getItem('userid')
-          }
+          data1.user_id = 0
+          // if (localStorage.getItem('userid')) {
+          //   data1.user_id = localStorage.getItem('userid')
+          // }
           data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
           data1.nonce_str =
             new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
