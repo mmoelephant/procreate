@@ -29,13 +29,13 @@ export default {
   },
   mounted() {
     /*eslint-disable*/
-    if (
-      !localStorage.getItem('userid') ||
-      !Number(localStorage.getItem('userid'))
-    ) {
-      this.$router.push('/login')
-      return
-    }
+    // if (
+    //   !localStorage.getItem('userid') ||
+    //   !Number(localStorage.getItem('userid'))
+    // ) {
+    //   this.$router.push('/login')
+    //   return
+    // }
     // this.getautheninfo()
     this.userinfo()
   },

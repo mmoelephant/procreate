@@ -4,7 +4,7 @@
       下载申报书
     </div>
     <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div>
-    <div id="filecontent">
+    <div v-if="detailinfo != {}" id="filecontent">
       <div class="panel size">
         <div id="qrcode" class="maCover maCoverStyle"></div>
         <div class="number">
@@ -839,6 +839,12 @@ import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
 export default {
+  props: {
+    ids: {
+      default: 0,
+      type: Number
+    }
+  },
   data() {
     return {
       detailinfo: {},
@@ -852,24 +858,25 @@ export default {
     this.qrcodeObj = {}
     this.jsbarcode = {}
     /*eslint-disable*/
-    this.$message({
-      type: 'info',
-      message: '请必须下载申报书，否则立项将有可能导致不成功！'
-    })
-    if (
-      !localStorage.getItem('userid') ||
-      !Number(localStorage.getItem('userid'))
-    ) {
-      this.$router.push('/login')
-      return
+    // if (
+    //   !localStorage.getItem('userid') ||
+    //   !Number(localStorage.getItem('userid'))
+    // ) {
+    //   this.$router.push('/login')
+    //   return
+    // }
+    // if (this.$route.query.id) {
+    //   this.getprodetail()
+    // }
+    let id = this.$route.query.shenbaoshu
+    if (this.ids !== 0) {
+      id = this.ids
     }
-    if (this.$route.query.id) {
-      this.getprodetail()
-    }
+    this.getprodetail(id)
   },
   methods: {
-    getprodetail() {
-      this.loading = true
+    getprodetail(id) {
+      // this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
@@ -889,7 +896,7 @@ export default {
       if (localStorage.getItem('accesstoken')) {
         data1.access_token = localStorage.getItem('accesstoken')
       }
-      data1.id = this.$route.query.id
+      data1.id = id
       data2 = datawork(data1)
       this.$api.get_pro_detail(data2).then((v) => {
         if (v.data.errcode === 0) {
@@ -1011,7 +1018,10 @@ export default {
   padding-left: 324px;
 }
 .dwlbtn {
-  position: absolute;
+  position: relative;
+  top: 20px;
+  left: 10px;
+  z-index: 3;
   width: 100px;
   height: 36px;
   text-align: center;
@@ -1021,8 +1031,9 @@ export default {
   cursor: pointer;
 }
 .dwltip {
-  position: absolute;
-  top: 100px;
+  position: relative;
+  top: 20px;
+  left: 10px;
   z-index: 2;
   color: red;
 }

@@ -87,6 +87,21 @@
         <el-button type="primary" @click="toword">生成申报书</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      :visible.sync="shushow"
+      title="申报书详情"
+      :close-on-click-modal="false"
+      :lock-scroll="false"
+      width="1240px"
+      class="shudialog"
+    >
+      <div>
+        <shu :ids="Id"></shu>
+      </div>
+      <!-- <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="close">关闭</el-button>
+      </span> -->
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -105,7 +120,11 @@ import { formValidate8 } from '../../../plugins/formValidate8'
 import { formValidate92 } from '../../../plugins/formValidate92'
 // import { formValidate102 } from '../../../plugins/formvalidate102'
 import { formValidate11 } from '../../../plugins/formValidate11'
+import shu from '../../declaration/great/cover'
 export default {
+  components: {
+    shu
+  },
   data() {
     return {
       form: {},
@@ -114,6 +133,7 @@ export default {
       files1: [],
       Id: 0,
       tipshow: false,
+      shushow: false,
       loading: false
     }
   },
@@ -279,11 +299,6 @@ export default {
       this.$api.commit_create(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
-          this.$message({
-            type: 'success',
-            message: '提交成功',
-            duration: 1000
-          })
           if (this.$route.query.id) {
             this.Id = Number(this.$route.query.id)
           } else if(localStorage.getItem('applyid')) {
@@ -321,9 +336,13 @@ export default {
     toword() {
       const that = this
       this.tipshow = false
-      setTimeout(() => {
-        that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
-      }, 1000)
+      this.shushow = true
+      // setTimeout(() => {
+      //   that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
+      // }, 1000)
+    },
+    close() {
+      this.shushow = false
     },
     uploadchange1() {
       const inputDOM = this.$refs.upload1
@@ -416,8 +435,7 @@ export default {
     downfile(val) {
       window.location.href = val.url
       // window.open(val.url, '_blank')
-    },
-    edit() {}
+    }
   }
 }
 </script>
@@ -468,4 +486,11 @@ export default {
   justify-content space-between
   width 100%
   margin-bottom 10px
+</style>
+<style lang="stylus">
+.shudialog
+  .el-dialog
+    margin-top 0 !important
+  .el-dialog__body
+    padding 0
 </style>

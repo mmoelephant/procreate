@@ -28,8 +28,8 @@
           >
             {{ item.name ? item.name : '-' }}
           </div>
-          <div @click="applytip">科技示范项目</div>
-          <div @click="applytip2">国际合作项目</div>
+          <div @click="applytip('科技示范项目')">科技示范项目</div>
+          <div @click="applytip('国际合作项目')">国际合作项目</div>
         </div>
         <div v-if="catedisable" class="bigcate">
           <div
@@ -40,8 +40,12 @@
           >
             {{ item.name ? item.name : '-' }}
           </div>
-          <div class="bigrey" @click="applytip">科技示范项目</div>
-          <div class="bigrey" @click="applytip2">国际合作项目</div>
+          <div class="bigrey" @click="applytip('科技示范项目')">
+            科技示范项目
+          </div>
+          <div class="bigrey" @click="applytip('国际合作项目')">
+            国际合作项目
+          </div>
         </div>
         <p>请继续选择子类别</p>
         <div v-if="!catedisable" class="smallcate">
@@ -423,6 +427,21 @@
         <div @click="savemsg">保存</div>
         <div class="submitbtn" @click="next">下一步</div>
       </div>
+      <el-dialog
+        :visible.sync="tipshow"
+        title="提示"
+        :close-on-click-modal="false"
+        :lock-scroll="false"
+        :show-close="false"
+        width="500px"
+      >
+        <div>
+          {{ tiptext ? tiptext : '-' }}
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="sure">确定并下载申报书</el-button>
+        </span>
+      </el-dialog>
     </div>
     <div v-else>
       <nuxt />
@@ -455,6 +474,9 @@ export default {
       endtime: '',
       disabled1: false,
       catedisable: false,
+      tipshow: false,
+      tiptext: '',
+      sbsfiles: [],
       loading: false
     }
   },
@@ -586,6 +608,7 @@ export default {
           this.bigcates = v.data.data.typeData
           this.smallcates = v.data.data.categoryData
           this.bigtitle = v.data.data.title
+          this.sbsfiles = deepCopy(v.data.data.sbs_files)
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -1209,17 +1232,21 @@ export default {
         query: { id: this.$route.query.id }
       })
     },
-    applytip() {
-      this.$message({
-        type: 'error',
-        message: '抱歉，暂未开通该类别的项目申报，请于2020年5月12号进行该类别的项目的申报。'
-      })
+    applytip(val) {
+      this.tipshow = true
+      if (val === '科技示范项目') {
+        this.tiptext = val + '项目申报暂未开通，您可以点此下载申报书，准备资料，申报通道将于5月12日9时开通，敬请关注！'
+      } else {
+        this.tiptext = val + '项目申报暂未开通，您可以点此下载申报书，准备资料，申报通道将于5月13日9时开通，敬请关注！'
+      }
     },
-    applytip2() {
-      this.$message({
-        type: 'error',
-        message: '抱歉，暂未开通该类别的项目申报，请于2020年5月13号进行该类别的项目的申报。'
-      })
+    sure() {
+      this.tipshow = false
+      if (this.tiptext === '科技示范项目项目申报暂未开通，您可以点此下载申报书，准备资料，申报通道将于5月12日9时开通，敬请关注！') {
+        window.location.href = this.sbsfiles[0].url
+      } else {
+        window.location.href = this.sbsfiles[1].url
+      }
     }
   }
 }

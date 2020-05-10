@@ -40,6 +40,10 @@ ul, li {
   margin: 60px 0;
 }
 
+.main.main2 {
+  margin: 0
+}
+
 .el-footer {
   padding: 0;
   margin-bottom: 20px;

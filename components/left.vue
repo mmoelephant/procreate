@@ -15,23 +15,23 @@
       </li>
       <li>
         <ul>
-          <li class="bignav">
+          <li class="bignav" @click="shortip('项目中期')">
             <i class="iconfont">&#xe61f;</i>
             项目中期
           </li>
-          <li>中期汇报</li>
-          <li>变更申请</li>
-          <li>中止申请</li>
+          <li @click="shortip('中期汇报')">中期汇报</li>
+          <li @click="shortip('变更申请')">变更申请</li>
+          <li @click="shortip('中止申请')">中止申请</li>
         </ul>
       </li>
       <li>
         <ul>
-          <li class="bignav">
+          <li class="bignav" @click="shortip('项目验收')">
             <i class="iconfont">&#xe61c;</i>
             项目验收
           </li>
-          <li>验收申请</li>
-          <li>证书申请</li>
+          <li @click="shortip('验收申请')">验收申请</li>
+          <li @click="shortip('证书申请')">证书申请</li>
         </ul>
       </li>
       <li
@@ -93,6 +93,12 @@ export default {
     },
     accoutset() {
       this.$router.push('/accoutset')
+    },
+    shortip(val) {
+      this.$message({
+        type: 'error',
+        message: '您还没有立项的项目无法进行' + val
+      })
     }
   }
 }
