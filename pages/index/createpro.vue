@@ -340,9 +340,13 @@ export default {
     applyagain(val) {
       this.$router.push({ path: '/creating', query: { id: Number(val) } })
     },
+    // 详情页数据
     details(val) {
-      this.dialogshow = true
-      this.detailid = val
+      this.$router.push({
+        path: '/detail?id=' + val
+      })
+      // this.dialogshow = true
+      // this.detailid = val
     },
     sure() {
       this.dialogshow = false
