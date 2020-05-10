@@ -44,9 +44,7 @@
         <div class="item">
           <div class="title limit">申报时间</div>
           <div class="line">
-            {{
-              detailinfo.submittime ? detailinfo.submittime.slice(0, 10) : '-'
-            }}
+            {{ detailinfo.submittime ? detailinfo.submittime : '-' }}
           </div>
         </div>
         <div class="remark">云南省住房和城乡建设厅</div>
