@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$route.query.layer === 'width' ? 'detaillController' : ''">
     <div v-if="info !== null" class="back">
       <div class="backName">查看详情</div>
 
@@ -49,15 +49,21 @@
       <div class="small">
         <div class="top">
           <div class="topName">审核信息</div>
-          <div v-if="false" class="topBtn">初审退回</div>
-          <div v-if="false" class="topBtn">退回修改</div>
-          <div class="topBtn" style="background:rgba(0,159,48,1);">
+          <div class="topBtn" :class="'statusColor' + info.statusType">
             {{ info.statusName }}
           </div>
         </div>
         <div v-if="verifyData" class="bottom">
           <div class="bottomL">
-            <img src="http://placehold.it/350x150" class="icon" />
+            <img
+              v-if="
+                parseInt(info.statusType) === 2 ||
+                  parseInt(info.statusType) === 4
+              "
+              src="~/assets/img/cha.png"
+              class="icon"
+            />
+            <img v-else src="~/assets/img/gou.png" class="icon" />
             <div style="margin-left:20px;">
               <div class="black">
                 {{ verifyData.content }}
@@ -261,7 +267,7 @@
             <div class="contItem marT20" @click="tabShow1 = !tabShow1">
               <div class="itemBlues">
                 <div class="numbers">1.申请立项理由</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow1" class="itemWhite">
@@ -292,7 +298,7 @@
             <div class="contItem marT20" @click="tabShow2 = !tabShow2">
               <div class="itemBlues">
                 <div class="numbers">2.国内、外研究现状和趋势</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow2" class="itemWhite">
@@ -329,7 +335,7 @@
             <div class="contItem marT20" @click="tabShow3 = !tabShow3">
               <div class="itemBlues">
                 <div class="numbers">3.研究目标和预期成果</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow3" class="itemWhite">
@@ -360,7 +366,7 @@
             <div class="contItem marT20" @click="tabShow4 = !tabShow4">
               <div class="itemBlues">
                 <div class="numbers">4.项目主要内容</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow4" class="itemWhite">
@@ -391,7 +397,7 @@
             <div class="contItem marT20" @click="tabShow5 = !tabShow5">
               <div class="itemBlues">
                 <div class="numbers">5.研究思路、方法和计划进度</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow5" class="itemWhite">
@@ -422,7 +428,7 @@
             <div class="contItem marT20" @click="tabShow6 = !tabShow6">
               <div class="itemBlues">
                 <div class="numbers">6.工作基础和科研保障情况</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow6" class="itemWhite">
@@ -459,7 +465,7 @@
             <div class="contItem marT20" @click="tabShow7 = !tabShow7">
               <div class="itemBlues">
                 <div class="numbers">7.主要研究人员</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow7" class="whiteFoot">
@@ -530,7 +536,7 @@
                 <div class="numbers">
                   8.项目研究单位及合作单位（打印后加盖公章生效）
                 </div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow8" class="whiteFoot">
@@ -606,7 +612,7 @@
             <div class="contItem marT20" @click="tabShow9 = !tabShow9">
               <div class="itemBlues">
                 <div class="numbers">9.上传相关附件</div>
-                <img src="http://placehold.it/350x150" class="cha" />
+                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
               </div>
             </div>
             <div v-if="tabShow9" class="whiteFoot">
@@ -651,6 +657,18 @@
   </div>
 </template>
 <style>
+.statusColor1 {
+  background-color: green !important;
+}
+.statusColor2 {
+  background-color: black !important;
+}
+.statusColor3 {
+  background-color: rgba(51, 51, 51, 1) !important;
+}
+.statusColor4 {
+  background-color: red !important;
+}
 .backName {
   font-size: 28px;
   font-weight: 400;
@@ -952,6 +970,9 @@ table tr td {
 }
 .sizeStyle {
   cursor: pointer;
+}
+.detaillController {
+  max-width: 800px;
 }
 </style>
 <script>
