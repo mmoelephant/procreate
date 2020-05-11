@@ -348,12 +348,15 @@ export default {
       this.$router.push({ path: '/creating', query: { id: Number(val) } })
     },
     view(val1, val2) {
+      let url = null;
       // 这里是预览申报书的页面
       if (val2 == 3) {
-        window.open('http://kjxm.ynbzde.com/declaration/great/cover2?shenbaoshu=' + val1, '_blank')
+        url = 'http://kjxm.ynbzde.com/declaration/great/cover2?shenbaoshu=' + val1
       } else {
-        window.open('http://kjxm.ynbzde.com/declaration/great/cover?shenbaoshu=' + val1, '_blank')
+        url = 'http://kjxm.ynbzde.com/declaration/great/cover?shenbaoshu=' + val1
       }
+      console.log(url)
+      window.open(url, '_blank')
     },
     // 详情页数据
     details(val1, val2) {

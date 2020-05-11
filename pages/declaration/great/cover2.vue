@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="remark">云南省住房和城乡建设厅制标准定额处</div>
-        <div class="date remark">二〇二五年五月制</div>
+        <div class="date remark">二〇二〇年五月制</div>
       </div>
       <div class="panel size2">
         <div class="headTitle">一、申报单位概况</div>

@@ -1,13 +1,6 @@
 <template>
   <div v-loading.fullscreen="loading">
-    <el-header
-      v-if="
-        route.name.slice(0, 5) != 'login' &&
-          route.path != '/declaration/great/cover' &&
-          route.path != '/declaration/great/cover2'
-      "
-      class="commonheader"
-    >
+    <el-header v-if="route.name.slice(0, 5) != 'login'" class="commonheader">
       <div class="webtitle" @click="toIndex">
         云南省住房和城乡建设厅科学技术计划项目管理系统
       </div>
@@ -31,13 +24,7 @@
     >
       <nuxt />
     </el-main>
-    <el-footer
-      v-if="
-        route.name.slice(0, 5) != 'login' &&
-          route.path != '/declaration/great/cover' &&
-          route.path != '/declaration/great/cover2'
-      "
-    >
+    <el-footer v-if="route.name.slice(0, 5) != 'login'">
       <div class="footerinfo">
         <span>主管单位：云南省住房和城乡建设厅</span>
         <span>联系电话：0871-64320642</span>
