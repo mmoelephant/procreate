@@ -3,7 +3,7 @@
     <div class="dwlbtn" @click="downloadfile">
       下载申报书
     </div>
-    <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div>
+    <!-- <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div> -->
     <div v-if="detailinfo != {}" id="filecontent">
       <div class="panel size">
         <div id="qrcode" class="maCover maCoverStyle"></div>

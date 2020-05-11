@@ -350,9 +350,9 @@ export default {
     view(val1, val2) {
       // 这里是预览申报书的页面
       if (val2 == 3) {
-        window.open('http://kjxm.ynbzde.com/declaration/great/cover2/?shenbaoshu=' + val1, '_blank')
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover2?shenbaoshu=' + val1, '_blank')
       } else {
-        window.open('http://kjxm.ynbzde.com/declaration/great/cover/?shenbaoshu=' + val1, '_blank')
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover?shenbaoshu=' + val1, '_blank')
       }
     },
     // 详情页数据

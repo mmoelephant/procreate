@@ -1489,9 +1489,9 @@ export default {
     view() {
       // 这里是预览申报书的页面
       if (this.infoType == 3) {
-        window.open('http://kjxm.ynbzde.com/declaration/great/cover2/?shenbaoshu=' + this.infoId, '_blank')
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover2?shenbaoshu=' + this.infoId, '_blank')
       } else {
-        window.open('http://kjxm.ynbzde.com/declaration/great/cover/?shenbaoshu=' + this.infoId, '_blank')
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover?shenbaoshu=' + this.infoId, '_blank')
       }
     }
   }
