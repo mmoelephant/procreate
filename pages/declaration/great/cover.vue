@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen="loading">
-    <div class="dwlbtn" @click="getPdf(filetitle, 'filecontent')">
+    <div class="dwlbtn" @click="downloadfile">
       下载申报书
     </div>
     <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div>
@@ -49,11 +49,6 @@
         </div>
         <div class="remark">云南省住房和城乡建设厅</div>
         <div class="date remark">二〇二五年五月制</div>
-        <!-- <div class="page">
-          <div class="grayLine"></div>
-          <div class="pageNumber">1</div>
-          <div class="grayLine"></div>
-        </div> -->
       </div>
       <div class="panel size2">
         <div class="headTitle">一、申请立项理由</div>
@@ -86,11 +81,6 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">2</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -114,15 +104,9 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">3</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
-        <!-- <div class="headTitle">二、国内外研究现状和趋势</div> -->
         <table class="table" style="margin-top: 60px">
           <tr class="centerCont">
             <td class="padding20" style="height:620px;">
@@ -179,11 +163,6 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">4</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -217,11 +196,6 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">5</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -255,11 +229,6 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">6</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -283,15 +252,9 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">7</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
-        <!-- <div class="headTitle">六、工作基础和科研保障条件</div> -->
         <table class="table" style="margin-top: 60px">
           <tr class="centerCont">
             <td class="padding20" style="height:620px;">
@@ -319,7 +282,6 @@
       </div>
       <div class="panel size2">
         <div class="headTitle">
-          <!-- style="margin-bottom:100px;" -->
           七、主要工作人员
         </div>
         <table class="table table1">
@@ -485,11 +447,6 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">8</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -567,11 +524,6 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">9</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -761,11 +713,6 @@
             </tr>
           </thead>
         </table>
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">10</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
       <div class="panel size2">
@@ -824,17 +771,13 @@
           </tr>
         </table>
 
-        <!-- <div class="pageCont">
-          <div class="grayLine"></div>
-          <div class="pageNumber">11</div>
-          <div class="grayLine"></div>
-        </div> -->
         <svg id="barcode" class="ma maPage"></svg>
       </div>
     </div>
   </div>
 </template>
 <script>
+import $ from 'jquery'
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
@@ -903,21 +846,25 @@ export default {
           this.loading = false
           this.detailinfo = v.data.data.data
           this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
-          this.qrcodeObj = new QRCode('qrcode', {
-            text: v.data.data.data.two_code,    
-            width: 150,
-            height: 150,
-            colorDark : '#000',
-            colorLight : '#fff',
-            correctLevel : QRCode.CorrectLevel.H
-          })
-          this.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-            // format: "pharmacode",
-            lineColor: "#000",
-            width: 4,
-            height: 40,
-            displayValue: false
-          })
+          if (v.data.data.data.two_code) {
+            this.qrcodeObj = new QRCode('qrcode', {
+              text: v.data.data.data.two_code,    
+              width: 150,
+              height: 150,
+              colorDark : '#000',
+              colorLight : '#fff',
+              correctLevel : QRCode.CorrectLevel.H
+            })
+          }
+          if (v.data.data.data.one_code) {
+            this.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+              // format: "pharmacode",
+              lineColor: "#000",
+              width: 4,
+              height: 40,
+              displayValue: false
+            })
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -940,32 +887,15 @@ export default {
           })
         }
       })
+    },
+    downloadfile() {
+      const that = this
+      document.getElementById('filecontent').scrollIntoView()
+      $('html , body').animate({ scrollTop: 0 }, 500)
+      setTimeout(() => {
+        that.getPdf(that.filetitle, 'filecontent')
+      }, 1000)
     }
-    // uploadwl() {
-    //   const commondata = JSON.parse(localStorage.getItem('commondata'))
-    //   const data1 = {}
-    //   let data2 = {}
-    //   const that = this
-    //   for (const i in commondata) {
-    //     data1[i] = commondata[i]
-    //   }
-    //   if (localStorage.getItem('userid')) {
-    //     data1.user_id = localStorage.getItem('userid')
-    //   }
-    //   data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
-    //   data1.nonce_str =
-    //     new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
-    //   if (localStorage.getItem('clientid')) {
-    //     data1.client_id = localStorage.getItem('clientid')
-    //   }
-    //   if (localStorage.getItem('accesstoken')) {
-    //     data1.access_token = localStorage.getItem('accesstoken')
-    //   }
-    //   data2 = datawork(data1)
-    //   this.$api.upload_pro_file(data2).then((v) => {
-    //     console.log(v)
-    //   }
-    // }
   },
   head:{
     script: [

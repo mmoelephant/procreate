@@ -920,11 +920,20 @@ export default {
     },
     savemsg() {
       // "保存"操作
-      this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
       const that = this
+      if (this.form.category_id) {
+        data1.category_id = this.form.category_id
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请先选择子类别'
+        })
+        return
+      }
+      this.loading = true
       for (const i in commondata) {
         data1[i] = commondata[i]
       }
@@ -1204,11 +1213,20 @@ export default {
     },
     savemsg2() {
       // "保存"操作
-      this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
       const that = this
+      if (this.form.category_id) {
+        data1.category_id = this.form.category_id
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请先选择子类别'
+        })
+        return
+      }
+      this.loading = true
       for (const i in commondata) {
         data1[i] = commondata[i]
       }

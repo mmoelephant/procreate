@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen="loading">
-    <div class="dwlbtn" @click="getPdf(filetitle, 'filecontent')">
+    <div class="dwlbtn" @click="downloadfile">
       下载申报书
     </div>
     <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div>
@@ -762,6 +762,7 @@
   </div>
 </template>
 <script>
+import $ from 'jquery'
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
@@ -830,21 +831,25 @@ export default {
           this.loading = false
           this.detailinfo = v.data.data.data
           this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
-          this.qrcodeObj = new QRCode('qrcode', {
-            text: v.data.data.data.two_code,    
-            width: 150,
-            height: 150,
-            colorDark : '#000',
-            colorLight : '#fff',
-            correctLevel : QRCode.CorrectLevel.H
-          })
-          this.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-            // format: "pharmacode",
-            lineColor: "#000",
-            width: 4,
-            height: 40,
-            displayValue: false
-          })
+          if (v.data.data.data.two_code) {
+            this.qrcodeObj = new QRCode('qrcode', {
+              text: v.data.data.data.two_code,    
+              width: 150,
+              height: 150,
+              colorDark : '#000',
+              colorLight : '#fff',
+              correctLevel : QRCode.CorrectLevel.H
+            })
+          }
+          if (v.data.data.data.one_code) {
+            this.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+              // format: "pharmacode",
+              lineColor: "#000",
+              width: 4,
+              height: 40,
+              displayValue: false
+            })
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
@@ -867,32 +872,15 @@ export default {
           })
         }
       })
+    },
+    downloadfile() {
+      const that = this
+      document.getElementById('filecontent').scrollIntoView()
+      $('html , body').animate({ scrollTop: 0 }, 500)
+      setTimeout(() => {
+        that.getPdf(that.filetitle, 'filecontent')
+      }, 1000)
     }
-    // uploadwl() {
-    //   const commondata = JSON.parse(localStorage.getItem('commondata'))
-    //   const data1 = {}
-    //   let data2 = {}
-    //   const that = this
-    //   for (const i in commondata) {
-    //     data1[i] = commondata[i]
-    //   }
-    //   if (localStorage.getItem('userid')) {
-    //     data1.user_id = localStorage.getItem('userid')
-    //   }
-    //   data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
-    //   data1.nonce_str =
-    //     new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
-    //   if (localStorage.getItem('clientid')) {
-    //     data1.client_id = localStorage.getItem('clientid')
-    //   }
-    //   if (localStorage.getItem('accesstoken')) {
-    //     data1.access_token = localStorage.getItem('accesstoken')
-    //   }
-    //   data2 = datawork(data1)
-    //   this.$api.upload_pro_file(data2).then((v) => {
-    //     console.log(v)
-    //   }
-    // }
   },
   head:{
     script: [
