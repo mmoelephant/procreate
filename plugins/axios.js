@@ -126,6 +126,14 @@ const api = {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Enterprise/Forms/searchBefore', data)
   },
+  save_create2(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/FormsBak/handlek', data)
+  },
+  commit_create2(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/handlek', data)
+  },
   get_pro_list(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Enterprise/Forms/search', data)

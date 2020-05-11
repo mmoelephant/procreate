@@ -80,11 +80,11 @@
                 : item.statusType == '1'
                 ? 'col6 green'
                 : item.statusType == '2'
-                ? 'col6 red'
+                ? 'col6'
                 : item.statusType == '3'
                 ? 'col6 grey'
                 : item.statusType == '4'
-                ? 'col6 blue'
+                ? 'col6 red'
                 : 'col6'
             "
             :title="item.statusName ? item.statusName : '-'"

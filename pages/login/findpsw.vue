@@ -311,6 +311,12 @@ export default {
           })
         }
       })
+    },
+    tofilesys() {
+      window.open(
+        'http://beian.miit.gov.cn/state/outPortal/loginPortal.action',
+        '_blank'
+      )
     }
   }
 }

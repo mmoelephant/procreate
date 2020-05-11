@@ -28,7 +28,7 @@
           >
             {{ item.name ? item.name : '-' }}
           </div>
-          <div @click="applytip('科技示范项目')">科技示范项目</div>
+          <!-- <div @click="techmodel">科技示范项目</div> -->
           <div @click="applytip('国际合作项目')">国际合作项目</div>
         </div>
         <div v-if="catedisable" class="bigcate">
@@ -40,9 +40,9 @@
           >
             {{ item.name ? item.name : '-' }}
           </div>
-          <div class="bigrey" @click="applytip('科技示范项目')">
+          <!-- <div class="bigrey" @click="techmodel">
             科技示范项目
-          </div>
+          </div> -->
           <div class="bigrey" @click="applytip('国际合作项目')">
             国际合作项目
           </div>
@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div v-if="route.path != '/creating'" class="d-guide">
+    <div v-if="route.path != '/creating' && bigOn != 3" class="d-guide">
       <div
         title="1.申请立项理由"
         :class="route.path == '/creating/step1' ? 'stepOn' : ''"
@@ -134,6 +134,85 @@
         @click="tostep9"
       >
         9.附件
+      </div>
+    </div>
+    <div v-if="route.path != '/creating' && bigOn == 3" class="d-guide">
+      <div
+        title="1.申报单位概况"
+        :class="route.path == '/creating/step12' ? 'stepOn' : ''"
+        @click="tostep12"
+      >
+        1.申请单位概况
+      </div>
+      <div
+        title="2.申报单位相关工作基础"
+        :class="route.path == '/creating/step22' ? 'stepOn' : ''"
+        @click="tostep22"
+      >
+        2.申报单位相关工作基础
+      </div>
+      <div
+        title="3.项目概况"
+        :class="route.path == '/creating/step32' ? 'stepOn' : ''"
+        @click="tostep32"
+      >
+        3.项目概况
+      </div>
+      <div
+        title="4.项目目标和预期成果"
+        :class="route.path == '/creating/step42' ? 'stepOn' : ''"
+        @click="tostep42"
+      >
+        4.项目目标和预期成果
+      </div>
+      <div
+        title="5.项目主要实施内容"
+        :class="route.path == '/creating/step52' ? 'stepOn' : ''"
+        @click="tostep52"
+      >
+        5.项目主要实施内容
+      </div>
+      <div
+        title="6.技术路线和计划进度"
+        :class="route.path == '/creating/step62' ? 'stepOn' : ''"
+        @click="tostep62"
+      >
+        6.技术路线和计划进度
+      </div>
+      <div
+        title="7.实施效果分析"
+        :class="route.path == '/creating/step72' ? 'stepOn' : ''"
+        @click="tostep72"
+      >
+        7.实施效果分析
+      </div>
+      <div
+        title="8.保障措施（包括组织方式、责任分工、团队实力、风险控制措施等）"
+        :class="route.path == '/creating/step82' ? 'stepOn' : ''"
+        @click="tostep82"
+      >
+        8.保障措施（包括组织方式、责任分工、团队实力、风险控制措施等）
+      </div>
+      <div
+        title="9.主要研究人员"
+        :class="route.path == '/creating/step92' ? 'stepOn' : ''"
+        @click="tostep92"
+      >
+        9.主要研究人员
+      </div>
+      <div
+        title="10.申报单位及合作单位（打印后加盖公章生效）"
+        :class="route.path == '/creating/step102' ? 'stepOn' : ''"
+        @click="tostep102"
+      >
+        10.申报单位及合作单位（打印后加盖公章生效）
+      </div>
+      <div
+        title="11.附件"
+        :class="route.path == '/creating/step112' ? 'stepOn' : ''"
+        @click="tostep112"
+      >
+        11.附件
       </div>
     </div>
     <h1 v-if="route.path != '/creating'" class="pagetitle central">
@@ -423,9 +502,13 @@
           </div>
         </div>
       </div>
-      <div class="btns">
+      <div v-if="bigOn != 3" class="btns">
         <div @click="savemsg">保存</div>
         <div class="submitbtn" @click="next">下一步</div>
+      </div>
+      <div v-if="bigOn == 3" class="btns">
+        <div @click="savemsg2">保存</div>
+        <div class="submitbtn" @click="next2">下一步</div>
       </div>
       <el-dialog
         :visible.sync="tipshow"
@@ -568,11 +651,19 @@ export default {
     steptwo() {
       this.handleform(this.form)
       const that = this
-      setTimeout(() => {
-        this.$store.commit('SET_FORM', this.form)
-        localStorage.setItem('form', JSON.stringify(this.form))
-        that.$router.push({ path: '/creating/step1', query: { id: this.$route.query.id } })
-      }, 1000)
+      if (this.bigOn != 3) {
+        setTimeout(() => {
+          this.$store.commit('SET_FORM', this.form)
+          localStorage.setItem('form', JSON.stringify(this.form))
+          that.$router.push({ path: '/creating/step1', query: { id: this.$route.query.id } })
+        }, 1000)
+      } else {
+        setTimeout(() => {
+          this.$store.commit('SET_FORM', this.form)
+          localStorage.setItem('form', JSON.stringify(this.form))
+          that.$router.push({ path: '/creating/step12', query: { id: this.$route.query.id } })
+        }, 1000)
+      }
     },
     beforeapply() {
       // this.loading = true
@@ -1026,7 +1117,7 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.type = 1
+      data1.type = this.form.type
       data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
       data1.starttime = this.handlestarttime(this.form.starttime)
@@ -1085,6 +1176,290 @@ export default {
             localStorage.setItem('form', JSON.stringify(this.form))
             that.$router.push({
               path: '/creating/step1',
+              query: { id: this.$route.query.id }
+            })  
+          }, 1000)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.next()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.next()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
+    savemsg2() {
+      // "保存"操作
+      this.loading = true
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
+        data1.id = this.$route.query.id
+      }
+      data1.type = this.form.type
+      if (this.form.category_id) {
+        data1.category_id = this.form.category_id
+      }
+      if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.enterprise_name && this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.starttime) {
+        data1.starttime = this.handlestarttime(this.form.starttime)
+      }
+      if (this.form.endtime) {
+        data1.endtime = this.handlendtime(this.form.endtime)
+      }
+      if (this.form.self_amount) {
+        data1.self_amount = this.form.self_amount
+      }
+      if (this.form.country_amount) {
+        data1.country_amount = this.form.country_amount
+      }
+      if (this.form.current_amount) {
+        data1.current_amount = this.form.current_amount
+      }
+      if (this.form.other_amount) {
+        data1.other_amount = this.form.other_amount
+      }
+      if (this.form.foreign_amount) {
+        data1.foreign_amount = this.form.foreign_amount
+      }
+      if (this.sum) {
+        this.form.amount = this.sum
+        data1.amount = this.sum
+      }
+      if (this.partner && this.partner[0]) {
+        data1.partner_name = JSON.stringify(this.partner)
+      }
+      if (this.addressb && this.addressb[0]) {
+        data1.address = JSON.stringify(this.addressb)
+      }
+      if (this.form.study_content && this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.check_content && this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.check_content = this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.expect_content && this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.expect_content = this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_name && this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_name = this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_job && this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_job = this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_mobile && this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_mobile = this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_email && this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_email = this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_address && this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_address = this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_company && this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_company = this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_name && this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_name = this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_job && this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_job = this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_mobile && this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_mobile = this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_email && this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_address && this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_company && this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      data2 = datawork(data1)
+      this.$api.save_create2(data2).then((v) => {
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.handleform(this.form)
+          this.$message({
+            type: 'success',
+            message: '保存成功'
+          })
+          if (this.bigOn && this.smallOn) {
+            this.catedisable = true
+          }
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
+          setTimeout(() => {
+            this.$store.commit('SET_FORM', this.form)
+            localStorage.setItem('form', JSON.stringify(this.form))       
+          }, 1000)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.savemsg()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.savemsg()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
+    next2() {
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      if (!formValidate2(this.form, this)) return
+      this.form.amount = this.sum
+      if (this.form.category_id) {
+        data1.category_id = this.form.category_id
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请先选择子类别'
+        })
+        return
+      }
+      this.loading = true
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
+        data1.id = this.$route.query.id
+      }
+      data1.type = this.form.type
+      data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.starttime = this.handlestarttime(this.form.starttime)
+      data1.endtime = this.handlendtime(this.form.endtime)
+      if (this.form.self_amount) {
+        data1.self_amount = this.form.self_amount
+      }
+      if (this.form.country_amount) {
+        data1.country_amount = this.form.country_amount
+      }
+      if (this.form.current_amount) {
+        data1.current_amount = this.form.current_amount
+      }
+      if (this.form.other_amount) {
+        data1.other_amount = this.form.other_amount
+      }
+      if (this.form.foreign_amount) {
+        data1.foreign_amount = this.form.foreign_amount
+      }
+      if (this.sum) {
+        data1.amount = this.sum
+      }
+      data1.partner_name = JSON.stringify(this.partner)
+      data1.address = JSON.stringify(this.addressb)
+      data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.check_content = this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.expect_content = this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_name = this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_job = this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_mobile = this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_email = this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_address = this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_company = this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_name = this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_job = this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_mobile = this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
+      data2 = datawork(data1)
+      this.$api.save_create2(data2).then((v) => {
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.handleform(this.form)
+          this.$message({
+            type: 'success',
+            message: '操作成功，即将进入下一步'
+          })
+          this.catedisable = true
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
+          setTimeout(() => {
+            this.$store.commit('SET_FORM', this.form)
+            localStorage.setItem('form', JSON.stringify(this.form))
+            that.$router.push({
+              path: '/creating/step12',
               query: { id: this.$route.query.id }
             })  
           }, 1000)
@@ -1231,6 +1606,76 @@ export default {
         path: '/creating/step9',
         query: { id: this.$route.query.id }
       })
+    },
+    tostep12() {
+      // 每次点击都要保存form数据
+      this.$router.push({
+        path: '/creating/step12',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep22() {
+      this.$router.push({
+        path: '/creating/step22',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep32() {
+      this.$router.push({
+        path: '/creating/step32',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep42() {
+      this.$router.push({
+        path: '/creating/step42',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep52() {
+      this.$router.push({
+        path: '/creating/step52',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep62() {
+      this.$router.push({
+        path: '/creating/step62',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep72() {
+      this.$router.push({
+        path: '/creating/step72',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep82() {
+      this.$router.push({
+        path: '/creating/step82',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep92() {
+      this.$router.push({
+        path: '/creating/step92',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep102() {
+      this.$router.push({
+        path: '/creating/step102',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep112() {
+      this.$router.push({
+        path: '/creating/step112',
+        query: { id: this.$route.query.id }
+      })
+    },
+    techmodel() {
+      this.$router.push('/creating2')
     },
     applytip(val) {
       this.tipshow = true

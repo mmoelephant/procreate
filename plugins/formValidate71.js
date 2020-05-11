@@ -1,4 +1,4 @@
-export function formValidate7(data, that) {
+export function formValidate71(data, that) {
   if (!data.e_sl || !data.e_sl.replace(/(^\s*)|(\s*$)/g, '')) {
     that.$message({
       type: 'error',
