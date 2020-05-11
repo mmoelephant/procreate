@@ -847,7 +847,7 @@ export default {
           this.detailinfo = v.data.data.data
           this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
           if (v.data.data.data.two_code) {
-            this.qrcodeObj = new QRCode('qrcode', {
+            that.qrcodeObj = new QRCode('qrcode', {
               text: v.data.data.data.two_code,    
               width: 150,
               height: 150,
@@ -857,7 +857,7 @@ export default {
             })
           }
           if (v.data.data.data.one_code) {
-            this.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
               // format: "pharmacode",
               lineColor: "#000",
               width: 4,
