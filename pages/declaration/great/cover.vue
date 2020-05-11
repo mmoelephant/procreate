@@ -6,7 +6,7 @@
     <!-- <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div> -->
     <div v-if="detailinfo != {}" id="filecontent">
       <div class="panel size">
-        <div id="qrcode" class="maCover maCoverStyle"></div>
+        <div id="qrcode" ref="qrcode" class="maCover maCoverStyle"></div>
         <div class="number">
           项目编号:{{ detailinfo.sn ? detailinfo.sn : '-' }}
         </div>
@@ -778,7 +778,7 @@
 </template>
 <script>
 import $ from 'jquery'
-import JsBarcode from 'jsbarcode'
+// import JsBarcode from 'jsbarcode'
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
@@ -793,14 +793,14 @@ export default {
     return {
       detailinfo: {},
       qrcodeObj: {},
-      // jsbarcode: {},
+      jsbarcode: {},
       filetitle: '',
       loading: false
     }
   },
   mounted() {
     this.qrcodeObj = {}
-    // this.jsbarcode = {}
+    this.jsbarcode = {}
     /*eslint-disable*/
     // if (
     //   !localStorage.getItem('userid') ||
@@ -820,6 +820,8 @@ export default {
   },
   methods: {
     getprodetail(id) {
+      document.getElementById('qrcode').innerHTML = ''
+      document.getElementById('barcode').innerHTML = ''
       // this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
@@ -848,7 +850,7 @@ export default {
           this.detailinfo = v.data.data.data
           this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
           if (v.data.data.data.two_code) {
-            that.qrcodeObj = new QRCode('qrcode', {
+            that.qrcodeObj = new QRCode(this.$refs.qrcode, {
               text: v.data.data.data.two_code,    
               width: 150,
               height: 150,
@@ -856,23 +858,19 @@ export default {
               colorLight : '#fff',
               correctLevel : QRCode.CorrectLevel.H
             })
+          } else {
+            that.qrcodeObj = {}
           }
           if (v.data.data.data.one_code) {
-            // that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-            //   // format: "pharmacode",
-            //   lineColor: "#000",
-            //   width: 4,
-            //   height: 40,
-            //   displayValue: false
-            // })
-            JsBarcode("#barcode", v.data.data.data.one_code, {
-              format: "CODE128",//选择要使用的条形码类型
+            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+              // format: "pharmacode",
+              lineColor: "#000",
               width: 4,
               height: 40,
-              lineColor: "#000",
-              // text: this.recipe.recipeNo,
-              displayValue: false,//是否在条形码下方显示文字
+              displayValue: false
             })
+          } else {
+            that.jsbarcode = {}
           }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)

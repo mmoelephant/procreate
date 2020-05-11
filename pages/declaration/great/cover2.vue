@@ -762,7 +762,6 @@
   </div>
 </template>
 <script>
-import JsBarcode from 'jsbarcode'
 import $ from 'jquery'
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
@@ -778,14 +777,14 @@ export default {
     return {
       detailinfo: {},
       qrcodeObj: {},
-      // jsbarcode: {},
+      jsbarcode: {},
       filetitle: '',
       loading: false
     }
   },
   mounted() {
     this.qrcodeObj = {}
-    // this.jsbarcode = {}
+    this.jsbarcode = {}
     /*eslint-disable*/
     // if (
     //   !localStorage.getItem('userid') ||
@@ -805,6 +804,8 @@ export default {
   },
   methods: {
     getprodetail(id) {
+      document.getElementById('qrcode').innerHTML = ''
+      document.getElementById('barcode').innerHTML = ''
       // this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
@@ -833,7 +834,7 @@ export default {
           this.detailinfo = v.data.data.data
           this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
           if (v.data.data.data.two_code) {
-            that.qrcodeObj = new QRCode('qrcode', {
+            that.qrcodeObj = new QRCode('#qrcode', {
               text: v.data.data.data.two_code,    
               width: 150,
               height: 150,
@@ -845,20 +846,12 @@ export default {
             that.qrcodeObj = {}
           }
           if (v.data.data.data.one_code) {
-            // that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-            //   // format: "pharmacode",
-            //   lineColor: "#000",
-            //   width: 4,
-            //   height: 40,
-            //   displayValue: false
-            // })
-            JsBarcode("#barcode", v.data.data.data.one_code, {
-              format: "CODE128",//选择要使用的条形码类型
+            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+              // format: "pharmacode",
+              lineColor: "#000",
               width: 4,
               height: 40,
-              lineColor: "#000",
-              // text: this.recipe.recipeNo,
-              displayValue: false,//是否在条形码下方显示文字
+              displayValue: false
             })
           } else {
             that.jsbarcode = {}
