@@ -92,6 +92,7 @@
       title="申报书详情"
       :close-on-click-modal="false"
       :lock-scroll="false"
+      :before-close="beforeClose"
       width="1240px"
       class="shudialog"
     >
@@ -343,8 +344,8 @@ export default {
       //   that.$router.push({ path: '/declaration/great/cover', query: { id: this.Id } })
       // }, 1000)
     },
-    close() {
-      this.shushow = false
+    beforeClose() {
+      this.$router.push({ path: '/createpro' })
     },
     uploadchange1() {
       const inputDOM = this.$refs.upload1

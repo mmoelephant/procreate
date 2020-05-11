@@ -829,12 +829,14 @@ export default {
             this.smallOn = v.data.data.data.category_id
           } else {
             this.form.category_id = 0
+            this.smallOn = ''
           }
           if (v.data.data.data.type && Number(v.data.data.data.type)) {
             this.form.type = v.data.data.data.type
             this.bigOn = v.data.data.data.type
           } else {
             this.form.type = 1
+            this.bigOn = 1
           }
           if (this.bigOn && this.smallOn) {
             this.catedisable = true

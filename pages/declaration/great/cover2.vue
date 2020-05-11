@@ -762,6 +762,7 @@
   </div>
 </template>
 <script>
+import JsBarcode from 'jsbarcode'
 import $ from 'jquery'
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
@@ -777,14 +778,14 @@ export default {
     return {
       detailinfo: {},
       qrcodeObj: {},
-      jsbarcode: {},
+      // jsbarcode: {},
       filetitle: '',
       loading: false
     }
   },
   mounted() {
     this.qrcodeObj = {}
-    this.jsbarcode = {}
+    // this.jsbarcode = {}
     /*eslint-disable*/
     // if (
     //   !localStorage.getItem('userid') ||
@@ -840,15 +841,27 @@ export default {
               colorLight : '#fff',
               correctLevel : QRCode.CorrectLevel.H
             })
+          } else {
+            that.qrcodeObj = {}
           }
           if (v.data.data.data.one_code) {
-            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-              // format: "pharmacode",
-              lineColor: "#000",
+            // that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+            //   // format: "pharmacode",
+            //   lineColor: "#000",
+            //   width: 4,
+            //   height: 40,
+            //   displayValue: false
+            // })
+            JsBarcode("#barcode", v.data.data.data.one_code, {
+              format: "CODE128",//选择要使用的条形码类型
               width: 4,
               height: 40,
-              displayValue: false
+              lineColor: "#000",
+              // text: this.recipe.recipeNo,
+              displayValue: false,//是否在条形码下方显示文字
             })
+          } else {
+            that.jsbarcode = {}
           }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)

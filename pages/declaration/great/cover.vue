@@ -778,6 +778,7 @@
 </template>
 <script>
 import $ from 'jquery'
+import JsBarcode from 'jsbarcode'
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
@@ -792,14 +793,14 @@ export default {
     return {
       detailinfo: {},
       qrcodeObj: {},
-      jsbarcode: {},
+      // jsbarcode: {},
       filetitle: '',
       loading: false
     }
   },
   mounted() {
     this.qrcodeObj = {}
-    this.jsbarcode = {}
+    // this.jsbarcode = {}
     /*eslint-disable*/
     // if (
     //   !localStorage.getItem('userid') ||
@@ -857,12 +858,20 @@ export default {
             })
           }
           if (v.data.data.data.one_code) {
-            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-              // format: "pharmacode",
-              lineColor: "#000",
+            // that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+            //   // format: "pharmacode",
+            //   lineColor: "#000",
+            //   width: 4,
+            //   height: 40,
+            //   displayValue: false
+            // })
+            JsBarcode("#barcode", v.data.data.data.one_code, {
+              format: "CODE128",//选择要使用的条形码类型
               width: 4,
               height: 40,
-              displayValue: false
+              lineColor: "#000",
+              // text: this.recipe.recipeNo,
+              displayValue: false,//是否在条形码下方显示文字
             })
           }
         } else if (v.data.errcode === 1104) {
