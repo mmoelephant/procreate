@@ -1,7 +1,13 @@
 <template>
   <div :class="$route.query.layer === 'width' ? 'detaillController' : ''">
     <div v-if="info !== null" class="back">
-      <div class="backName">查看详情</div>
+      <div class="backName">
+        <div>查看详情</div>
+        <div class="backup" @click="$router.go(-1)">
+          <img src="~assets/img/backicon.png" alt="" />
+          <div>返回上一级</div>
+        </div>
+      </div>
 
       <div class="small smallHead fix">
         <scroll-x class="bg-white nav" scroll-with-animation>
@@ -44,68 +50,61 @@
             </div>
           </div>
         </scroll-x>
-        <div class="return">返回上一级</div>
+        <div
+          class="blueBtn detailBtnSize"
+          style="margin:0px 20px 0 0;"
+          @click="view"
+        >
+          预览申报书
+        </div>
       </div>
-      <div class="small">
+      <div
+        v-if="
+          info &&
+            (info.status == '6' || info.status == '8' || info.status == '9')
+        "
+        class="small"
+      >
         <div class="top">
           <div class="topName">审核信息</div>
-          <div class="topBtn" :class="'statusColor' + info.statusType">
-            {{ info.statusName }}
-          </div>
         </div>
         <div v-if="verifyData" class="bottom">
           <div class="bottomL">
-            <img
-              v-if="
-                parseInt(info.statusType) === 2 ||
-                  parseInt(info.statusType) === 4
-              "
-              src="~/assets/img/cha.png"
-              class="icon"
-            />
-            <img v-else src="~/assets/img/gou.png" class="icon" />
+            <img src="~/assets/img/cha.png" class="icon" />
             <div style="margin-left:20px;">
               <div class="black">
-                {{ verifyData.content }}
+                {{ verifyData.content ? verifyData.content : '-' }}
               </div>
               <div class="red">
-                {{ verifyData.time }}
+                {{ verifyData.time ? verifyData.time : '-' }}
               </div>
             </div>
-            <!-- <div style="margin-left:20px;">
-              <div class="black">
-                恭喜您的线上资料已审核通过，请尽快送审纸质资料
-              </div>
-              <div v-if="false" class="red">
-                反馈信息：上传的营业执照附件不清晰。
-              </div>
-              <div class="add" style="margin-top:7px;">
-                送审地址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;杨莉花&nbsp;&nbsp;&nbsp;&nbsp;15887247513&nbsp;&nbsp;&nbsp;&nbsp;周一至周五&nbsp;&nbsp;&nbsp;&nbsp;9:00至17:30&nbsp;&nbsp;&nbsp;&nbsp;云南省昆明市官渡区关上街道春城路巫家坝昭商大酒店7楼办公区
-              </div>
-            </div> -->
           </div>
-          <div
+          <!-- <div
             v-if="false"
             class="blueBtn detailBtnSize"
             style="margin-top:0px;"
           >
             修改资料
-          </div>
-          <div class="blueBtn detailBtnSize" style="margin-top:0px;">
-            下载申报书
-          </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="remarkBox marT20">
+        <div class="remarkL">申报状态</div>
+        <div :class="'statusColor' + info.statusType">
+          {{ info.statusName ? info.statusName : '-' }}
         </div>
       </div>
       <div class="remarkBox marT20">
         <div class="remarkL">申报类别</div>
         <div class="remarkR">
-          {{ info.typeName }}
+          {{ info.category_name ? info.category_name : '-' }}
         </div>
       </div>
 
       <div class="cont marT20">
         <!--计划申报书-->
-        <div v-if="inv === 0">
+        <div v-if="inv == 0">
           <div class="contName">计划任务书</div>
           <div class="contItem marT40">
             <div class="contL">项目编号</div>
@@ -261,13 +260,14 @@
           </div>
         </div>
         <!--下面是折叠区域-->
-        <div v-if="inv === 1">
+        <div v-if="inv == 1 && info.type != 3">
           <!--一个折叠区域-->
           <div class="paddingMaring20">
             <div class="contItem marT20" @click="tabShow1 = !tabShow1">
               <div class="itemBlues">
                 <div class="numbers">1.申请立项理由</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow1" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow1" class="itemWhite">
@@ -298,7 +298,8 @@
             <div class="contItem marT20" @click="tabShow2 = !tabShow2">
               <div class="itemBlues">
                 <div class="numbers">2.国内、外研究现状和趋势</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow2" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow2" class="itemWhite">
@@ -335,7 +336,8 @@
             <div class="contItem marT20" @click="tabShow3 = !tabShow3">
               <div class="itemBlues">
                 <div class="numbers">3.研究目标和预期成果</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow3" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow3" class="itemWhite">
@@ -366,7 +368,8 @@
             <div class="contItem marT20" @click="tabShow4 = !tabShow4">
               <div class="itemBlues">
                 <div class="numbers">4.项目主要内容</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow4" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow4" class="itemWhite">
@@ -397,7 +400,8 @@
             <div class="contItem marT20" @click="tabShow5 = !tabShow5">
               <div class="itemBlues">
                 <div class="numbers">5.研究思路、方法和计划进度</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow5" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow5" class="itemWhite">
@@ -428,7 +432,8 @@
             <div class="contItem marT20" @click="tabShow6 = !tabShow6">
               <div class="itemBlues">
                 <div class="numbers">6.工作基础和科研保障情况</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow6" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow6" class="itemWhite">
@@ -465,7 +470,8 @@
             <div class="contItem marT20" @click="tabShow7 = !tabShow7">
               <div class="itemBlues">
                 <div class="numbers">7.主要研究人员</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow7" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow7" class="whiteFoot">
@@ -536,7 +542,8 @@
                 <div class="numbers">
                   8.项目研究单位及合作单位（打印后加盖公章生效）
                 </div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow8" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow8" class="whiteFoot">
@@ -612,7 +619,408 @@
             <div class="contItem marT20" @click="tabShow9 = !tabShow9">
               <div class="itemBlues">
                 <div class="numbers">9.上传相关附件</div>
-                <!-- <img src="http://placehold.it/350x150" class="cha" /> -->
+                <img v-if="tabShow9" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow9" class="whiteFoot">
+              <div class="footText">附件列表</div>
+              <table class="table">
+                <tr>
+                  <th>
+                    序号
+                  </th>
+                  <th style="width:870px;">
+                    文件名称
+                  </th>
+                  <th>
+                    操作
+                  </th>
+                </tr>
+                <tr v-for="(val, ind) in info.files" :key="ind">
+                  <td>{{ ind + 1 }}</td>
+                  <td>
+                    {{ val.name }}
+                  </td>
+                  <td>
+                    <div style="display:flex;">
+                      <a :href="val.url" target="_blank" class="view">查看</a>
+                      <a :href="val.url" download class="view">下载</a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div v-if="inv == 1 && info.type == 3">
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow1 = !tabShow1">
+              <div class="itemBlues">
+                <div class="numbers">1.申报单位概况</div>
+                <img v-if="tabShow1" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow1" class="itemWhite">
+              <div class="whiteCont">
+                {{ info.a_gk ? info.a_gk : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow2 = !tabShow2">
+              <div class="itemBlues">
+                <div class="numbers">2.申报单位相关工作基础</div>
+                <img v-if="tabShow2" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow2" class="itemWhite">
+              <div class="whiteCont">
+                {{ info.a_jc ? info.a_jc : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow10 = !tabShow10">
+              <div class="itemBlues">
+                <div class="numbers">3.项目概况</div>
+                <img
+                  v-if="tabShow10"
+                  src="~assets/img/updown.png"
+                  class="cha"
+                />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow10" class="itemWhite">
+              <div class="whiteCont">
+                {{ info.b_gk ? info.b_gk : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow3 = !tabShow3">
+              <div class="itemBlues">
+                <div class="numbers">4.研究目标和预期成果</div>
+                <img v-if="tabShow3" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow3" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                研究目标
+              </div>
+              <div class="whiteCont">
+                {{ info.c_mb ? info.c_mb : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                预期成果的名称及表达方式
+              </div>
+              <div class="whiteCont">
+                {{ info.c_cg ? info.c_cg : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                成果产出对相关管理工作的作用和应用前景
+              </div>
+              <div class="whiteCont">
+                {{ info.c_yy ? info.c_yy : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow4 = !tabShow4">
+              <div class="itemBlues">
+                <div class="numbers">5.项目主要实施内容</div>
+                <img v-if="tabShow4" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow4" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                项目示范内容
+              </div>
+              <div class="whiteCont">
+                {{ info.d_nr ? info.d_nr : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                关键问题和难点分析
+              </div>
+              <div class="whiteCont">
+                {{ info.d_gj ? info.d_gj : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                考核指标
+              </div>
+              <div class="whiteCont">
+                {{ info.d_zb ? info.d_zb : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                先进性/创新点
+              </div>
+              <div class="whiteCont">
+                {{ info.d_zb ? info.d_zb : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow5 = !tabShow5">
+              <div class="itemBlues">
+                <div class="numbers">6.技术路线和计划进度</div>
+                <img v-if="tabShow5" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow5" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                实施技术路线
+              </div>
+              <div class="whiteCont">
+                {{ info.e_js ? info.e_js : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                工作计划
+              </div>
+              <div class="whiteCont">
+                {{ info.e_jh ? info.e_jh : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                成果转化
+              </div>
+              <div class="whiteCont">
+                {{ info.e_zh ? info.e_zh : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                服务推广计划
+              </div>
+              <div class="whiteCont">
+                {{ info.e_tg ? info.e_tg : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow6 = !tabShow6">
+              <div class="itemBlues">
+                <div class="numbers">7.实施效果分析</div>
+                <img v-if="tabShow6" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow6" class="itemWhite">
+              <div class="whiteHead" style="margin-top:0px;padding-top:20px;">
+                项目实施对推动住房建设领域科技进步有作用
+              </div>
+              <div class="whiteCont">
+                {{ info.f_jb ? info.f_jb : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                社会、经济、环境效益分析
+              </div>
+              <div class="whiteCont">
+                {{ info.f_xy ? info.f_xy : '-' }}
+              </div>
+              <div class="lines"></div>
+              <div class="whiteHead">
+                项目示范意义
+              </div>
+              <div class="whiteCont">
+                {{ info.f_sf ? info.f_sf : '-' }}
+              </div>
+            </div>
+          </div>
+          <!--一个折叠区域-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow11 = !tabShow11">
+              <div class="itemBlues">
+                <div class="numbers">
+                  8.保障措施（包括组织方式、责任分工、团队实力、风险控制措施等）
+                </div>
+                <img
+                  v-if="tabShow11"
+                  src="~assets/img/updown.png"
+                  class="cha"
+                />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow11" class="itemWhite">
+              <div class="whiteCont">
+                {{ info.g_bz ? info.g_bz : '-' }}
+              </div>
+            </div>
+          </div>
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow7 = !tabShow7">
+              <div class="itemBlues">
+                <div class="numbers">9.主要研究人员</div>
+                <img v-if="tabShow7" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow7" class="whiteFoot">
+              <div class="footText">研究人员列表</div>
+              <table class="table">
+                <tr>
+                  <th>
+                    序号
+                  </th>
+                  <th>
+                    姓名
+                  </th>
+                  <th>
+                    性别
+                  </th>
+                  <th>
+                    生日
+                  </th>
+                  <th>
+                    职位
+                  </th>
+                  <th>
+                    学科
+                  </th>
+                  <th>
+                    行业
+                  </th>
+                  <th>
+                    公司
+                  </th>
+                  <th>
+                    专业
+                  </th>
+                </tr>
+                <tr v-for="(val, ind) in info.worker_json" :key="ind">
+                  <td>{{ ind + 1 }}</td>
+                  <td>
+                    {{ val.name }}
+                  </td>
+                  <td>
+                    {{ val.sex }}
+                  </td>
+                  <td>
+                    {{ val.birthday }}
+                  </td>
+                  <td>
+                    {{ val.job }}
+                  </td>
+                  <td>
+                    {{ val.study_major }}
+                  </td>
+                  <td>
+                    {{ val.now_major }}
+                  </td>
+                  <td>
+                    {{ val.company }}
+                  </td>
+                  <td>
+                    {{ val.task }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow8 = !tabShow8">
+              <div class="itemBlues">
+                <div class="numbers">
+                  8.项目研究单位及合作单位（打印后加盖公章生效）
+                </div>
+                <img v-if="tabShow8" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
+              </div>
+            </div>
+            <div v-if="tabShow8" class="whiteFoot">
+              <div class="footText">合作单位列表</div>
+              <table class="table">
+                <tr>
+                  <th>
+                    序号
+                  </th>
+                  <th>
+                    单位名称
+                  </th>
+                  <th>
+                    负责人
+                  </th>
+                  <th>
+                    负责人联系电话
+                  </th>
+                  <th>
+                    负责人邮箱
+                  </th>
+                  <th>
+                    负责人地址
+                  </th>
+                  <th>
+                    联系人
+                  </th>
+                  <th>
+                    联系人联系电话
+                  </th>
+                  <th>
+                    联系人邮箱
+                  </th>
+                  <th>
+                    联系人地址
+                  </th>
+                </tr>
+                <tr v-for="(val, ind) in info.partner_json" :key="ind">
+                  <td>{{ ind + 1 }}</td>
+                  <td>
+                    {{ val.name }}
+                  </td>
+                  <td>
+                    {{ val.leader_name }}
+                  </td>
+                  <td>
+                    {{ val.leader_mobile }}
+                  </td>
+                  <td>
+                    {{ val.leader_email }}
+                  </td>
+                  <td>
+                    {{ val.leader_address }}
+                  </td>
+                  <td>
+                    {{ val.link_name }}
+                  </td>
+                  <td>
+                    {{ val.link_mobile }}
+                  </td>
+                  <td>
+                    {{ val.link_email }}
+                  </td>
+                  <td>
+                    {{ val.link_address }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <!--一个折叠区域（表格）-->
+          <div class="paddingMaring20">
+            <div class="contItem marT20" @click="tabShow9 = !tabShow9">
+              <div class="itemBlues">
+                <div class="numbers">9.上传相关附件</div>
+                <img v-if="tabShow9" src="~assets/img/updown.png" class="cha" />
+                <img v-else src="~assets/img/updown.png" class="cha2" />
               </div>
             </div>
             <div v-if="tabShow9" class="whiteFoot">
@@ -648,31 +1056,48 @@
       </div>
       <div class="detailBtn">
         <div class="grayBtn detailBtnSize" @click="$router.go(-1)">
-          返回上一级
+          返回
         </div>
-        <div v-if="false" class="blueBtn detailBtnSize marL20">修改资料</div>
-        <div class="blueBtn detailBtnSize marL20">下载申报书</div>
+        <!-- <div v-if="false" class="blueBtn detailBtnSize marL20">修改资料</div> -->
+        <!-- <div class="blueBtn detailBtnSize marL20">下载申报书</div> -->
       </div>
     </div>
   </div>
 </template>
 <style>
 .statusColor1 {
-  background-color: green !important;
+  margin-left: 40px;
+  color: green !important;
 }
 .statusColor2 {
-  background-color: black !important;
+  margin-left: 40px;
+  color: black !important;
 }
 .statusColor3 {
-  background-color: rgba(51, 51, 51, 1) !important;
+  margin-left: 40px;
+  color: rgba(51, 51, 51, 1) !important;
 }
 .statusColor4 {
-  background-color: red !important;
+  margin-left: 40px;
+  color: red !important;
 }
 .backName {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 28px;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
+}
+.backup {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #1d78d3;
+  cursor: pointer;
+}
+.backup img {
+  margin-right: 5px;
 }
 .remarkBox {
   padding-left: 38px;
@@ -753,12 +1178,14 @@
 }
 
 .detailBtnSize {
+  min-width: 100px;
   margin-top: 40px;
-  padding: 10px 35px;
+  padding: 5px 35px;
   font-size: 14px;
   font-weight: 400;
   color: rgba(255, 255, 255, 1);
   border-radius: 100px;
+  cursor: pointer;
 }
 .grayBtn {
   background: rgba(204, 204, 204, 1);
@@ -842,6 +1269,9 @@
 }
 .fix {
   position: relative !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .total {
   display: flex;
@@ -900,6 +1330,13 @@
 .cha {
   width: 14px;
   height: 8px;
+  cursor: pointer;
+}
+.cha2 {
+  width: 14px;
+  height: 8px;
+  transform: rotate(180deg);
+  cursor: pointer;
 }
 .itemWhite {
   background: rgba(255, 255, 255, 1);
@@ -984,6 +1421,7 @@ export default {
     return {
       inv: 0,
       infoId: null,
+      infoType: null,
       info: null,
       verifyData: [], // 审核信息
       tabShow1: false,
@@ -994,12 +1432,16 @@ export default {
       tabShow6: false,
       tabShow7: false,
       tabShow8: false,
-      tabShow9: false
+      tabShow9: false,
+      tabShow10: false,
+      tabShow11: false
     }
   },
   mounted() {
+    /*eslint-disable*/
     // 查询的ID传递
     this.infoId = this.$route.query.id
+    this.infoType = this.$route.query.type
     this.getDetil()
   },
   methods: {
@@ -1036,7 +1478,6 @@ export default {
         if (v.data.errcode === 0) {
           that.info = v.data.data.data
           that.verifyData = v.data.data.verifyData
-          console.log('详情获得', that.info, that.verifyData)
         } else {
           this.$message({
             type: 'error',
@@ -1044,6 +1485,14 @@ export default {
           })
         }
       })
+    },
+    view() {
+      // 这里是预览申报书的页面
+      if (this.infoType == 3) {
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover2/?shenbaoshu=' + this.infoId, '_blank')
+      } else {
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover/?shenbaoshu=' + this.infoId, '_blank')
+      }
     }
   }
 }

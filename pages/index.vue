@@ -68,10 +68,10 @@ export default {
           if (v.data.data) {
             if (v.data.data.status && v.data.data.status == '5') {
               this.status = v.data.data.status
-              this.$message({
-                type: 'error',
-                message: '您的企业信息暂未认证通过，请先认证企业信息，再进行下一步操作！'
-              })
+              // this.$message({
+              //   type: 'error',
+              //   message: '您的企业信息暂未认证通过，请先认证企业信息，再进行下一步操作！'
+              // })
               setTimeout(() => {
                 that.$router.push('/userinfo')
               }, 1000)
@@ -132,10 +132,10 @@ export default {
               v.data.data.enterprise[0].status &&
               v.data.data.enterprise[0].status != '1'
             ) {
-              this.$message({
-                type: 'error',
-                message: '您的企业信息暂未认证通过，请先认证企业信息，再进行下一步操作！'
-              })
+              // this.$message({
+              //   type: 'error',
+              //   message: '您的企业信息暂未认证通过，请先认证企业信息，再进行下一步操作！'
+              // })
               setTimeout(() => {
                 that.$router.push('/userinfo')
               }, 1000)

@@ -51,8 +51,8 @@
           <p class="col4">起始日期</p>
           <p class="col5">截止日期</p>
           <p class="col6">申报状态</p>
-          <p class="col7">添加时间</p>
-          <p class="col8">操作</p>
+          <!-- <p class="col7">添加时间</p> -->
+          <p class="col7">操作</p>
         </div>
         <div v-for="item in projects" :key="item.id" class="listItem">
           <p class="col1" :title="item.k ? item.k : '-'">
@@ -91,14 +91,14 @@
           >
             {{ item.statusName ? item.statusName : '-' }}
           </p>
-          <p class="col7" :title="item.addtime ? item.addtime : '-'">
+          <!-- <p class="col7" :title="item.addtime ? item.addtime : '-'">
             {{ item.addtime ? item.addtime : '-' }}
-          </p>
-          <p class="col8">
+          </p> -->
+          <p class="col7">
             <span v-if="item.isedit == '1'" @click="edit(item.id)">
               编辑
             </span>
-            <span @click="details(item.id)">
+            <span @click="details(item.id, item.type)">
               查看
             </span>
             <span v-if="item.isdel == '1'" @click="delpro(item.id)">
@@ -110,6 +110,13 @@
               @click="applyagain(item.id)"
             >
               重新申报
+            </span>
+            <span
+              v-if="item.issbs == '1'"
+              class="againbtn"
+              @click="view(item.id, item.type)"
+            >
+              预览申报书
             </span>
             <span></span>
           </p>
@@ -340,10 +347,22 @@ export default {
     applyagain(val) {
       this.$router.push({ path: '/creating', query: { id: Number(val) } })
     },
+    view(val1, val2) {
+      // 这里是预览申报书的页面
+      if (val2 == 3) {
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover2/?shenbaoshu=' + val1, '_blank')
+      } else {
+        window.open('http://kjxm.ynbzde.com/declaration/great/cover/?shenbaoshu=' + val1, '_blank')
+      }
+    },
     // 详情页数据
-    details(val) {
+    details(val1, val2) {
       this.$router.push({
-        path: '/detail?id=' + val
+        path: '/detail',
+        query: {
+          id: val1,
+          type: val2
+        }
       })
       // this.dialogshow = true
       // this.detailid = val

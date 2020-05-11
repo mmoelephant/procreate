@@ -110,6 +110,10 @@ const api = {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Api/Enterprise/edit', data)
   },
+  cert_before(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Api/Enterprise/certBefore', data)
+  },
   handle_before(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Enterprise/Forms/handleBefore', data)
@@ -128,11 +132,11 @@ const api = {
   },
   save_create2(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
-    return service.post('Enterprise/FormsBak/handlek', data)
+    return service.post('Enterprise/FormsBak/handles', data)
   },
   commit_create2(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
-    return service.post('Enterprise/Forms/handlek', data)
+    return service.post('Enterprise/Forms/handles', data)
   },
   get_pro_list(data) {
     if (data) data = qs.stringify(data, { allowDots: true })

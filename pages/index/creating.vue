@@ -649,21 +649,21 @@ export default {
       this.$router.push({ path: '/creating', query: { id: this.$route.query.id } })
     },
     steptwo() {
-      this.handleform(this.form)
-      const that = this
-      if (this.bigOn != 3) {
-        setTimeout(() => {
-          this.$store.commit('SET_FORM', this.form)
-          localStorage.setItem('form', JSON.stringify(this.form))
-          that.$router.push({ path: '/creating/step1', query: { id: this.$route.query.id } })
-        }, 1000)
-      } else {
-        setTimeout(() => {
-          this.$store.commit('SET_FORM', this.form)
-          localStorage.setItem('form', JSON.stringify(this.form))
-          that.$router.push({ path: '/creating/step12', query: { id: this.$route.query.id } })
-        }, 1000)
-      }
+      // this.handleform(this.form)
+      // const that = this
+      // if (this.bigOn != 3) {
+      //   setTimeout(() => {
+      //     this.$store.commit('SET_FORM', this.form)
+      //     localStorage.setItem('form', JSON.stringify(this.form))
+      //     that.$router.push({ path: '/creating/step1', query: { id: this.$route.query.id } })
+      //   }, 1000)
+      // } else {
+      //   setTimeout(() => {
+      //     this.$store.commit('SET_FORM', this.form)
+      //     localStorage.setItem('form', JSON.stringify(this.form))
+      //     that.$router.push({ path: '/creating/step12', query: { id: this.$route.query.id } })
+      //   }, 1000)
+      // }
     },
     beforeapply() {
       // this.loading = true

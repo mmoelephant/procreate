@@ -3,7 +3,8 @@
     <el-header
       v-if="
         route.name.slice(0, 5) != 'login' &&
-          route.path != '/declaration/great/cover'
+          route.path != '/declaration/great/cover' &&
+          route.path != '/declaration/great/cover2'
       "
       class="commonheader"
     >
@@ -22,7 +23,8 @@
       :class="
         route.name.slice(0, 5) == 'login'
           ? ''
-          : route.path == '/declaration/great/cover'
+          : route.path == '/declaration/great/cover' ||
+            route.path == '/declaration/great/cover2'
           ? 'main main2'
           : 'main'
       "
@@ -32,7 +34,8 @@
     <el-footer
       v-if="
         route.name.slice(0, 5) != 'login' &&
-          route.path != '/declaration/great/cover'
+          route.path != '/declaration/great/cover' &&
+          route.path != '/declaration/great/cover2'
       "
     >
       <div class="footerinfo">
@@ -432,6 +435,7 @@ export default {
 .bodyTitle {
   font-size: 24px;
   font-weight: 400;
+  text-align: left !important;
   color: rgba(0, 0, 0, 1);
   margin-bottom: 10px;
 }

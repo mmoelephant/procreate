@@ -65,10 +65,16 @@ export function formValidate(data, that) {
       message: '请输入管理员姓名'
     })
     return false
-  } else if (!data.link_identity || data.link_identity.length !== 18) {
+  } else if (!data.link_identity) {
     that.$message({
       type: 'error',
       message: '请输入管理员身份证号'
+    })
+    return false
+  } else if (data.link_identity.length !== 18) {
+    that.$message({
+      type: 'error',
+      message: '管理员身份证号格式不正确'
     })
     return false
   } else if (!data.tel || !data.tel.replace(/(^\s*)|(\s*$)/g, '')) {
@@ -77,10 +83,16 @@ export function formValidate(data, that) {
       message: '请输入办公电话'
     })
     return false
-  } else if (!data.link_mobile || data.link_mobile.length !== 11) {
+  } else if (!data.link_mobile) {
     that.$message({
       type: 'error',
       message: '请输入管理员联系手机号'
+    })
+    return false
+  } else if (data.link_mobile.length !== 11) {
+    that.$message({
+      type: 'error',
+      message: '管理员联系手机号格式不正确'
     })
     return false
   } else if (!data.qq || !data.qq.replace(/(^\s*)|(\s*$)/g, '')) {

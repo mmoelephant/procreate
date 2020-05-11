@@ -55,7 +55,7 @@
           />
         </div>
         <div class="formitem">
-          <div class="itemname">法人身份证号</div>
+          <div class="itemname">身份证号</div>
           <input
             v-model="form.identity"
             type="text"
@@ -64,7 +64,7 @@
           />
         </div>
         <div class="formitem upload">
-          <div class="itemname">法人身份证正反面</div>
+          <div class="itemname">身份证正反面</div>
           <div>
             <div v-if="!disabled1" class="uploadbox">
               <div class="uploadbtn">
@@ -123,7 +123,7 @@
           </div>
         </div>
         <div class="formitem">
-          <div class="itemname">法人手机号</div>
+          <div class="itemname">手机号</div>
           <input
             v-model="form.mobile"
             type="text"
@@ -165,24 +165,24 @@
         </div>
         <div class="formitem">
           <div class="itemname">单位性质</div>
-          <input
+          <!-- <input
             v-model="form.enterprise_type"
             type="text"
             :disabled="disabled1"
             placeholder="请输入单位性质"
-          />
-          <!-- <el-select
-            v-model="form.unitype"
+          /> -->
+          <el-select
+            v-model="form.enterprise_type"
             :disabled="disabled1"
             placeholder="请选择单位性质"
           >
             <el-option
               v-for="item in unitypes"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+              :key="item"
+              :label="item"
+              :value="item"
             ></el-option>
-          </el-select> -->
+          </el-select>
         </div>
         <div class="formitem">
           <div class="itemname">注册地址</div>
@@ -330,6 +330,7 @@ export default {
     }
     this.userinfo()
     this.getautheninfo()
+    this.getcertinfo()
   },
   methods: {
     userinfo() {
@@ -419,6 +420,7 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.get_authen_info(data2).then((v) => {
+        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           if (v.data.data) {
@@ -445,6 +447,56 @@ export default {
           setTimeout(() => {
             if (localStorage.getItem('done')) {
               that.getautheninfo()
+            }
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
+    getcertinfo() {
+      this.loading = true
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      data2 = datawork(data1)
+      this.$api.cert_before(data2).then((v) => {
+        console.log(v)
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.unitypes = deepCopy(v.data.data.enterpriseType)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.getcertinfo()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.getcertinfo()
             }
           }, 1000)
         } else {
