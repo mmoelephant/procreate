@@ -420,7 +420,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.get_authen_info(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           if (v.data.data) {
@@ -481,7 +480,6 @@ export default {
       }
       data2 = datawork(data1)
       this.$api.cert_before(data2).then((v) => {
-        console.log(v)
         if (v.data.errcode === 0) {
           this.loading = false
           this.unitypes = deepCopy(v.data.data.enterpriseType)

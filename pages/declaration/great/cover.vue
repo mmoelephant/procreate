@@ -849,29 +849,29 @@ export default {
           this.loading = false
           this.detailinfo = v.data.data.data
           this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
-          if (v.data.data.data.two_code) {
-            that.qrcodeObj = new QRCode(this.$refs.qrcode, {
-              text: v.data.data.data.two_code,    
-              width: 150,
-              height: 150,
-              colorDark : '#000',
-              colorLight : '#fff',
-              correctLevel : QRCode.CorrectLevel.H
-            })
-          } else {
-            that.qrcodeObj = {}
-          }
-          if (v.data.data.data.one_code) {
-            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-              // format: "pharmacode",
-              lineColor: "#000",
-              width: 4,
-              height: 40,
-              displayValue: false
-            })
-          } else {
-            that.jsbarcode = {}
-          }
+          // if (v.data.data.data.two_code) {
+          that.qrcodeObj = new QRCode(this.$refs.qrcode, {
+            text: v.data.data.data.two_code,    
+            width: 150,
+            height: 150,
+            colorDark : '#000',
+            colorLight : '#fff',
+            correctLevel : QRCode.CorrectLevel.H
+          })
+          // } else {
+          //   that.qrcodeObj = {}
+          // }
+          // if (v.data.data.data.one_code) {
+          that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+            // format: "pharmacode",
+            lineColor: "#000",
+            width: 4,
+            height: 40,
+            displayValue: false
+          })
+          // } else {
+          //   that.jsbarcode = {}
+          // }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {
