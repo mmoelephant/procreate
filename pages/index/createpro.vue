@@ -355,7 +355,6 @@ export default {
       } else {
         url = 'http://kjxm.ynbzde.com/declaration/great/cover?shenbaoshu=' + val1
       }
-      console.log(url)
       window.open(url, '_blank')
     },
     // 详情页数据

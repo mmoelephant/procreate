@@ -3,14 +3,13 @@
     <div class="dwlbtn" @click="downloadfile">
       下载申报书
     </div>
-    <!-- <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div> -->
     <div v-if="detailinfo != {}" id="filecontent">
       <div class="panel size">
         <div id="qrcode" class="maCover maCoverStyle"></div>
         <div class="number">
           项目编号:{{ detailinfo.sn ? detailinfo.sn : '-' }}
         </div>
-        <div class="company">云南省住房和城乡厅</div>
+        <div class="company">云南省住房和城乡建设厅</div>
         <div class="company them">
           （{{ detailinfo.typeName ? detailinfo.typeName : '-' }}）
         </div>
@@ -47,7 +46,7 @@
             {{ detailinfo.submittime ? detailinfo.submittime : '-' }}
           </div>
         </div>
-        <div class="remark">云南省住房和城乡建设厅制标准定额处</div>
+        <div class="remark">云南省住房和城乡建设厅</div>
         <div class="date remark">二〇二〇年五月制</div>
       </div>
       <div class="panel size2">
@@ -60,7 +59,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">二、申报单位相关工作基础</div>
@@ -72,7 +72,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">三、项目概况</div>
@@ -84,7 +85,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">四、项目目标和预期成果</div>
@@ -117,7 +119,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">五、项目主要实施内容</div>
@@ -140,10 +143,10 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
-        <!-- <div class="headTitle">五、项目主要实施内容</div> -->
         <table class="table" style="margin-top: 60px">
           <tr class="centerCont">
             <td class="padding20" style="height:620px;">
@@ -165,7 +168,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">六、技术路线和计划进度</div>
@@ -188,7 +192,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <table class="table" style="margin-top: 60px">
@@ -214,7 +219,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">七、实施效果分析</div>
@@ -247,7 +253,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">
@@ -261,12 +268,13 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">
           <!-- style="margin-bottom:100px;" -->
-          九、主要工作人员
+          九、主要研究人员
         </div>
         <table class="table table1">
           <thead>
@@ -431,7 +439,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:50px;">
@@ -508,7 +517,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">
@@ -572,9 +582,10 @@
         <div class="font28" style="margin-top:33px;">（二）合作单位</div>
         <table
           v-for="(item, index) in detailinfo.partner_json"
-          v-show="detailinfo.partner_json"
+          v-show="index < 2"
           :key="index"
           class="table"
+          style="margin-top: 50px"
         >
           <thead>
             <tr>
@@ -698,7 +709,72 @@
           </thead>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
+      </div>
+      <div
+        v-if="detailinfo.partner_json && detailinfo.partner_json.length > 2"
+        class="panel size2"
+      >
+        <table
+          v-for="(item, index) in detailinfo.partner_json"
+          v-show="index > 1 && index < 5"
+          :key="index"
+          class="table"
+          :style="index == 2 ? '' : 'margin-top: 50px'"
+        >
+          <thead>
+            <tr>
+              <th class="tableFont" style="width:178px;">合作单位</th>
+              <th class="tableFont" colspan="3">
+                {{ item.name ? item.name : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">负责人</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_name ? item.leader_name : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_mobile ? item.leader_mobile : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_email ? item.leader_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_address ? item.leader_address : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">经办人</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_name ? item.link_name : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_mobile ? item.link_mobile : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_email ? item.link_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_address ? item.link_address : '-' }}
+              </th>
+            </tr>
+          </thead>
+        </table>
+
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:58px;">
@@ -756,7 +832,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
     </div>
   </div>
@@ -832,30 +909,28 @@ export default {
         if (v.data.errcode === 0) {
           this.loading = false
           this.detailinfo = v.data.data.data
-          this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
-          // if (v.data.data.data.two_code) {
-          that.qrcodeObj = new QRCode('#qrcode', {
-            text: v.data.data.data.two_code,    
-            width: 150,
-            height: 150,
-            colorDark : '#000',
-            colorLight : '#fff',
-            correctLevel : QRCode.CorrectLevel.H
-          })
-          // } else {
-          //   that.qrcodeObj = {}
-          // }
-          // if (v.data.data.data.one_code) {
-          that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+          this.filetitle = '云南省住房和城乡建设厅' + v.data.data.data.typeName + '申报书'
+          setTimeout(() => {
+            that.qrcodeObj = new QRCode('#qrcode', {
+              text: v.data.data.data.two_code,
+              width: 150,
+              height: 150,
+              colorDark : '#000',
+              colorLight : '#fff',
+              correctLevel : QRCode.CorrectLevel.H
+            })
+          }, 1000)
+          if (v.data.data.data.one_code) {
+            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
               // format: "pharmacode",
-            lineColor: "#000",
-            width: 4,
-            height: 40,
-            displayValue: false
-          })
-          // } else {
-          //   that.jsbarcode = {}
-          // }
+              lineColor: "#000",
+              width: 4,
+              height: 40,
+              displayValue: false
+            })
+          } else {
+            that.jsbarcode = {}
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {

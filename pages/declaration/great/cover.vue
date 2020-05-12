@@ -3,14 +3,13 @@
     <div class="dwlbtn" @click="downloadfile">
       下载申报书
     </div>
-    <!-- <div class="dwltip">请务必下载申报表，否则立项可能会不成功！</div> -->
     <div v-if="detailinfo != {}" id="filecontent">
       <div class="panel size">
         <div id="qrcode" ref="qrcode" class="maCover maCoverStyle"></div>
         <div class="number">
           项目编号:{{ detailinfo.sn ? detailinfo.sn : '-' }}
         </div>
-        <div class="company">云南省住房和城乡厅</div>
+        <div class="company">云南省住房和城乡建设厅</div>
         <div class="company them" style="font-size:60px;">
           （{{ detailinfo.typeName ? detailinfo.typeName : '-' }}）
         </div>
@@ -81,7 +80,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">二、国内外研究现状和趋势</div>
@@ -104,7 +104,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <table class="table" style="margin-top: 60px">
@@ -130,7 +131,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">三、研究目标和预期效果</div>
@@ -163,7 +165,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">四、主要研究内容</div>
@@ -196,7 +199,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">五、研究思路、方法和计划进度</div>
@@ -229,7 +233,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">六、工作基础和科研保障条件</div>
@@ -252,7 +257,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <table class="table" style="margin-top: 60px">
@@ -278,11 +284,12 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">
-          七、主要工作人员
+          七、主要研究人员
         </div>
         <table class="table table1">
           <thead>
@@ -447,7 +454,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:50px;">
@@ -524,7 +532,8 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle">
@@ -588,9 +597,10 @@
         <div class="font28" style="margin-top:33px;">（二）合作单位</div>
         <table
           v-for="(item, index) in detailinfo.partner_json"
-          v-show="detailinfo.partner_json"
+          v-show="index < 2"
           :key="index"
           class="table"
+          style="margin-top: 50px"
         >
           <thead>
             <tr>
@@ -713,7 +723,73 @@
             </tr>
           </thead>
         </table>
-        <svg id="barcode" class="ma maPage"></svg>
+
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
+      </div>
+      <div
+        v-if="detailinfo.partner_json && detailinfo.partner_json.length > 2"
+        class="panel size2"
+      >
+        <table
+          v-for="(item, index) in detailinfo.partner_json"
+          v-show="index > 1 && index < 5"
+          :key="index"
+          class="table"
+          :style="index == 2 ? '' : 'margin-top: 50px'"
+        >
+          <thead>
+            <tr>
+              <th class="tableFont" style="width:178px;">合作单位</th>
+              <th class="tableFont" colspan="3">
+                {{ item.name ? item.name : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">负责人</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_name ? item.leader_name : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_mobile ? item.leader_mobile : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_email ? item.leader_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.leader_address ? item.leader_address : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">经办人</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_name ? item.link_name : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">电话(手机）</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_mobile ? item.link_mobile : '-' }}
+              </th>
+            </tr>
+            <tr>
+              <th class="tableFont" style="width:178px;">电子邮箱</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_email ? item.link_email : '-' }}
+              </th>
+              <th class="tableFont" style="width:178px;">通讯地址</th>
+              <th class="tableFont" style="width:380px;">
+                {{ item.link_address ? item.link_address : '-' }}
+              </th>
+            </tr>
+          </thead>
+        </table>
+
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
       <div class="panel size2">
         <div class="headTitle" style="margin-bottom:58px;">
@@ -771,14 +847,14 @@
           </tr>
         </table>
 
-        <svg id="barcode" class="ma maPage"></svg>
+        <!-- <svg id="barcode" class="ma maPage"></svg> -->
+        <img id="barcode" class="ma maPage" />
       </div>
     </div>
   </div>
 </template>
 <script>
 import $ from 'jquery'
-// import JsBarcode from 'jsbarcode'
 import { datawork } from '../../../plugins/datawork'
 import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
@@ -848,30 +924,28 @@ export default {
         if (v.data.errcode === 0) {
           this.loading = false
           this.detailinfo = v.data.data.data
-          this.filetitle = '云南省住房和城乡厅' + v.data.data.data.typeName + '申报书'
-          // if (v.data.data.data.two_code) {
-          that.qrcodeObj = new QRCode(this.$refs.qrcode, {
-            text: v.data.data.data.two_code,    
-            width: 150,
-            height: 150,
-            colorDark : '#000',
-            colorLight : '#fff',
-            correctLevel : QRCode.CorrectLevel.H
-          })
-          // } else {
-          //   that.qrcodeObj = {}
-          // }
-          // if (v.data.data.data.one_code) {
-          that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
-            // format: "pharmacode",
-            lineColor: "#000",
-            width: 4,
-            height: 40,
-            displayValue: false
-          })
-          // } else {
-          //   that.jsbarcode = {}
-          // }
+          this.filetitle = '云南省住房和城乡建设厅' + v.data.data.data.typeName + '申报书'
+          setTimeout(() => {
+            that.qrcodeObj = new QRCode(this.$refs.qrcode, {
+              text: v.data.data.data.two_code,
+              width: 150,
+              height: 150,
+              colorDark : '#000',
+              colorLight : '#fff',
+              correctLevel : QRCode.CorrectLevel.H
+            })
+          }, 1000)
+          if (v.data.data.data.one_code) {
+            that.jsbarcode = new JsBarcode("#barcode", v.data.data.data.one_code, {
+              // format: "pharmacode",
+              lineColor: "#000",
+              width: 4,
+              height: 40,
+              displayValue: false
+            })
+          } else {
+            that.jsbarcode = {}
+          }
         } else if (v.data.errcode === 1104) {
           getToken(commondata, this)
           setTimeout(() => {

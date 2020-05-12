@@ -427,8 +427,7 @@ export default {
   margin-bottom: 10px;
 }
 .bodyCont {
-  font-size: 24px;
-  font-weight: 300;
+  font-size: 20px;
   color: rgba(0, 0, 0, 1);
 }
 /* page8表格 */

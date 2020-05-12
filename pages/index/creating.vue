@@ -960,9 +960,6 @@ export default {
         data1.id = this.$route.query.id
       }
       data1.type = this.form.type
-      if (this.form.category_id) {
-        data1.category_id = this.form.category_id
-      }
       if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       }
@@ -1045,6 +1042,75 @@ export default {
       if (this.form.link_company && this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
       }
+      if (this.form.a_md) {
+        data1.a_md = this.form.a_md
+      }
+      if (this.form.a_yj) {
+        data1.a_yj = this.form.a_yj
+      }
+      if (this.form.a_yy) {
+        data1.a_yy = this.form.a_yy
+      }
+      if (this.form.b_xz) {
+        data1.b_xz = this.form.b_xz
+      }
+      if (this.form.b_zb) {
+        data1.b_zb = this.form.b_zb
+      }
+      if (this.form.b_wt) {
+        data1.b_wt = this.form.b_wt
+      }
+      if (this.form.b_qs) {
+        data1.b_qs = this.form.b_qs
+      }
+      if (this.form.c_mb) {
+        data1.c_mb = this.form.c_mb
+      }
+      if (this.form.c_cg) {
+        data1.c_cg = this.form.c_cg
+      }
+      if (this.form.c_yy) {
+        data1.c_yy = this.form.c_yy
+      }
+      if (this.form.d_nr) {
+        data1.d_nr = this.form.d_nr
+      }
+      if (this.form.d_cx) {
+        data1.d_cx = this.form.d_cx
+      }
+      if (this.form.d_zb) {
+        data1.d_zb = this.form.d_zb
+      }
+      if (this.form.e_sl) {
+        data1.e_sl = this.form.e_sl
+      }
+      if (this.form.e_mb) {
+        data1.e_mb = this.form.e_mb
+      }
+      if (this.form.e_jd) {
+        data1.e_jd = this.form.e_jd
+      }
+      if (this.form.f_jc) {
+        data1.f_jc = this.form.f_jc
+      }
+      if (this.form.f_rw) {
+        data1.f_rw = this.form.f_rw
+      }
+      if (this.form.f_td) {
+        data1.f_td = this.form.f_td
+      }
+      if (this.form.f_zj) {
+        data1.f_zj = this.form.f_zj
+      }
+      if (this.form.worker_json && this.form.worker_json.length > 0) {
+        data1.worker_json = JSON.stringify(this.form.worker_json)
+      }
+      if (this.form.partner_json && this.form.partner_json.length > 0) {
+        data1.partner_json = JSON.stringify(this.form.partner_json)
+      }
+      if (this.form.files && this.form.files.length > 0) {
+        data1.files = JSON.stringify(this.form.files)
+      }
       data2 = datawork(data1)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
@@ -1054,9 +1120,7 @@ export default {
             type: 'success',
             message: '保存成功'
           })
-          if (this.bigOn && this.smallOn) {
-            this.catedisable = true
-          }
+          this.catedisable = true
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -1168,6 +1232,75 @@ export default {
       data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
       data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
       data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.a_md) {
+        data1.a_md = this.form.a_md
+      }
+      if (this.form.a_yj) {
+        data1.a_yj = this.form.a_yj
+      }
+      if (this.form.a_yy) {
+        data1.a_yy = this.form.a_yy
+      }
+      if (this.form.b_xz) {
+        data1.b_xz = this.form.b_xz
+      }
+      if (this.form.b_zb) {
+        data1.b_zb = this.form.b_zb
+      }
+      if (this.form.b_wt) {
+        data1.b_wt = this.form.b_wt
+      }
+      if (this.form.b_qs) {
+        data1.b_qs = this.form.b_qs
+      }
+      if (this.form.c_mb) {
+        data1.c_mb = this.form.c_mb
+      }
+      if (this.form.c_cg) {
+        data1.c_cg = this.form.c_cg
+      }
+      if (this.form.c_yy) {
+        data1.c_yy = this.form.c_yy
+      }
+      if (this.form.d_nr) {
+        data1.d_nr = this.form.d_nr
+      }
+      if (this.form.d_cx) {
+        data1.d_cx = this.form.d_cx
+      }
+      if (this.form.d_zb) {
+        data1.d_zb = this.form.d_zb
+      }
+      if (this.form.e_sl) {
+        data1.e_sl = this.form.e_sl
+      }
+      if (this.form.e_mb) {
+        data1.e_mb = this.form.e_mb
+      }
+      if (this.form.e_jd) {
+        data1.e_jd = this.form.e_jd
+      }
+      if (this.form.f_jc) {
+        data1.f_jc = this.form.f_jc
+      }
+      if (this.form.f_rw) {
+        data1.f_rw = this.form.f_rw
+      }
+      if (this.form.f_td) {
+        data1.f_td = this.form.f_td
+      }
+      if (this.form.f_zj) {
+        data1.f_zj = this.form.f_zj
+      }
+      if (this.form.worker_json && this.form.worker_json.length > 0) {
+        data1.worker_json = JSON.stringify(this.form.worker_json)
+      }
+      if (this.form.partner_json && this.form.partner_json.length > 0) {
+        data1.partner_json = JSON.stringify(this.form.partner_json)
+      }
+      if (this.form.files && this.form.files.length > 0) {
+        data1.files = JSON.stringify(this.form.files)
+      }
       data2 = datawork(data1)
       this.$api.save_create(data2).then((v) => {
         if (v.data.errcode === 0) {
@@ -1253,9 +1386,6 @@ export default {
         data1.id = this.$route.query.id
       }
       data1.type = this.form.type
-      if (this.form.category_id) {
-        data1.category_id = this.form.category_id
-      }
       if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
       }
@@ -1338,6 +1468,69 @@ export default {
       if (this.form.link_company && this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')) {
         data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
       }
+      if (this.form.a_gk) {
+        data1.a_gk = this.form.a_gk
+      }
+      if (this.form.a_jc) {
+        data1.a_jc = this.form.a_jc
+      }
+      if (this.form.b_gk) {
+        data1.b_gk = this.form.b_gk
+      }
+      if (this.form.c_mb) {
+        data1.c_mb = this.form.c_mb
+      }
+      if (this.form.c_cg) {
+        data1.c_cg = this.form.c_cg
+      }
+      if (this.form.c_yy) {
+        data1.c_yy = this.form.c_yy
+      }
+      if (this.form.d_nr) {
+        data1.d_nr = this.form.d_nr
+      }
+      if (this.form.d_gj) {
+        data1.d_gj = this.form.d_gj
+      }
+      if (this.form.d_zb) {
+        data1.d_zb = this.form.d_zb
+      }
+      if (this.form.d_cx) {
+        data1.d_cx = this.form.d_cx
+      }
+      if (this.form.e_js) {
+        data1.e_js = this.form.e_js
+      }
+      if (this.form.e_jh) {
+        data1.e_jh = this.form.e_jh
+      }
+      if (this.form.e_zh) {
+        data1.e_zh = this.form.e_zh
+      }
+      if (this.form.e_tg) {
+        data1.e_tg = this.form.e_tg
+      }
+      if (this.form.f_jb) {
+        data1.f_jb = this.form.f_jb
+      }
+      if (this.form.f_xy) {
+        data1.f_xy = this.form.f_xy
+      }
+      if (this.form.f_sf) {
+        data1.f_sf = this.form.f_sf
+      }
+      if (this.form.g_bz) {
+        data1.g_bz = this.form.g_bz
+      }
+      if (this.form.worker_json && this.form.worker_json.length > 0) {
+        data1.worker_json = JSON.stringify(this.form.worker_json)
+      }
+      if (this.form.partner_json && this.form.partner_json.length > 0) {
+        data1.partner_json = JSON.stringify(this.form.partner_json)
+      }
+      if (this.form.files && this.form.files.length > 0) {
+        data1.files = JSON.stringify(this.form.files)
+      }
       data2 = datawork(data1)
       this.$api.save_create2(data2).then((v) => {
         if (v.data.errcode === 0) {
@@ -1347,9 +1540,7 @@ export default {
             type: 'success',
             message: '保存成功'
           })
-          if (this.bigOn && this.smallOn) {
-            this.catedisable = true
-          }
+          this.catedisable = true
           if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
@@ -1362,14 +1553,14 @@ export default {
           getToken(commondata, this)
           setTimeout(() => {
             if (localStorage.getItem('tokenDone')) {
-              that.savemsg()
+              that.savemsg2()
             }
           }, 1000)
         } else if (v.data.errcode === 1103) {
           getClientId(commondata, this)
           setTimeout(() => {
             if (localStorage.getItem('done')) {
-              that.savemsg()
+              that.savemsg2()
             }
           }, 1000)
         } else {
@@ -1461,6 +1652,69 @@ export default {
       data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
       data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
       data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.a_gk) {
+        data1.a_gk = this.form.a_gk
+      }
+      if (this.form.a_jc) {
+        data1.a_jc = this.form.a_jc
+      }
+      if (this.form.b_gk) {
+        data1.b_gk = this.form.b_gk
+      }
+      if (this.form.c_mb) {
+        data1.c_mb = this.form.c_mb
+      }
+      if (this.form.c_cg) {
+        data1.c_cg = this.form.c_cg
+      }
+      if (this.form.c_yy) {
+        data1.c_yy = this.form.c_yy
+      }
+      if (this.form.d_nr) {
+        data1.d_nr = this.form.d_nr
+      }
+      if (this.form.d_gj) {
+        data1.d_gj = this.form.d_gj
+      }
+      if (this.form.d_zb) {
+        data1.d_zb = this.form.d_zb
+      }
+      if (this.form.d_cx) {
+        data1.d_cx = this.form.d_cx
+      }
+      if (this.form.e_js) {
+        data1.e_js = this.form.e_js
+      }
+      if (this.form.e_jh) {
+        data1.e_jh = this.form.e_jh
+      }
+      if (this.form.e_zh) {
+        data1.e_zh = this.form.e_zh
+      }
+      if (this.form.e_tg) {
+        data1.e_tg = this.form.e_tg
+      }
+      if (this.form.f_jb) {
+        data1.f_jb = this.form.f_jb
+      }
+      if (this.form.f_xy) {
+        data1.f_xy = this.form.f_xy
+      }
+      if (this.form.f_sf) {
+        data1.f_sf = this.form.f_sf
+      }
+      if (this.form.g_bz) {
+        data1.g_bz = this.form.g_bz
+      }
+      if (this.form.worker_json && this.form.worker_json.length > 0) {
+        data1.worker_json = JSON.stringify(this.form.worker_json)
+      }
+      if (this.form.partner_json && this.form.partner_json.length > 0) {
+        data1.partner_json = JSON.stringify(this.form.partner_json)
+      }
+      if (this.form.files && this.form.files.length > 0) {
+        data1.files = JSON.stringify(this.form.files)
+      }
       data2 = datawork(data1)
       this.$api.save_create2(data2).then((v) => {
         if (v.data.errcode === 0) {
@@ -1487,14 +1741,14 @@ export default {
           getToken(commondata, this)
           setTimeout(() => {
             if (localStorage.getItem('tokenDone')) {
-              that.next()
+              that.next2()
             }
           }, 1000)
         } else if (v.data.errcode === 1103) {
           getClientId(commondata, this)
           setTimeout(() => {
             if (localStorage.getItem('done')) {
-              that.next()
+              that.next2()
             }
           }, 1000)
         } else {
@@ -1752,7 +2006,6 @@ export default {
 .smallcate
   min-height 32px
   border none
-  // border 1px red solid
   padding 0
   >div
     min-width 120px
