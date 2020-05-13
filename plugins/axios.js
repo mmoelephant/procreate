@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-const test = 'http://testk.dlzjzy.com/'
+const test = 'http://kjadm.ynbzde.com/'
 // http://kjadm.ynbzde.com/
 // http://testk.dlzjzy.com/
 const service = axios.create({
@@ -137,6 +137,14 @@ const api = {
   commit_create2(data) {
     if (data) data = qs.stringify(data, { allowDots: true })
     return service.post('Enterprise/Forms/handles', data)
+  },
+  save_create3(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/FormsBak/handleg', data)
+  },
+  commit_create3(data) {
+    if (data) data = qs.stringify(data, { allowDots: true })
+    return service.post('Enterprise/Forms/handleg', data)
   },
   get_pro_list(data) {
     if (data) data = qs.stringify(data, { allowDots: true })

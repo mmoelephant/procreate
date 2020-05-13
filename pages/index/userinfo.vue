@@ -387,6 +387,11 @@ export default {
               that.userinfo()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -448,6 +453,11 @@ export default {
               that.getautheninfo()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -496,6 +506,11 @@ export default {
             if (localStorage.getItem('done')) {
               that.getcertinfo()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.loading = false
@@ -570,6 +585,10 @@ export default {
             if (localStorage.getItem('done')) {
               that.uploadfile1()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.$message({
@@ -652,6 +671,10 @@ export default {
               that.uploadfile2()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.$message({
             type: 'error',
@@ -732,6 +755,10 @@ export default {
             if (localStorage.getItem('done')) {
               that.uploadfile3()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.$message({
@@ -819,6 +846,11 @@ export default {
               that.submit()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -886,6 +918,11 @@ export default {
             if (localStorage.getItem('done')) {
               that.modifysure()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.loading = false

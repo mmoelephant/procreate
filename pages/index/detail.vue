@@ -1478,6 +1478,11 @@ export default {
         if (v.data.errcode === 0) {
           that.info = v.data.data.data
           that.verifyData = v.data.data.verifyData
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.$message({
             type: 'error',

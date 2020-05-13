@@ -1,70 +1,18 @@
 <template>
   <div v-loading.fullscreen="loading" class="indexpage">
     <div class="contentbox">
-      <div class="contenthead">1.项目基本信息</div>
+      <div class="contenthead">6.项目合作方式及已具备的合作基础和条件</div>
       <div class="content">
-        <div class="formitems">
-          <div class="formitem">
-            <div class="itemname">项目名称</div>
-            <input
-              v-model="form.name"
-              type="text"
-              disabled
-              placeholder="请输入项目名称"
-            />
-          </div>
-          <div class="formitem">
-            <div class="itemname">项目研发类型</div>
-            <input
-              v-model="form.a_nx"
-              type="text"
-              placeholder="请输入项目研发类型"
-            />
-          </div>
-          <div class="formitem">
-            <div class="itemname">属何种合作协议（协定）</div>
-            <input
-              v-model="form.a_hz"
-              type="text"
-              placeholder="请输入属何种合作协议（协定）"
-            />
-          </div>
-          <div class="formitem">
-            <div class="itemname">协议名称</div>
-            <input
-              v-model="form.a_xy"
-              type="text"
-              placeholder="请输入协议名称"
-            />
-          </div>
-          <div class="formitem">
-            <div class="itemname">合作国别</div>
-            <input
-              v-model="form.a_gb"
-              type="text"
-              placeholder="请输入合作国别"
-            />
-          </div>
-          <div class="formitem formitem2 date2">
-            <div>
-              <div class="itemname">合作起始日期</div>
-              <el-date-picker
-                v-model="form.a_qs"
-                type="date"
-                placeholder="请选择合作起始时间"
-              >
-              </el-date-picker>
-            </div>
-            <div>
-              <div class="itemname">合作终止日期</div>
-              <el-date-picker
-                v-model="form.a_zz"
-                type="date"
-                placeholder="请选择合作终止时间"
-              >
-              </el-date-picker>
-            </div>
-          </div>
+        <div>
+          <el-input
+            v-model="form.f_tj"
+            type="textarea"
+            rows="6"
+            show-word-limit
+            maxlength="500"
+            placeholder="请填写项目合作方式及已具备的合作基础和条件"
+          >
+          </el-input>
         </div>
       </div>
     </div>
@@ -81,6 +29,10 @@ import { getToken } from '../../../plugins/gettoken'
 import { deepCopy } from '../../../plugins/deepcopy'
 import { formValidate21 } from '../../../plugins/formValidate21'
 import { formValidate33 } from '../../../plugins/formValidate33'
+import { formValidate43 } from '../../../plugins/formValidate43'
+import { formValidate53 } from '../../../plugins/formValidate53'
+import { formValidate63 } from '../../../plugins/formValidate63'
+import { formValidate73 } from '../../../plugins/formValidate73'
 export default {
   data() {
     return {
@@ -106,67 +58,12 @@ export default {
     }
   },
   methods: {
-    handlestarttime(data) {
-      let timedata = {}
-      let year = ''
-      let month = ''
-      let date = ''
-      if (data && typeof data == 'string') {
-        if (data.slice(0, 1) != 0) {
-          timedata = new Date(data)
-          year = timedata.getFullYear()
-          month = timedata.getMonth()
-          date = timedata.getDate()
-          return year + '-' + (month + 1) + '-' + date
-        } {
-          return data
-        }
-      } else {
-        timedata = new Date(data)
-        year = timedata.getFullYear()
-        month = timedata.getMonth()
-        date = timedata.getDate()
-        return year + '-' + (month + 1) + '-' + date
-      }
-    },
-    handlendtime(data) {
-      let timedata = {}
-      let year = ''
-      let month = ''
-      let date = ''
-      if (data && typeof data == 'string') {
-        if (data.slice(0, 1) != 0) {
-          timedata = new Date(data)
-          year = timedata.getFullYear()
-          month = timedata.getMonth()
-          date = timedata.getDate()
-          return year + '-' + (month + 1) + '-' + date
-        } {
-          return data
-        }
-      } else {
-        timedata = new Date(data)
-        year = timedata.getFullYear()
-        month = timedata.getMonth()
-        date = timedata.getDate()
-        return year + '-' + (month + 1) + '-' + date
-      }
-    },
-    handleform(data) {
-      for (const i in data) {
-        if (i == 'a_qs') {
-          data.a_qs = this.handlestarttime(data[i])
-        } else if (i == 'a_zz') {
-          data.a_zz = this.handlendtime(data[i])
-        }
-      }
-    },
     savemsg() {
       // “保存”操作
+      this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
       let data2 = {}
-      this.loading = true
       const that = this
       for (const i in commondata) {
         data1[i] = commondata[i]
@@ -207,36 +104,23 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      if (this.form.a_nx && this.form.a_nx.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.a_nx = this.form.a_nx.replace(/(^\s*)|(\s*$)/g, '')
-      }
-      if (this.form.a_hz && this.form.a_hz.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.a_hz = this.form.a_hz.replace(/(^\s*)|(\s*$)/g, '')
-      }
-      if (this.form.a_xy && this.form.a_xy.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.a_xy = this.form.a_xy.replace(/(^\s*)|(\s*$)/g, '')
-      }
-      if (this.form.a_gb && this.form.a_gb.replace(/(^\s*)|(\s*$)/g, '')) {
-        data1.a_gb = this.form.a_gb.replace(/(^\s*)|(\s*$)/g, '')
-      }
-      if (this.form.a_qs) {
-        data1.a_qs = this.handlestarttime(this.form.a_qs)
-      }
-      if (this.form.a_zz) {
-        data1.a_zz = this.handlendtime(this.form.a_zz)
+      if (this.form.f_tj && this.form.f_tj.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.f_tj = this.form.f_tj.replace(/(^\s*)|(\s*$)/g, '')
       }
       data2 = datawork(data1)
       this.$api.save_create3(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
-          this.handleform(this.form)
           this.$message({
             type: 'success',
             message: '保存成功'
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+          if (
+            !localStorage.getItem('applyid') ||
+              !Number(localStorage.getItem('applyid'))
+          ) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
           }
@@ -271,6 +155,10 @@ export default {
     next() {
       if (!formValidate21(this.form, this)) return
       if (!formValidate33(this.form, this)) return
+      if (!formValidate43(this.form, this)) return
+      if (!formValidate53(this.form, this)) return
+      if (!formValidate63(this.form, this)) return
+      if (!formValidate73(this.form, this)) return
       this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
       const data1 = {}
@@ -315,17 +203,11 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      data1.a_nx = this.form.a_nx.replace(/(^\s*)|(\s*$)/g, '')
-      data1.a_hz = this.form.a_hz.replace(/(^\s*)|(\s*$)/g, '')
-      data1.a_xy = this.form.a_xy.replace(/(^\s*)|(\s*$)/g, '')
-      data1.a_gb = this.form.a_gb.replace(/(^\s*)|(\s*$)/g, '')
-      data1.a_qs = this.handlestarttime(this.form.a_qs)
-      data1.a_zz = this.handlendtime(this.form.a_zz)
+      data1.f_tj = this.form.f_tj.replace(/(^\s*)|(\s*$)/g, '')
       data2 = datawork(data1)
       this.$api.save_create3(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
-          this.handleform(this.form)
           this.$message({
             type: 'success',
             message: '操作成功，即将进行下一步',
@@ -333,13 +215,16 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+          if (
+            !localStorage.getItem('applyid') ||
+              !Number(localStorage.getItem('applyid'))
+          ) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
           }
           setTimeout(() => {
             that.$router.push({
-              path: '/creating/step23',
+              path: '/creating/step73',
               query: { id: this.$route.query.id }
             })
           }, 1000)
@@ -374,19 +259,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped>
-.formitem input
-  width calc(100% - 114px) !important
-.formitem.formitem2
-  >div
-    display flex
-    align-items center
-    width 50%
-</style>
-<style lang="stylus">
-.formitem.formitem2.date2
-  .el-date-editor.el-input
-    width calc(100% - 114px) !important
-  .el-input__inner
-    width 100% !important
-</style>

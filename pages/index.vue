@@ -155,6 +155,11 @@ export default {
               that.userinfo()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({

@@ -194,6 +194,11 @@ export default {
               that.userinfo()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -272,6 +277,11 @@ export default {
               that.sure()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -342,6 +352,10 @@ export default {
                 if (localStorage.getItem('done')) {
                   that.send()
                 }
+              }, 1000)
+            } else if (v.data.errmsg === '没有登录') {
+              setTimeout(() => {
+                that.$router.push('/login')
               }, 1000)
             } else {
               this.$message({
@@ -419,6 +433,11 @@ export default {
                 that.sure2()
               }
             }, 1000)
+          } else if (v.data.errmsg === '没有登录') {
+            this.loading = false
+            setTimeout(() => {
+              that.$router.push('/login')
+            }, 1000)
           } else {
             this.loading = false
             this.$message({
@@ -466,6 +485,11 @@ export default {
               if (localStorage.getItem('done')) {
                 that.sure2()
               }
+            }, 1000)
+          } else if (v.data.errmsg === '没有登录') {
+            this.loading = false
+            setTimeout(() => {
+              that.$router.push('/login')
             }, 1000)
           } else {
             this.loading = false

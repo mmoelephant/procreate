@@ -1,7 +1,7 @@
 <template>
   <div v-loading.fullscreen="loading" class="indexpage">
     <div class="contentbox">
-      <div class="contenthead">9.主要研究人员</div>
+      <div class="contenthead">8.主要研究人员</div>
       <div class="content">
         <div class="formitems">
           <div class="formitem two date">
@@ -207,15 +207,13 @@ import { getClientId } from '../../../plugins/getclientid'
 import { getToken } from '../../../plugins/gettoken'
 import { deepCopy } from '../../../plugins/deepcopy'
 import { formValidate21 } from '../../../plugins/formValidate21'
-import { formValidate32 } from '../../../plugins/formValidate32'
-import { formValidate42 } from '../../../plugins/formValidate42'
-import { formValidate52 } from '../../../plugins/formValidate52'
-import { formValidate62 } from '../../../plugins/formValidate62'
-import { formValidate72 } from '../../../plugins/formValidate72'
-import { formValidate82 } from '../../../plugins/formValidate82'
-import { formValidate921 } from '../../../plugins/formValidate921'
-import { formValidate101 } from '../../../plugins/formValidate101'
-import { formValidate9 } from '../../../plugins/formValidate9'
+import { formValidate33 } from '../../../plugins/formValidate33'
+import { formValidate43 } from '../../../plugins/formValidate43'
+import { formValidate53 } from '../../../plugins/formValidate53'
+import { formValidate63 } from '../../../plugins/formValidate63'
+import { formValidate73 } from '../../../plugins/formValidate73'
+import { formValidate83 } from '../../../plugins/formValidate83'
+import { formValidate93 } from '../../../plugins/formValidate93'
 export default {
   data() {
     return {
@@ -250,23 +248,23 @@ export default {
     /*eslint-disable*/
     if (
       !localStorage.getItem('userid') ||
-      !Number(localStorage.getItem('userid'))
+        !Number(localStorage.getItem('userid'))
     ) {
       this.$router.push('/login')
       return
     }
     if (
       localStorage.getItem('form') &&
-      JSON.parse(localStorage.getItem('form')) &&
-      JSON.parse(localStorage.getItem('form')) != {}
+        JSON.parse(localStorage.getItem('form')) &&
+        JSON.parse(localStorage.getItem('form')) != {}
     ) {
       this.form = deepCopy(JSON.parse(localStorage.getItem('form')))
     }
     // 如果存在主要研究人员信息，就赋值给人员列表worker_json
     if (
       localStorage.getItem('worker') &&
-      JSON.parse(localStorage.getItem('worker')) &&
-      JSON.parse(localStorage.getItem('worker')).length > 0
+        JSON.parse(localStorage.getItem('worker')) &&
+        JSON.parse(localStorage.getItem('worker')).length > 0
     ) {
       this.form.worker_json = deepCopy(JSON.parse(localStorage.getItem('worker')))
       this.worker_json = deepCopy(JSON.parse(localStorage.getItem('worker')))
@@ -297,7 +295,13 @@ export default {
       }
       for (const i in this.form) {
         // 合作单位和项目所在地是转为字符串
-        if (i == 'address' || i == 'partner_name') {
+        if (
+          i == 'address' ||
+            i == 'partner_name' ||
+            i == 'worker_json' ||
+            i == 'partner_json' ||
+            i == 'files'
+        ) {
           data1[i] = JSON.stringify(this.form[i])
         } else {
           // 给表格中的每一项都去处空格
@@ -314,14 +318,13 @@ export default {
       } else {
         data1.id = this.$route.query.id
       }
-      // data1.category_id = 1
       // 保存的时候，如果存在人员信息，就传值，如果没有，就不传值
       if (this.worker_json.length > 0) {
         this.form.worker_json = deepCopy(this.worker_json)
         data1.worker_json = JSON.stringify(this.worker_json)
       }
       data2 = datawork(data1)
-      this.$api.save_create2(data2).then((v) => {
+      this.$api.save_create3(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
           this.$message({
@@ -330,7 +333,10 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+          if (
+            !localStorage.getItem('applyid') ||
+              !Number(localStorage.getItem('applyid'))
+          ) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
           }
@@ -364,15 +370,13 @@ export default {
     },
     next() {
       if (!formValidate21(this.form, this)) return
-      if (!formValidate32(this.form, this)) return
-      if (!formValidate42(this.form, this)) return
-      if (!formValidate52(this.form, this)) return
-      if (!formValidate62(this.form, this)) return
-      if (!formValidate72(this.form, this)) return
-      if (!formValidate82(this.form, this)) return
-      if (!formValidate921(this.form, this)) return
-      if (!formValidate101(this.form, this)) return
-      if (!formValidate9(this.form, this)) return
+      if (!formValidate33(this.form, this)) return
+      if (!formValidate43(this.form, this)) return
+      if (!formValidate53(this.form, this)) return
+      if (!formValidate63(this.form, this)) return
+      if (!formValidate73(this.form, this)) return
+      if (!formValidate83(this.form, this)) return
+      if (!formValidate93(this.form, this)) return
       this.form.worker_json = deepCopy(this.worker_json)
       this.loading = true
       const commondata = JSON.parse(localStorage.getItem('commondata'))
@@ -396,7 +400,13 @@ export default {
       }
       for (const i in this.form) {
         // 合作单位和项目所在地是转为字符串
-        if (i == 'address' || i == 'partner_name') {
+        if (
+          i == 'address' ||
+            i == 'partner_name' ||
+            i == 'worker_json' ||
+            i == 'partner_json' ||
+            i == 'files'
+        ) {
           data1[i] = JSON.stringify(this.form[i])
         } else {
           // 给表格中的每一项都去处空格
@@ -417,7 +427,7 @@ export default {
         data1.worker_json = JSON.stringify(this.worker_json)
       }
       data2 = datawork(data1)
-      this.$api.save_create2(data2).then((v) => {
+      this.$api.save_create3(data2).then((v) => {
         if (v.data.errcode === 0) {
           this.loading = false
           this.$message({
@@ -427,13 +437,16 @@ export default {
           })
           this.$store.commit('SET_FORM', this.form)
           localStorage.setItem('form', JSON.stringify(this.form))
-          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+          if (
+            !localStorage.getItem('applyid') ||
+              !Number(localStorage.getItem('applyid'))
+          ) {
             localStorage.setItem('applyid', v.data.data)
             this.$store.commit('SET_APPLY_ID', v.data.data)
           }
           setTimeout(() => {
             that.$router.push({
-              path: '/creating/step102',
+              path: '/creating/step93',
               query: { id: this.$route.query.id }
             })
           }, 1000)
@@ -466,7 +479,7 @@ export default {
       })
     },
     formValidate() {
-      if (!this.name && !this.name.replace(/(^\s*)|(\s*$)/g, '')) {
+      if (!this.name || !this.name.replace(/(^\s*)|(\s*$)/g, '')) {
         this.$message({
           type: 'error',
           message: '请输入姓名'
@@ -484,31 +497,31 @@ export default {
           message: '请选择出生日期'
         })
         return false
-      } else if (!this.job && !this.job.replace(/(^\s*)|(\s*$)/g, '')) {
+      } else if (!this.job || !this.job.replace(/(^\s*)|(\s*$)/g, '')) {
         this.$message({
           type: 'error',
           message: '请输入职务/职称'
         })
         return false
-      } else if (!this.study_major && !this.study_major.replace(/(^\s*)|(\s*$)/g, '')) {
+      } else if (!this.study_major || !this.study_major.replace(/(^\s*)|(\s*$)/g, '')) {
         this.$message({
           type: 'error',
           message: '请输入所学专业'
         })
         return false
-      } else if (!this.now_major && !this.now_major.replace(/(^\s*)|(\s*$)/g, '')) {
+      } else if (!this.now_major || !this.now_major.replace(/(^\s*)|(\s*$)/g, '')) {
         this.$message({
           type: 'error',
           message: '请输入现从事专业'
         })
         return false
-      } else if (!this.company && !this.company.replace(/(^\s*)|(\s*$)/g, '')) {
+      } else if (!this.company || !this.company.replace(/(^\s*)|(\s*$)/g, '')) {
         this.$message({
           type: 'error',
           message: '请输入所在单位'
         })
         return false
-      } else if (!this.task && !this.task.replace(/(^\s*)|(\s*$)/g, '')) {
+      } else if (!this.task || !this.task.replace(/(^\s*)|(\s*$)/g, '')) {
         this.$message({
           type: 'error',
           message: '请输入在本项目中承担的任务'

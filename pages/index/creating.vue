@@ -29,7 +29,7 @@
             {{ item.name ? item.name : '-' }}
           </div>
           <!-- <div @click="techmodel">科技示范项目</div> -->
-          <div @click="applytip('国际合作项目')">国际合作项目</div>
+          <!-- <div @click="applytip('国际合作项目')">国际合作项目</div> -->
         </div>
         <div v-if="catedisable" class="bigcate">
           <div
@@ -43,9 +43,9 @@
           <!-- <div class="bigrey" @click="techmodel">
             科技示范项目
           </div> -->
-          <div class="bigrey" @click="applytip('国际合作项目')">
+          <!-- <div class="bigrey" @click="applytip('国际合作项目')">
             国际合作项目
-          </div>
+          </div> -->
         </div>
         <p>请继续选择子类别</p>
         <div v-if="!catedisable" class="smallcate">
@@ -71,7 +71,10 @@
         </div>
       </div>
     </div>
-    <div v-if="route.path != '/creating' && bigOn != 3" class="d-guide">
+    <div
+      v-if="route.path != '/creating' && bigOn != 3 && bigOn != 4"
+      class="d-guide"
+    >
       <div
         title="1.申请立项理由"
         :class="route.path == '/creating/step1' ? 'stepOn' : ''"
@@ -213,6 +216,71 @@
         @click="tostep112"
       >
         11.附件
+      </div>
+    </div>
+    <div v-if="route.path != '/creating' && bigOn == 4" class="d-guide">
+      <div
+        title="1.项目基本信息"
+        :class="route.path == '/creating/step13' ? 'stepOn' : ''"
+        @click="tostep13"
+      >
+        1.项目基本信息
+      </div>
+      <div
+        title="2.申报单位及合作方（打印后加盖公章生效）"
+        :class="route.path == '/creating/step23' ? 'stepOn' : ''"
+        @click="tostep23"
+      >
+        2.申报单位及合作方（打印后加盖公章生效）
+      </div>
+      <div
+        title="3.项目概况及申请理由"
+        :class="route.path == '/creating/step33' ? 'stepOn' : ''"
+        @click="tostep33"
+      >
+        3.项目概况及申请理由
+      </div>
+      <div
+        title="4.合作内容及预期成果"
+        :class="route.path == '/creating/step43' ? 'stepOn' : ''"
+        @click="tostep43"
+      >
+        4.合作内容及预期成果
+      </div>
+      <div
+        title="5.合作各方简况及现有技术基础和优势等"
+        :class="route.path == '/creating/step53' ? 'stepOn' : ''"
+        @click="tostep53"
+      >
+        5.合作各方简况及现有技术基础和优势等
+      </div>
+      <div
+        title="6.项目合作方式及已具备的合作基础和条件"
+        :class="route.path == '/creating/step63' ? 'stepOn' : ''"
+        @click="tostep63"
+      >
+        6.项目合作方式及已具备的合作基础和条件
+      </div>
+      <div
+        title="7.进度计划"
+        :class="route.path == '/creating/step73' ? 'stepOn' : ''"
+        @click="tostep73"
+      >
+        7.进度计划
+      </div>
+      <div
+        title="8.主要研究人员"
+        :class="route.path == '/creating/step83' ? 'stepOn' : ''"
+        @click="tostep83"
+      >
+        8.主要研究人员
+      </div>
+      <div
+        title="9.附件"
+        :class="route.path == '/creating/step93' ? 'stepOn' : ''"
+        @click="tostep93"
+      >
+        9.附件
       </div>
     </div>
     <h1 v-if="route.path != '/creating'" class="pagetitle central">
@@ -502,13 +570,17 @@
           </div>
         </div>
       </div>
-      <div v-if="bigOn != 3" class="btns">
+      <div v-if="bigOn != 3 && bigOn != 4" class="btns">
         <div @click="savemsg">保存</div>
         <div class="submitbtn" @click="next">下一步</div>
       </div>
       <div v-if="bigOn == 3" class="btns">
         <div @click="savemsg2">保存</div>
         <div class="submitbtn" @click="next2">下一步</div>
+      </div>
+      <div v-if="bigOn == 4" class="btns">
+        <div @click="savemsg3">保存</div>
+        <div class="submitbtn" @click="next3">下一步</div>
       </div>
       <el-dialog
         :visible.sync="tipshow"
@@ -592,7 +664,12 @@ export default {
           this.addressb = deepCopy(this.form.address)
           this.bigOn = this.form.type
           this.smallOn = this.form.category_id
-          if (this.bigOn && this.smallOn) {
+          // 国际合作项目没有子类
+          if (this.bigOn != 4) {
+            if (this.bigOn && this.smallOn) {
+              this.catedisable = true
+            }
+          } else {
             this.catedisable = true
           }
         }
@@ -625,7 +702,12 @@ export default {
       this.addressb = deepCopy(this.form.address)
       this.bigOn = this.form.type
       this.smallOn = this.form.category_id
-      if (this.bigOn && this.smallOn) {
+      // 国际合作项目没有子类
+      if (this.bigOn != 4) {
+        if (this.bigOn && this.smallOn) {
+          this.catedisable = true
+        }
+      } else {
         this.catedisable = true
       }
     }
@@ -714,6 +796,11 @@ export default {
               that.beforeapply()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -762,6 +849,11 @@ export default {
             if (localStorage.getItem('done')) {
               that.userinfo()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.loading = false
@@ -821,6 +913,13 @@ export default {
           }
           this.form.partner_name = deepCopy(this.partner)
           this.form.address = deepCopy(this.addressb)
+          if (v.data.data.data.type && Number(v.data.data.data.type)) {
+            this.form.type = v.data.data.data.type
+            this.bigOn = v.data.data.data.type
+          } else {
+            this.form.type = 1
+            this.bigOn = 1
+          }
           if (
             v.data.data.data.category_id &&
             Number(v.data.data.data.category_id)
@@ -829,16 +928,13 @@ export default {
             this.smallOn = v.data.data.data.category_id
           } else {
             this.form.category_id = 0
-            this.smallOn = ''
+            this.smallOn = 0
           }
-          if (v.data.data.data.type && Number(v.data.data.data.type)) {
-            this.form.type = v.data.data.data.type
-            this.bigOn = v.data.data.data.type
+          if (this.bigOn != 4) {
+            if (this.bigOn && this.smallOn) {
+              this.catedisable = true
+            }
           } else {
-            this.form.type = 1
-            this.bigOn = 1
-          }
-          if (this.bigOn && this.smallOn) {
             this.catedisable = true
           }
         } else if (v.data.errcode === 1104) {
@@ -854,6 +950,11 @@ export default {
             if (localStorage.getItem('done')) {
               that.getprodetail()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.loading = false
@@ -1143,6 +1244,11 @@ export default {
               that.savemsg()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -1336,6 +1442,11 @@ export default {
             if (localStorage.getItem('done')) {
               that.next()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.loading = false
@@ -1563,6 +1674,11 @@ export default {
               that.savemsg2()
             }
           }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
         } else {
           this.loading = false
           this.$message({
@@ -1750,6 +1866,401 @@ export default {
             if (localStorage.getItem('done')) {
               that.next2()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
+    savemsg3() {
+      // "保存"操作
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      const that = this
+      // 国际合作项目没有子类别
+      // if (this.form.category_id) {
+      //   data1.category_id = this.form.category_id
+      // } else {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '请先选择子类别'
+      //   })
+      //   return
+      // }
+      this.loading = true
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
+        data1.id = this.$route.query.id
+      }
+      data1.type = this.form.type
+      if (this.form.name && this.form.name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.enterprise_name && this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.starttime) {
+        data1.starttime = this.handlestarttime(this.form.starttime)
+      }
+      if (this.form.endtime) {
+        data1.endtime = this.handlendtime(this.form.endtime)
+      }
+      if (this.form.self_amount) {
+        data1.self_amount = this.form.self_amount
+      }
+      if (this.form.country_amount) {
+        data1.country_amount = this.form.country_amount
+      }
+      if (this.form.current_amount) {
+        data1.current_amount = this.form.current_amount
+      }
+      if (this.form.other_amount) {
+        data1.other_amount = this.form.other_amount
+      }
+      if (this.form.foreign_amount) {
+        data1.foreign_amount = this.form.foreign_amount
+      }
+      if (this.sum) {
+        this.form.amount = this.sum
+        data1.amount = this.sum
+      }
+      if (this.partner && this.partner[0]) {
+        data1.partner_name = JSON.stringify(this.partner)
+      }
+      if (this.addressb && this.addressb[0]) {
+        data1.address = JSON.stringify(this.addressb)
+      }
+      if (this.form.study_content && this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.check_content && this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.check_content = this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.expect_content && this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.expect_content = this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_name && this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_name = this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_job && this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_job = this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_mobile && this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_mobile = this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_email && this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_email = this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_address && this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_address = this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.leader_company && this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.leader_company = this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_name && this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_name = this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_job && this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_job = this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_mobile && this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_mobile = this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_email && this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_address && this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.link_company && this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')) {
+        data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
+      }
+      if (this.form.a_nx) {
+        data1.a_nx = this.form.a_nx
+      }
+      if (this.form.a_hz) {
+        data1.a_hz = this.form.a_hz
+      }
+      if (this.form.a_xy) {
+        data1.a_xy = this.form.a_xy
+      }
+      if (this.form.a_gb) {
+        data1.a_gb = this.form.a_gb
+      }
+      if (this.form.a_qs) {
+        data1.a_qs = this.form.a_qs
+      }
+      if (this.form.a_zz) {
+        data1.a_zz = this.form.a_zz
+      }
+      if (this.form.d_by) {
+        data1.d_by = this.form.d_by
+      }
+      if (this.form.d_kx) {
+        data1.d_kx = this.form.d_kx
+      }
+      if (this.form.e_nr) {
+        data1.e_nr = this.form.e_nr
+      }
+      if (this.form.f_gf) {
+        data1.f_gf = this.form.f_gf
+      }
+      if (this.form.f_tj) {
+        data1.f_tj = this.form.f_tj
+      }
+      if (this.form.f_jh) {
+        data1.f_jh = this.form.f_jh
+      }
+      if (this.form.worker_json && this.form.worker_json.length > 0) {
+        data1.worker_json = JSON.stringify(this.form.worker_json)
+      }
+      if (this.form.partner_json && this.form.partner_json.length > 0) {
+        data1.partner_json = JSON.stringify(this.form.partner_json)
+      }
+      if (this.form.files && this.form.files.length > 0) {
+        data1.files = JSON.stringify(this.form.files)
+      }
+      data2 = datawork(data1)
+      this.$api.save_create3(data2).then((v) => {
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.handleform(this.form)
+          this.$message({
+            type: 'success',
+            message: '保存成功'
+          })
+          this.catedisable = true
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
+          setTimeout(() => {
+            this.$store.commit('SET_FORM', this.form)
+            localStorage.setItem('form', JSON.stringify(this.form))       
+          }, 1000)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.savemsg3()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.savemsg3()
+            }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
+          }, 1000)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: v.data.errmsg
+          })
+        }
+      })
+    },
+    next3() {
+      const commondata = JSON.parse(localStorage.getItem('commondata'))
+      const data1 = {}
+      let data2 = {}
+      if (!formValidate2(this.form, this)) return
+      this.form.amount = this.sum
+      // 国际合作项目没有子类别
+      // if (this.form.category_id) {
+      //   data1.category_id = this.form.category_id
+      // } else {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '请先选择子类别'
+      //   })
+      //   return
+      // }
+      this.loading = true
+      const that = this
+      for (const i in commondata) {
+        data1[i] = commondata[i]
+      }
+      if (localStorage.getItem('userid')) {
+        data1.user_id = localStorage.getItem('userid')
+      }
+      data1.timestamp = Math.round(new Date().getTime() / 1000).toString()
+      data1.nonce_str =
+        new Date().getTime() + '' + Math.floor(Math.random() * 899 + 100)
+      if (localStorage.getItem('clientid')) {
+        data1.client_id = localStorage.getItem('clientid')
+      }
+      if (localStorage.getItem('accesstoken')) {
+        data1.access_token = localStorage.getItem('accesstoken')
+      }
+      if (!this.$route.query.id) {
+        // 保存生成的id
+        if (localStorage.getItem('applyid')) {
+          data1.id = localStorage.getItem('applyid')
+        }
+      } else {
+        data1.id = this.$route.query.id
+      }
+      data1.type = this.form.type
+      data1.name = this.form.name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.enterprise_name = this.form.enterprise_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.starttime = this.handlestarttime(this.form.starttime)
+      data1.endtime = this.handlendtime(this.form.endtime)
+      if (this.form.self_amount) {
+        data1.self_amount = this.form.self_amount
+      }
+      if (this.form.country_amount) {
+        data1.country_amount = this.form.country_amount
+      }
+      if (this.form.current_amount) {
+        data1.current_amount = this.form.current_amount
+      }
+      if (this.form.other_amount) {
+        data1.other_amount = this.form.other_amount
+      }
+      if (this.form.foreign_amount) {
+        data1.foreign_amount = this.form.foreign_amount
+      }
+      if (this.sum) {
+        data1.amount = this.sum
+      }
+      data1.partner_name = JSON.stringify(this.partner)
+      data1.address = JSON.stringify(this.addressb)
+      data1.study_content = this.form.study_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.check_content = this.form.check_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.expect_content = this.form.expect_content.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_name = this.form.leader_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_job = this.form.leader_job.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_mobile = this.form.leader_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_email = this.form.leader_email.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_address = this.form.leader_address.replace(/(^\s*)|(\s*$)/g, '')
+      data1.leader_company = this.form.leader_company.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_name = this.form.link_name.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_job = this.form.link_job.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_mobile = this.form.link_mobile.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_email = this.form.link_email.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_address = this.form.link_address.replace(/(^\s*)|(\s*$)/g, '')
+      data1.link_company = this.form.link_company.replace(/(^\s*)|(\s*$)/g, '')
+      if (this.form.a_nx) {
+        data1.a_nx = this.form.a_nx
+      }
+      if (this.form.a_hz) {
+        data1.a_hz = this.form.a_hz
+      }
+      if (this.form.a_xy) {
+        data1.a_xy = this.form.a_xy
+      }
+      if (this.form.a_gb) {
+        data1.a_gb = this.form.a_gb
+      }
+      if (this.form.a_qs) {
+        data1.a_qs = this.form.a_qs
+      }
+      if (this.form.a_zz) {
+        data1.a_zz = this.form.a_zz
+      }
+      if (this.form.d_by) {
+        data1.d_by = this.form.d_by
+      }
+      if (this.form.d_kx) {
+        data1.d_kx = this.form.d_kx
+      }
+      if (this.form.e_nr) {
+        data1.e_nr = this.form.e_nr
+      }
+      if (this.form.f_gf) {
+        data1.f_gf = this.form.f_gf
+      }
+      if (this.form.f_tj) {
+        data1.f_tj = this.form.f_tj
+      }
+      if (this.form.f_jh) {
+        data1.f_jh = this.form.f_jh
+      }
+      if (this.form.worker_json && this.form.worker_json.length > 0) {
+        data1.worker_json = JSON.stringify(this.form.worker_json)
+      }
+      if (this.form.partner_json && this.form.partner_json.length > 0) {
+        data1.partner_json = JSON.stringify(this.form.partner_json)
+      }
+      if (this.form.files && this.form.files.length > 0) {
+        data1.files = JSON.stringify(this.form.files)
+      }
+      data2 = datawork(data1)
+      this.$api.save_create3(data2).then((v) => {
+        if (v.data.errcode === 0) {
+          this.loading = false
+          this.handleform(this.form)
+          this.$message({
+            type: 'success',
+            message: '操作成功，即将进入下一步'
+          })
+          this.catedisable = true
+          if (!localStorage.getItem('applyid') || !Number(localStorage.getItem('applyid'))) {
+            localStorage.setItem('applyid', v.data.data)
+            this.$store.commit('SET_APPLY_ID', v.data.data)
+          }
+          setTimeout(() => {
+            this.$store.commit('SET_FORM', this.form)
+            localStorage.setItem('form', JSON.stringify(this.form))
+            that.$router.push({
+              path: '/creating/step13',
+              query: { id: this.$route.query.id }
+            })  
+          }, 1000)
+        } else if (v.data.errcode === 1104) {
+          getToken(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('tokenDone')) {
+              that.next3()
+            }
+          }, 1000)
+        } else if (v.data.errcode === 1103) {
+          getClientId(commondata, this)
+          setTimeout(() => {
+            if (localStorage.getItem('done')) {
+              that.next3()
+            }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.loading = false
@@ -1948,9 +2459,76 @@ export default {
         query: { id: this.$route.query.id }
       })
     },
-    techmodel() {
-      this.$router.push('/creating2')
+    tostep13() {
+      // 每次点击都要保存form数据
+      this.$router.push({
+        path: '/creating/step13',
+        query: { id: this.$route.query.id }
+      })
     },
+    tostep23() {
+      this.$router.push({
+        path: '/creating/step23',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep33() {
+      this.$router.push({
+        path: '/creating/step33',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep43() {
+      this.$router.push({
+        path: '/creating/step43',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep53() {
+      this.$router.push({
+        path: '/creating/step53',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep63() {
+      this.$router.push({
+        path: '/creating/step63',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep73() {
+      this.$router.push({
+        path: '/creating/step73',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep83() {
+      this.$router.push({
+        path: '/creating/step83',
+        query: { id: this.$route.query.id }
+      })
+    },
+    tostep93() {
+      this.$router.push({
+        path: '/creating/step93',
+        query: { id: this.$route.query.id }
+      })
+    },
+    // tostep103() {
+    //   this.$router.push({
+    //     path: '/creating/step103',
+    //     query: { id: this.$route.query.id }
+    //   })
+    // },
+    // tostep113() {
+    //   this.$router.push({
+    //     path: '/creating/step113',
+    //     query: { id: this.$route.query.id }
+    //   })
+    // },
+    // techmodel() {
+    //   this.$router.push('/creating2')
+    // },
     applytip(val) {
       this.tipshow = true
       if (val === '科技示范项目') {

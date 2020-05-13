@@ -486,7 +486,7 @@
             <td class="padding20" style="height:620px;">
               <div class="bodyTitle">（一）必要性</div>
               <div class="bodyCont">
-                {{ detailinfo.a_md ? detailinfo.a_md : '-' }}
+                {{ detailinfo.d_by ? detailinfo.d_by : '-' }}
               </div>
             </td>
           </tr>
@@ -494,7 +494,7 @@
             <td class="padding20" style="height:620px;">
               <div class="bodyTitle">（二）可行性</div>
               <div class="bodyCont">
-                {{ detailinfo.a_yj ? detailinfo.a_yj : '-' }}
+                {{ detailinfo.d_kx ? detailinfo.d_kx : '-' }}
               </div>
             </td>
           </tr>
@@ -508,7 +508,7 @@
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:1400px;">
-              {{ detailinfo.a_gk ? detailinfo.a_gk : '-' }}
+              {{ detailinfo.e_nr ? detailinfo.e_nr : '-' }}
             </td>
           </tr>
         </table>
@@ -521,7 +521,7 @@
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:1400px;">
-              {{ detailinfo.a_gk ? detailinfo.a_gk : '-' }}
+              {{ detailinfo.f_gf ? detailinfo.f_gf : '-' }}
             </td>
           </tr>
         </table>
@@ -534,7 +534,7 @@
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:1400px;">
-              {{ detailinfo.a_gk ? detailinfo.a_gk : '-' }}
+              {{ detailinfo.f_tj ? detailinfo.f_tj : '-' }}
             </td>
           </tr>
         </table>
@@ -547,7 +547,7 @@
         <table class="table">
           <tr class="centerCont">
             <td class="padding20" style="height:1400px;">
-              {{ detailinfo.a_gk ? detailinfo.a_gk : '-' }}
+              {{ detailinfo.f_jh ? detailinfo.f_jh : '-' }}
             </td>
           </tr>
         </table>
@@ -893,6 +893,11 @@ export default {
             if (localStorage.getItem('done')) {
               that.getprodetail()
             }
+          }, 1000)
+        } else if (v.data.errmsg === '没有登录') {
+          this.loading = false
+          setTimeout(() => {
+            that.$router.push('/login')
           }, 1000)
         } else {
           this.loading = false
